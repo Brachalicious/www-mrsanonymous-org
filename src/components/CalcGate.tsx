@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { clearExitLock } from "./QuickExit";
 
 const LS_ENABLED = "calc_disguise_enabled";
 const LS_PASSCODE = "calc_disguise_passcode";
@@ -75,12 +76,14 @@ export function CalcGate() {
       if (mode === "setup" || !stored) {
         window.localStorage.setItem(LS_PASSCODE, sequence);
         window.sessionStorage.setItem(SS_UNLOCKED, "1");
+        clearExitLock();
         window.dispatchEvent(new Event("calc-disguise-changed"));
         setUnlocked(true);
         return;
       }
       if (sequence === stored) {
         window.sessionStorage.setItem(SS_UNLOCKED, "1");
+        clearExitLock();
         window.dispatchEvent(new Event("calc-disguise-changed"));
         setUnlocked(true);
         return;
