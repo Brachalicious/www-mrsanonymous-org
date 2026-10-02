@@ -58,8 +58,16 @@ export function performQuickExitFallback() {
 
 function exitLockActive(): boolean {
   try {
+    // A leftover permanent flag without the disguise would lock the owner
+    // out forever — discard it.
+    if (!disguiseEnabled()) window.localStorage.removeItem(EXIT_FLAG);
+    // Opening the site with ?reset=1 clears any lock.
+    if (new URLSearchParams(window.location.search).get("reset") === "1") {
+      clearExitLock();
+      return false;
+    }
     return (
-      window.localStorage.getItem(EXIT_FLAG) === "1" ||
+      (disguiseEnabled() && window.localStorage.getItem(EXIT_FLAG) === "1") ||
       window.sessionStorage.getItem(EXIT_FLAG) === "1"
     );
   } catch {
