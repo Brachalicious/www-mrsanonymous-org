@@ -1,20 +1,33 @@
 import { useEffect } from "react";
 
 const QUICK_EXIT_URL = "https://www.google.com";
-const EXIT_FLAG = "mrsanon:exited-at";
-// How long after a quick exit the app refuses to be re-entered via
-// back/forward or cache restore — long enough that an abuser grabbing the
-// device right after cannot just press Back to see the app.
-const EXIT_LOCK_MS = 2 * 60 * 1000;
-
-export function performQuickExit() {
-  // Mark the exit so any attempt to return (back button, bfcache restore)
-  // within the lock window bounces straight back out.
+const EXIT_FLAG = "mrsanon:exited";
+// The exit lock is PERMANENT for the browser: once a quick exit happens,
+// any attempt to return to the app (back button, forward button, cache
+// restore, new visit) bounces straight back out. It is stored in
+// localStorage so it survives tab closes and browser restarts. The only
+// way back in is unlocking the calculator disguise with the passcode,
+// which calls clearExitLock() — something only the real user can do.
+export function clearExitLock() {
   try {
-    sessionStorage.setItem(EXIT_FLAG, String(Date.now()));
+    window.localStorage.removeItem(EXIT_FLAG);
   } catch {
     // ignore
   }
+}
+
+function setExitFlag() {
+  try {
+    window.localStorage.setItem(EXIT_FLAG, "1");
+  } catch {
+    // ignore
+  }
+}
+
+export function performQuickExit() {
+  // Mark the exit so any attempt to return (back button, bfcache restore)
+  // bounces straight back out — permanently, until the calculator unlock.
+  setExitFlag();
   // Replace the current history entry with the safe URL so this app
   // does NOT remain in the browser's back/forward history. The exit must
   // always stay in the current tab and never create a new tab or entry.
@@ -24,32 +37,34 @@ export function performQuickExit() {
 export function performQuickExitFallback() {
   // If Google is blocked by the network, fall back to a blank page so the
   // back button still cannot return to MrsANONymous.
-  try {
-    sessionStorage.setItem(EXIT_FLAG, String(Date.now()));
-  } catch {
-    // ignore
-  }
+  setExitFlag();
   window.location.replace("about:blank");
 }
 
 function exitLockActive(): boolean {
   try {
-    const at = Number(sessionStorage.getItem(EXIT_FLAG) || 0);
-    if (!at) return false;
-    if (Date.now() - at < EXIT_LOCK_MS) return true;
-    // Lock expired — clear it so normal use resumes.
-    sessionStorage.removeItem(EXIT_FLAG);
+    return window.localStorage.getItem(EXIT_FLAG) === "1";
   } catch {
-    // ignore
+    return false;
   }
-  return false;
 }
 
 export function QuickExit() {
   useEffect(() => {
     // If we land here while an exit lock is active (back button, forward
-    // button, or a restored cached page), leave again immediately.
-    if (exitLockActive()) {
+    // button, cache restore, or a fresh visit), leave again immediately.
+    // Exception: when the calculator disguise is enabled, the app opens as
+    // an innocent-looking calculator instead — the real user clears the
+    // lock by entering their passcode, while anyone snooping sees only a
+    // calculator.
+    const disguiseOn = (() => {
+      try {
+        return window.localStorage.getItem("calc_disguise_enabled") === "1";
+      } catch {
+        return false;
+      }
+    })();
+    if (exitLockActive() && !disguiseOn) {
       performQuickExit();
       return;
     }
