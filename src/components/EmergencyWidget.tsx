@@ -258,7 +258,8 @@ export function EmergencyWidget() {
 
 
   // Fallback (English) href so the link is valid even before translation runs.
-  const smsNumber = emergency.sms ?? emergency.police;
+  const smsNumber = resolveSmsNumber(emergency.sms ?? emergency.police);
+  const testMode = getTest911Number() !== null;
   const fallbackHref = `sms:${smsNumber}?&body=${encodeURIComponent(buildSmsBody(message))}`;
 
   async function handleTextClick(e: React.MouseEvent<HTMLAnchorElement>) {
