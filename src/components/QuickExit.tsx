@@ -1,29 +1,59 @@
 import { useEffect } from "react";
 
 const QUICK_EXIT_URL = "https://www.google.com";
+const EXIT_FLAG = "mrsanon:exited-at";
+// How long after a quick exit the app refuses to be re-entered via
+// back/forward or cache restore — long enough that an abuser grabbing the
+// device right after cannot just press Back to see the app.
+const EXIT_LOCK_MS = 2 * 60 * 1000;
 
 export function performQuickExit() {
+  // Mark the exit so any attempt to return (back button, bfcache restore)
+  // within the lock window bounces straight back out.
+  try {
+    sessionStorage.setItem(EXIT_FLAG, String(Date.now()));
+  } catch {
+    // ignore
+  }
   // Replace the current history entry with the safe URL so this app
   // does NOT remain in the browser's back/forward history. The exit must
   // always stay in the current tab and never create a new tab or entry.
-  try {
-    // Wipe this page from the session history entry before leaving.
-    window.history.replaceState(null, "", QUICK_EXIT_URL);
-  } catch {
-    // Cross-origin replaceState can throw; location.replace below still
-    // removes the entry.
-  }
   window.location.replace(QUICK_EXIT_URL);
 }
 
 export function performQuickExitFallback() {
   // If Google is blocked by the network, fall back to a blank page so the
   // back button still cannot return to MrsANONymous.
+  try {
+    sessionStorage.setItem(EXIT_FLAG, String(Date.now()));
+  } catch {
+    // ignore
+  }
   window.location.replace("about:blank");
+}
+
+function exitLockActive(): boolean {
+  try {
+    const at = Number(sessionStorage.getItem(EXIT_FLAG) || 0);
+    if (!at) return false;
+    if (Date.now() - at < EXIT_LOCK_MS) return true;
+    // Lock expired — clear it so normal use resumes.
+    sessionStorage.removeItem(EXIT_FLAG);
+  } catch {
+    // ignore
+  }
+  return false;
 }
 
 export function QuickExit() {
   useEffect(() => {
+    // If we land here while an exit lock is active (back button, forward
+    // button, or a restored cached page), leave again immediately.
+    if (exitLockActive()) {
+      performQuickExit();
+      return;
+    }
+
     function isTyping(target: EventTarget | null) {
       const el = target as HTMLElement | null;
       if (!el) return false;
@@ -75,8 +105,8 @@ export function QuickExit() {
       performQuickExit();
     }
 
-    // If the tab becomes hidden (user switching away), arm a flag so that
-    // returning via back/forward cache also exits instead of showing content.
+    // If the page is restored from the back/forward cache, exit instead of
+    // showing content.
     function handlePageShow(e: PageTransitionEvent) {
       if (e.persisted) {
         performQuickExit();
