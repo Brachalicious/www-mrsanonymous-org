@@ -11,6 +11,7 @@ import {
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LANGUAGES, translateToEnglish, type LangCode } from "@/lib/translations";
 import { getEmergency } from "@/lib/emergency-numbers";
+import { getTest911Number, resolveSmsNumber } from "@/lib/test-911";
 import { useRegion } from "@/hooks/use-region";
 import helpSignalButton from "@/assets/help-signal-button.png.asset.json";
 import { SafeExternalButton } from "@/components/SafeExternalButton";
@@ -258,7 +259,8 @@ export function EmergencyWidget() {
 
 
   // Fallback (English) href so the link is valid even before translation runs.
-  const smsNumber = emergency.sms ?? emergency.police;
+  const smsNumber = resolveSmsNumber(emergency.sms ?? emergency.police);
+  const testMode = getTest911Number() !== null;
   const fallbackHref = `sms:${smsNumber}?&body=${encodeURIComponent(buildSmsBody(message))}`;
 
   async function handleTextClick(e: React.MouseEvent<HTMLAnchorElement>) {
@@ -495,6 +497,11 @@ export function EmergencyWidget() {
                 )}
               </div>
               {storyStatus && <p className="mt-1 text-[10px] text-ink-600">{storyStatus}</p>}
+              {testMode && (
+                <p className="mt-1 rounded bg-amber-100 px-2 py-1 text-[10px] font-bold text-amber-800">
+                  TEST MODE — texts go to {getTest911Number()}, not 911. Open the app with ?test911=off to clear.
+                </p>
+              )}
             </div>
 
 
