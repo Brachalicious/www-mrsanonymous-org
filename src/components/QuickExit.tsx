@@ -52,8 +52,19 @@ function exitLockActive(): boolean {
 export function QuickExit() {
   useEffect(() => {
     // If we land here while an exit lock is active (back button, forward
-    // button, or a restored cached page), leave again immediately.
-    if (exitLockActive()) {
+    // button, cache restore, or a fresh visit), leave again immediately.
+    // Exception: when the calculator disguise is enabled, the app opens as
+    // an innocent-looking calculator instead — the real user clears the
+    // lock by entering their passcode, while anyone snooping sees only a
+    // calculator.
+    const disguiseOn = (() => {
+      try {
+        return window.localStorage.getItem("calc_disguise_enabled") === "1";
+      } catch {
+        return false;
+      }
+    })();
+    if (exitLockActive() && !disguiseOn) {
       performQuickExit();
       return;
     }
