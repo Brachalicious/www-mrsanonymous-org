@@ -2,15 +2,26 @@ import { useEffect } from "react";
 
 const QUICK_EXIT_URL = "https://www.google.com";
 const EXIT_FLAG = "mrsanon:exited";
-// The exit lock is PERMANENT for the browser: once a quick exit happens,
-// any attempt to return to the app (back button, forward button, cache
-// restore, new visit) bounces straight back out. It is stored in
-// localStorage so it survives tab closes and browser restarts. The only
-// way back in is unlocking the calculator disguise with the passcode,
-// which calls clearExitLock() — something only the real user can do.
+// The exit lock blocks returning to the app after a quick exit (back
+// button, forward button, cache restore, new visit all bounce back out).
+// When the calculator disguise is enabled, the lock is PERMANENT
+// (localStorage, survives restarts) — the only way back in is unlocking
+// the calculator with the passcode, which calls clearExitLock().
+// When the disguise is OFF, the lock lasts only for the current tab
+// session (sessionStorage) so the owner is never locked out of their
+// own site with no way back in.
+function disguiseEnabled(): boolean {
+  try {
+    return window.localStorage.getItem("calc_disguise_enabled") === "1";
+  } catch {
+    return false;
+  }
+}
+
 export function clearExitLock() {
   try {
     window.localStorage.removeItem(EXIT_FLAG);
+    window.sessionStorage.removeItem(EXIT_FLAG);
   } catch {
     // ignore
   }
@@ -18,7 +29,11 @@ export function clearExitLock() {
 
 function setExitFlag() {
   try {
-    window.localStorage.setItem(EXIT_FLAG, "1");
+    if (disguiseEnabled()) {
+      window.localStorage.setItem(EXIT_FLAG, "1");
+    } else {
+      window.sessionStorage.setItem(EXIT_FLAG, "1");
+    }
   } catch {
     // ignore
   }
@@ -43,7 +58,10 @@ export function performQuickExitFallback() {
 
 function exitLockActive(): boolean {
   try {
-    return window.localStorage.getItem(EXIT_FLAG) === "1";
+    return (
+      window.localStorage.getItem(EXIT_FLAG) === "1" ||
+      window.sessionStorage.getItem(EXIT_FLAG) === "1"
+    );
   } catch {
     return false;
   }
