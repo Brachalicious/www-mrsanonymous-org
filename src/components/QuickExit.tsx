@@ -75,14 +75,7 @@ export function QuickExit() {
     // an innocent-looking calculator instead — the real user clears the
     // lock by entering their passcode, while anyone snooping sees only a
     // calculator.
-    const disguiseOn = (() => {
-      try {
-        return window.localStorage.getItem("calc_disguise_enabled") === "1";
-      } catch {
-        return false;
-      }
-    })();
-    if (exitLockActive() && !disguiseOn) {
+    if (exitLockActive() && !disguiseEnabled()) {
       performQuickExit();
       return;
     }
