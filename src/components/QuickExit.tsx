@@ -82,7 +82,9 @@ export function QuickExit() {
     }
 
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") {
+      if (e.key === "Escape" || e.key === "Esc" || e.code === "Escape") {
+        e.preventDefault();
+        e.stopImmediatePropagation();
         performQuickExit();
         return;
       }
