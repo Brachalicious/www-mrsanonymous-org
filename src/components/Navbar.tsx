@@ -354,8 +354,19 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="max-h-[calc(100dvh-9rem)] overflow-y-auto overscroll-contain border-t border-ink-300/30 bg-white lg:hidden">
-          <div className="flex flex-col gap-2 px-5 py-4">
+        <div className="fixed inset-0 z-[80] overflow-y-auto overscroll-contain bg-white lg:hidden">
+          <div className="sticky top-0 flex items-center justify-between border-b border-ink-300/40 bg-white px-5 py-3">
+            <span className="text-sm font-extrabold uppercase tracking-widest text-ink-900">Menu</span>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label="Close menu"
+              className="touch-manipulation rounded-lg border border-ink-300/60 px-4 py-2 text-lg font-bold text-ink-900"
+            >
+              ✕
+            </button>
+          </div>
+          <div className="flex flex-col gap-2 px-5 py-4 pb-16">
             {tabs.map((tab) => {
               const labelKey = TAB_LABEL_KEYS[tab.testid];
               const label = labelKey ? t(labelKey) : tab.label;
