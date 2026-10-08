@@ -488,7 +488,7 @@ export function EmergencyWidget() {
                     data-testid="emergency-story-police"
                     className={`btn-rose py-2 text-[10px] ${is988 ? "" : "col-span-2"}`}
                   >
-                    <MessageSquare className="h-3 w-3" /> Text police ({smsNumber})
+                    <MessageSquare className="h-3 w-3 shrink-0" /> <span className="whitespace-normal break-words leading-tight">{testMode ? "Text test #" : "Text police"}</span>
                   </button>
                 ) : (
                   <p className={`text-[10px] text-ink-500 ${is988 ? "" : "col-span-2"}`}>
