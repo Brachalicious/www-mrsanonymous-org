@@ -297,8 +297,10 @@ export function Navbar() {
           </button>
           <button
             data-testid="nav-mobile-toggle"
+            type="button"
+            aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="rounded-lg border border-ink-300/40 p-2"
+            className="touch-manipulation rounded-lg border border-ink-300/40 p-3"
             aria-label="Toggle menu"
           >
           <div className="space-y-1">
@@ -352,7 +354,7 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="border-t border-ink-300/30 bg-white lg:hidden">
+        <div className="max-h-[calc(100dvh-9rem)] overflow-y-auto overscroll-contain border-t border-ink-300/30 bg-white lg:hidden">
           <div className="flex flex-col gap-2 px-5 py-4">
             {tabs.map((tab) => {
               const labelKey = TAB_LABEL_KEYS[tab.testid];
