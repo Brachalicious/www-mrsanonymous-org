@@ -256,7 +256,7 @@ function GoPage() {
         />
       )}
 
-      {backButton}
+      {fullscreen && backButton}
     </div>
   );
 }
