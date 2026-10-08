@@ -120,41 +120,21 @@ export function QuickExit() {
       }
     }
 
-    // History trap: keep a guard entry on top of the stack so pressing the
-    // browser Back button fires popstate instead of leaving — and when it
-    // does, we quick-exit rather than letting the user navigate back into
-    // or around the app.
-    const guard = { mrsanonGuard: true };
-    try {
-      window.history.pushState(guard, "");
-    } catch {
-      // ignore
-    }
-
-    function handlePopState() {
-      // Re-arm the trap, then exit — back must never expose the app.
-      try {
-        window.history.pushState(guard, "");
-      } catch {
-        // ignore
-      }
-      performQuickExit();
-    }
-
-    // If the page is restored from the back/forward cache, exit instead of
-    // showing content.
+    // Normal Back/Forward between app pages must keep working. Back is only
+    // blocked AFTER a quick exit: the exit uses location.replace (the app
+    // leaves history) and sets the exit lock, so returning bounces out.
+    // If the page is restored from the back/forward cache while an exit
+    // lock is active, leave again instead of showing content.
     function handlePageShow(e: PageTransitionEvent) {
-      if (e.persisted) {
+      if (e.persisted && exitLockActive() && !disguiseEnabled()) {
         performQuickExit();
       }
     }
 
     window.addEventListener("keydown", handleKeyDown, true);
-    window.addEventListener("popstate", handlePopState);
     window.addEventListener("pageshow", handlePageShow);
     return () => {
       window.removeEventListener("keydown", handleKeyDown, true);
-      window.removeEventListener("popstate", handlePopState);
       window.removeEventListener("pageshow", handlePageShow);
     };
   }, []);
