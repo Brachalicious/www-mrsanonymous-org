@@ -10,7 +10,7 @@ export function Footer() {
   const emergency = getEmergency(lang, country);
   return (
     <footer className="border-t border-ink-300 bg-white">
-      <div className="mx-auto max-w-7xl px-5 py-10 lg:px-10">
+      <div className="mx-auto max-w-7xl px-5 pb-36 pt-10 lg:px-10 md:pb-28">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           <Link to="/" className="group flex flex-col items-center leading-none md:items-start">
             <div className="flex items-baseline gap-1">
