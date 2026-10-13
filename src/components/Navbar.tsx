@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Shield, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -105,6 +107,14 @@ export function Navbar() {
   const loggedIn = !!user;
   const tabs = getTabs(loggedIn);
 
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
 
   async function handleLogout() {
     await supabase.auth.signOut();
@@ -295,12 +305,15 @@ export function Navbar() {
             <ShieldIcon className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">{hideHistory ? "Hidden" : "Hide"}</span>
           </button>
-          <button
+          <Button
             data-testid="nav-mobile-toggle"
             type="button"
+            variant="outline"
+            size="icon"
             aria-expanded={open}
+            aria-controls="phone-navigation"
             onClick={() => setOpen((v) => !v)}
-            className="touch-manipulation rounded-lg border border-ink-300/40 p-3"
+            className="h-12 w-12 shrink-0 touch-manipulation"
             aria-label="Toggle menu"
           >
           <div className="space-y-1">
@@ -308,7 +321,7 @@ export function Navbar() {
             <div className="h-0.5 w-5 bg-ink-900" />
             <div className="h-0.5 w-5 bg-ink-900" />
           </div>
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -353,20 +366,23 @@ export function Navbar() {
       </nav>
 
       {/* Mobile menu */}
-      {open && (
-        <div className="fixed inset-0 z-[80] overflow-y-auto overscroll-contain bg-white lg:hidden">
-          <div className="sticky top-0 flex items-center justify-between border-b border-ink-300/40 bg-white px-5 py-3">
+      {open && createPortal(
+        <div id="phone-navigation" role="dialog" aria-modal="true" aria-label="Menu" className="fixed inset-0 z-[90] flex h-dvh flex-col overflow-hidden bg-popover text-popover-foreground lg:hidden">
+          <div className="grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-4 border-b border-border px-5 py-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
             <span className="text-sm font-extrabold uppercase tracking-widest text-ink-900">Menu</span>
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="icon"
               onClick={() => setOpen(false)}
               aria-label="Close menu"
-              className="touch-manipulation rounded-lg border border-ink-300/60 px-4 py-2 text-lg font-bold text-ink-900"
+              className="h-12 w-12 shrink-0 touch-manipulation"
             >
-              ✕
-            </button>
+              <X aria-hidden="true" />
+            </Button>
           </div>
-          <div className="flex flex-col gap-2 px-5 py-4 pb-16">
+          <nav aria-label="Phone navigation" className="min-h-0 flex-1 touch-pan-y overflow-y-auto overscroll-contain">
+          <div className="flex flex-col gap-2 px-5 py-4 pb-[max(4rem,env(safe-area-inset-bottom))]">
             {tabs.map((tab) => {
               const labelKey = TAB_LABEL_KEYS[tab.testid];
               const label = labelKey ? t(labelKey) : tab.label;
@@ -470,8 +486,9 @@ export function Navbar() {
               </>
             )}
           </div>
+          </nav>
         </div>
-      )}
+      , document.body)}
     </header>
   );
 }
