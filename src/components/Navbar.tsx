@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { Shield, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -72,6 +72,7 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [hideHistory, setHideHistory] = useState(false);
   const navigate = useNavigate();
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { lang, setLang, t } = useLanguage();
   const { country: region } = useRegion();
   const emergency = getEmergency(lang, region);
@@ -106,6 +107,10 @@ export function Navbar() {
 
   const loggedIn = !!user;
   const tabs = getTabs(loggedIn);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     if (!open) return;
