@@ -290,5 +290,15 @@ export const shareEntry = createServerFn({ method: "POST" })
       .select()
       .single();
     if (error) throw new Error(error.message);
+    // The board lists shared notebooks; sharing a page must make its notebook
+    // visible there too (only shared pages are ever shown).
+    if (data.shared && updated?.notebook_id) {
+      await context.supabase
+        .from("notebooks")
+        .update({ shared: true, share_as: data.shareAs, shared_at: new Date().toISOString() })
+        .eq("id", updated.notebook_id)
+        .eq("owner_id", context.userId)
+        .eq("shared", false);
+    }
     return updated;
   });
