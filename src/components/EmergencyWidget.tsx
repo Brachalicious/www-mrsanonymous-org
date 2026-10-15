@@ -342,7 +342,7 @@ export function EmergencyWidget() {
   const msgLangDir = LANGUAGES.find((l) => l.code === msgLang)?.dir ?? "ltr";
 
   return (
-    <div className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-3">
+    <div className="fixed bottom-5 right-5 z-[60] flex flex-col items-end gap-3">
       {open && (
         <div className="note-card max-h-[calc(100dvh-12rem)] w-80 max-w-[92vw] overflow-y-auto overscroll-contain p-4">
           <div className="flex items-center justify-between">
