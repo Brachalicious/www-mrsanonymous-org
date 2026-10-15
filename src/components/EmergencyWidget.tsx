@@ -344,7 +344,7 @@ export function EmergencyWidget() {
   return (
     <div className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-3">
       {open && (
-        <div className="note-card w-80 max-w-[92vw] overflow-hidden p-4">
+        <div className="note-card max-h-[calc(100dvh-1.5rem)] w-80 max-w-[92vw] overflow-y-auto overscroll-contain p-4">
           <div className="flex items-center justify-between">
             <h3 className="font-serif text-lg text-ink-900">{t("emg.title")}</h3>
             <button
