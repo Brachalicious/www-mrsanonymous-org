@@ -4,6 +4,7 @@ import { performQuickExit } from "@/components/QuickExit";
 import {
   AlertTriangle,
   ChevronDown,
+  ClipboardList,
   BookOpen,
   EyeOff,
   FileText,
