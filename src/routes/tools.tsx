@@ -4,6 +4,7 @@ import { performQuickExit } from "@/components/QuickExit";
 import {
   AlertTriangle,
   ChevronDown,
+  ClipboardList,
   BookOpen,
   EyeOff,
   FileText,
@@ -147,6 +148,26 @@ function ToolsPage() {
             </Link>
             <p className="text-xs text-ink-500">
               Nothing here is shared to the public board. Use it to build a record if you ever choose to report.
+            </p>
+          </div>
+        </ToolCard>
+
+        <ToolCard
+          icon={<ClipboardList className="h-6 w-6 text-ink-900" />}
+          title="My Safety Plan"
+          color="bg-cream-200"
+          summary="Build a step-by-step safety plan for staying safe at home, work, and online."
+        >
+          <div className="flex flex-col gap-2">
+            <Link
+              to="/safety-plan"
+              data-testid="tools-safety-plan"
+              className="btn-dark w-full"
+            >
+              Open My Safety Plan
+            </Link>
+            <p className="text-xs text-ink-500">
+              Saved only on your own device. Print it or erase it at any time.
             </p>
           </div>
         </ToolCard>
