@@ -83,7 +83,7 @@ export function Footer() {
                 <sup className="text-2xl font-black md:text-4xl">33</sup>
               </span>
             </p>
-            <span className="font-serif text-lg font-bold tracking-wide text-rose-500 underline decoration-rose-500/40 decoration-2 underline-offset-8 group-hover:decoration-rose-500 md:text-xl">
+            <span className="font-serif text-sm font-bold leading-none tracking-wide text-rose-500 underline decoration-rose-500/40 decoration-2 underline-offset-8 group-hover:decoration-rose-500 md:text-lg">
               mysticminded33.com
             </span>
 
