@@ -12,7 +12,7 @@ export function Footer() {
   const emergency = getEmergency(lang, country);
   return (
     <footer className="border-t border-ink-300 bg-white">
-      <div className="mx-auto max-w-7xl px-5 pb-52 pt-10 lg:px-10 md:pb-28">
+      <div className="mx-auto max-w-7xl px-5 pb-[184px] pt-10 lg:px-10 md:pb-28">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           <Link to="/" className="group flex flex-col items-center leading-none md:items-start">
             <div className="flex items-baseline gap-1">
@@ -71,15 +71,22 @@ export function Footer() {
             <img
               src={mysticMindedLogo}
               alt="MysticMinded³³ logo"
-              className="h-56 w-auto transition-transform group-hover:scale-[1.03] md:h-72"
+              className="h-44 w-auto transition-transform group-hover:scale-[1.03] md:h-72"
               loading="lazy"
             />
-            <p className="pb-2 text-center font-serif text-4xl font-black leading-[1.25] tracking-tight text-rose-500 transition-colors group-hover:text-rose-600 md:text-6xl">
+
+            <p className="pb-1 text-center font-serif text-4xl font-black leading-[1.15] tracking-tight text-ink-900 md:text-6xl">
               Brought to you by
               <br className="md:hidden" />{" "}
-              MysticMinded
-              <sup className="text-2xl font-black text-ink-400 md:text-4xl">33</sup>
+              <span className="text-rose-500">
+                MysticMinded
+                <sup className="text-2xl font-black md:text-4xl">33</sup>
+              </span>
             </p>
+            <span className="font-serif text-lg font-bold tracking-wide text-rose-500 underline decoration-rose-500/40 decoration-2 underline-offset-8 group-hover:decoration-rose-500 md:text-xl">
+              mysticminded33.com
+            </span>
+
 
           </a>
 
