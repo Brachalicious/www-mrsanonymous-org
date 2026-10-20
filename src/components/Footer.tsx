@@ -71,7 +71,7 @@ export function Footer() {
             <img
               src={mysticMindedLogo}
               alt="MysticMinded³³ logo"
-              className="h-[36vh] max-h-[440px] w-auto transition-transform group-hover:scale-[1.03]"
+              className="h-[35vh] max-h-[420px] w-auto transition-transform group-hover:scale-[1.03]"
               loading="lazy"
             />
 
