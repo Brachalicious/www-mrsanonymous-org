@@ -65,7 +65,7 @@ export function Footer() {
             href="https://www.mysticminded33.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="group mt-2 flex flex-col items-center gap-4"
+            className="group mt-2 flex flex-col items-center gap-2 md:gap-4"
             aria-label="Visit MysticMinded33"
           >
             <img
