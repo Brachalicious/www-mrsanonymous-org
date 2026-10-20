@@ -71,9 +71,10 @@ export function Footer() {
             <img
               src={mysticMindedLogo}
               alt="MysticMinded³³ logo"
-              className="h-56 w-auto transition-transform group-hover:scale-[1.03] md:h-72"
+              className="h-44 w-auto transition-transform group-hover:scale-[1.03] md:h-72"
               loading="lazy"
             />
+
             <p className="pb-1 text-center font-serif text-4xl font-black leading-[1.3] tracking-tight text-ink-900 md:text-6xl">
               Brought to you by
               <br className="md:hidden" />{" "}
