@@ -54,6 +54,16 @@ function PrivacyPage() {
         Do not rely on translation for anything you consider secret.
       </Section>
 
+      <Section title="Mascot app guidance">
+        Guidance conversations are saved privately in your account until you delete them or delete
+        your account. Only your account can access them through the app; they are not posted to the
+        board or sent to the support inbox. Your questions and the conversation history are sent
+        through Lovable AI to an AI provider to generate replies. The selected provider endpoint
+        uses zero data retention. The mascot does not read your notebooks, recordings, saved
+        addresses, or safety plan. Do not enter names, addresses, or other identifying details.
+        AI guidance can be mistaken and is not emergency, medical, or legal assistance.
+      </Section>
+
       <Section title="Deleting your account">
         You can permanently delete your account and everything in it at any time from{" "}
         <a href="/settings" className="text-rose-600 underline">Settings</a>. Deletion is immediate and

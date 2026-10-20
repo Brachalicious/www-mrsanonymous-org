@@ -3,6 +3,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useRegion } from "@/hooks/use-region";
 import { getEmergency } from "@/lib/emergency-numbers";
 import mysticMindedLogo from "@/assets/mysticminded-logo-rbw-exact.png";
+import mascotAsset from "@/assets/app-guidance-mascot.jpeg.asset.json";
+import { Button } from "@/components/ui/button";
 
 export function Footer() {
   const { lang } = useLanguage();
@@ -53,6 +55,12 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-col items-center gap-2 border-t border-ink-300 pt-6">
+          <Button asChild variant="ghost" className="mb-6 h-auto flex-col gap-2 p-3 hover:bg-secondary" title="Ask for app guidance">
+            <Link to="/guidance" aria-label="Ask the mascot for app guidance">
+              <img src={mascotAsset.url} alt="MrsANONymous guidance mascot with a red bow" className="h-64 w-48 object-contain" loading="lazy" />
+              <span className="font-serif text-xl text-primary">Ask for app guidance</span>
+            </Link>
+          </Button>
           <img
             src={mysticMindedLogo}
             alt="MysticMinded³³ logo"

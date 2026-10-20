@@ -62,6 +62,7 @@ function DeleteAccountPage() {
         <li>Your account (nickname, password hash, security-question hashes).</li>
         <li>Every notebook, journal entry, recording, and uploaded file.</li>
         <li>Every story you shared, and your support messages with us.</li>
+        <li>Your saved mascot guidance conversations.</li>
       </ul>
       <p className="mt-3 text-ink-700">
         Deletion is immediate and permanent. Nothing is retained afterwards except, where legally

@@ -7,6 +7,9 @@ export const deleteMyAccount = createServerFn({ method: "POST" })
     const { userId } = context;
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
+    const { error: guidanceError } = await supabaseAdmin.from("guidance_threads").delete().eq("owner_id", userId);
+    if (guidanceError) throw new Error("Your guidance conversations could not be deleted. Please try again.");
+
     const { data: notebooks } = await supabaseAdmin
       .from("notebooks")
       .select("id")
