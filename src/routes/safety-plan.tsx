@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { copyPlanText, downloadPlan, sharePlan } from "@/lib/safety-plan-export";
 
 export const Route = createFileRoute("/safety-plan")({
   component: SafetyPlanPage,
