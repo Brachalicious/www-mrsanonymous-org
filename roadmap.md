@@ -9,3 +9,4 @@
 - [x] Make NotebookCover match the CoverDesigner preview (label box, marble, spine)
 - [x] Clean marble styling (natural wavy veins + soft clouds, colors stay true — verified pink/red/mixed)
 - [x] Typecheck passed; verified via browser screenshots
+- [x] Footer branding: black/white/red MysticMinded33 credit, large and bold, clickable to mysticminded33.com (verified phone + desktop clearance).
