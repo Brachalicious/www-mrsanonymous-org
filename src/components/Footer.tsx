@@ -61,15 +61,28 @@ export function Footer() {
               <span className="font-serif text-xl text-primary">Ask for app guidance</span>
             </Link>
           </Button>
-          <img
-            src={mysticMindedLogo}
-            alt="MysticMinded³³ logo"
-            className="h-56 w-auto md:h-72"
-          />
-          <p className="text-xs tracking-wide text-ink-500">
-            Brought to you by <span className="font-serif italic text-rose-500">MysticMinded</span>
-            <sup className="text-ink-400">33</sup>
-          </p>
+          <a
+            href="https://www.mysticminded33.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group mt-2 flex flex-col items-center gap-4"
+            aria-label="Visit MysticMinded33"
+          >
+            <img
+              src={mysticMindedLogo}
+              alt="MysticMinded³³ logo"
+              className="h-56 w-auto transition-transform group-hover:scale-[1.03] md:h-72"
+              loading="lazy"
+            />
+            <p className="pb-2 text-center font-serif text-4xl font-black leading-[1.25] tracking-tight text-rose-500 transition-colors group-hover:text-rose-600 md:text-6xl">
+              Brought to you by
+              <br className="md:hidden" />{" "}
+              MysticMinded
+              <sup className="text-2xl font-black text-ink-400 md:text-4xl">33</sup>
+            </p>
+
+          </a>
+
         </div>
       </div>
     </footer>
