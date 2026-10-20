@@ -87,23 +87,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       if (!mounted) return;
       const nextUser = session?.user ?? null;
       setSession(session ?? null);
       setUser(nextUser);
 
-      if (nextUser) {
-        const { data } = await sb.from("profiles").select("*").eq("id", nextUser.id).single();
-        if (mounted) setProfile((data as Profile | null) ?? null);
-        const { data: roles } = await sb.from("user_roles").select("role").eq("user_id", nextUser.id);
-        if (mounted) setIsAdmin(Array.isArray(roles) && roles.some((r: any) => r.role === "admin"));
-      } else {
+      if (!nextUser) {
         setProfile(null);
         setIsAdmin(false);
+        setLoading(false);
+        return;
       }
-
-      if (mounted) setLoading(false);
+      // Auth holds its session lock while invoking this callback. Defer database
+      // calls until it returns, or getSession and sign-in can wait indefinitely.
+      setTimeout(() => {
+        if (!mounted) return;
+        void (async () => {
+          try {
+            const { data } = await sb.from("profiles").select("*").eq("id", nextUser.id).single();
+            if (mounted) setProfile((data as Profile | null) ?? null);
+            const { data: roles } = await sb.from("user_roles").select("role").eq("user_id", nextUser.id);
+            if (mounted) setIsAdmin(Array.isArray(roles) && roles.some((r: any) => r.role === "admin"));
+          } finally {
+            if (mounted) setLoading(false);
+          }
+        })();
+      }, 0);
     });
 
     return () => {
