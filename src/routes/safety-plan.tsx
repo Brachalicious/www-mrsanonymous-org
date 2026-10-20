@@ -136,6 +136,8 @@ function SafetyPlanPage() {
   const [active, setActive] = useState(TABS[0]);
   const [loaded, setLoaded] = useState(false);
   const [savedAt, setSavedAt] = useState<string>("");
+  const [busy, setBusy] = useState<string>("");
+  const [exportNote, setExportNote] = useState<string>("");
 
   useEffect(() => {
     try {
