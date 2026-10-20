@@ -51,6 +51,14 @@ function DashboardPage() {
 
   const options: Option[] = [
     {
+      to: "/board",
+      title: "Go to THE BOARD!",
+      desc: "Read anonymous stories from other women and girls.",
+      icon: <Users className="h-6 w-6 text-rose-600" />,
+      tone: "bg-rose-100",
+      testid: "dash-board",
+    },
+    {
       to: "/tell-your-story",
       title: "Tell your story",
       desc: "Write privately, or share anonymously to the community board.",
@@ -98,14 +106,6 @@ function DashboardPage() {
       icon: <LifeBuoy className="h-6 w-6 text-ink-900" />,
       tone: "bg-cream-200",
       testid: "dash-resources",
-    },
-    {
-      to: "/board",
-      title: "The board",
-      desc: "Read anonymous stories from other women and girls.",
-      icon: <Users className="h-6 w-6 text-rose-600" />,
-      tone: "bg-rose-100",
-      testid: "dash-board",
     },
     {
       to: "/inbox",

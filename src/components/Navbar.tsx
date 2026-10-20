@@ -26,6 +26,7 @@ type NavItem = {
 
 const BASE_TABS: NavItem[] = [
   { to: "/dashboard", label: "Dashboard", testid: "nav-dashboard" },
+  { to: "/board", label: "Go to THE BOARD!", testid: "nav-board", kind: "rose" },
   { to: "/about", label: "About us", testid: "nav-about" },
   { to: "/women", label: "Women", testid: "nav-women" },
   { to: "/girls", label: "Girls", testid: "nav-girls" },
@@ -44,6 +45,7 @@ const INBOX_TAB: NavItem = {
 };
 
 const TAB_LABEL_KEYS: Record<string, string> = {
+  "nav-board": "nav.goToBoard",
   "nav-about": "nav.about",
   "nav-women": "nav.women",
   "nav-girls": "nav.girls",
@@ -54,17 +56,8 @@ const TAB_LABEL_KEYS: Record<string, string> = {
 };
 
 function getTabs(loggedIn: boolean): NavItem[] {
-  return [
-    BASE_TABS[0],
-    BASE_TABS[1],
-    BASE_TABS[2],
-    BASE_TABS[3],
-    BASE_TABS[4],
-    BASE_TABS[5],
-    BASE_TABS[6],
-    BASE_TABS[7],
-    BASE_TABS[8],
-  ];
+  void loggedIn;
+  return [...BASE_TABS];
 }
 
 export function Navbar() {
@@ -416,7 +409,9 @@ export function Navbar() {
                   className={
                     tab.kind === "dark"
                       ? "rounded-md bg-ink-900 px-3 py-2 text-center text-xs font-bold uppercase tracking-widest text-white"
-                      : "rounded-lg px-3 py-2 text-sm text-ink-900 hover:bg-ink-100"
+                      : tab.kind === "rose"
+                        ? "rounded-md bg-rose-500 px-3 py-2 text-center text-sm font-extrabold uppercase tracking-widest text-white"
+                        : "rounded-lg px-3 py-2 text-sm text-ink-900 hover:bg-ink-100"
                   }
                 >
                   {label}
