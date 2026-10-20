@@ -226,6 +226,63 @@ function SafetyPlanPage() {
           <button type="button" onClick={() => window.print()} data-testid="safety-plan-print" className="btn-rose">
             🖨️ Print my plan
           </button>
+          <button
+            type="button"
+            onClick={async () => {
+              if (busy) return;
+              setBusy("download");
+              try {
+                await downloadPlan(SECTIONS, values);
+                setExportNote("Saved a PDF copy to your downloads.");
+              } catch {
+                setExportNote("Could not create the PDF on this device — try Print instead.");
+              } finally {
+                setBusy("");
+              }
+            }}
+            disabled={!!busy}
+            data-testid="safety-plan-download"
+            className="btn-ghost"
+          >
+            {busy === "download" ? "Preparing PDF…" : "⬇️ Download a copy"}
+          </button>
+          <button
+            type="button"
+            onClick={async () => {
+              if (busy) return;
+              setBusy("share");
+              try {
+                const result = await sharePlan(SECTIONS, values);
+                if (result === "shared") setExportNote("Shared from this device.");
+                else if (result === "cancelled") setExportNote("");
+                else setExportNote("This device can't share files, so a PDF copy was saved to your downloads instead.");
+              } catch {
+                setExportNote("Could not share on this device — try Download a copy instead.");
+              } finally {
+                setBusy("");
+              }
+            }}
+            disabled={!!busy}
+            data-testid="safety-plan-share"
+            className="btn-ghost"
+          >
+            {busy === "share" ? "Opening share…" : "↗️ Share my plan"}
+          </button>
+          <button
+            type="button"
+            onClick={async () => {
+              try {
+                await copyPlanText(SECTIONS, values);
+                setExportNote("Copied your plan as text — paste it anywhere you trust.");
+              } catch {
+                setExportNote("Copying was blocked on this page. Use Download instead.");
+              }
+            }}
+            data-testid="safety-plan-copy"
+            className="btn-ghost"
+          >
+            📋 Copy as text
+          </button>
           <button type="button" onClick={erase} data-testid="safety-plan-erase" className="btn-ghost">
             Erase this plan
           </button>
@@ -233,6 +290,15 @@ function SafetyPlanPage() {
             Talk it through: 1-800-799-7233
           </a>
         </div>
+        {exportNote && (
+          <p className="mt-3 text-sm text-rose-500 print:hidden" data-testid="safety-plan-export-note">
+            {exportNote}
+          </p>
+        )}
+        <p className="mt-3 max-w-2xl text-xs leading-relaxed text-ink-500 print:hidden">
+          Only share this with someone you completely trust — it holds the details of your situation. Your plan saves
+          automatically on this device as you type; Download, Share and Copy give you a copy that stays off our servers.
+        </p>
 
         {/* Print view: everything */}
         <div className="hidden print:block">
