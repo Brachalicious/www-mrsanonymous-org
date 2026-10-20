@@ -88,6 +88,91 @@ export type Database = {
           },
         ]
       }
+      guidance_ai_state: {
+        Row: {
+          id: string
+          message: string
+          status: number
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          message: string
+          status: number
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          message?: string
+          status?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      guidance_messages: {
+        Row: {
+          created_at: string
+          id: string
+          message: Json
+          sdk_id: string
+          thread_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: Json
+          sdk_id: string
+          thread_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: Json
+          sdk_id?: string
+          thread_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guidance_messages_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "guidance_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      guidance_threads: {
+        Row: {
+          created_at: string
+          id: string
+          owner_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          owner_id: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          owner_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guidance_threads_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       inbox_recovery_locks: {
         Row: {
           created_at: string

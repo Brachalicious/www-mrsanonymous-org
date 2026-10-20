@@ -19,6 +19,7 @@ import { Route as DownloadRouteImport } from './routes/download'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as GirlsRouteImport } from './routes/girls'
 import { Route as GoRouteImport } from './routes/go'
+import { Route as GuidanceRouteImport } from './routes/guidance'
 import { Route as InboxRouteImport } from './routes/inbox'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as LoginRouteImport } from './routes/login'
@@ -34,6 +35,9 @@ import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as WomenRouteImport } from './routes/women'
 import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
 import { Route as AdminModerationRouteImport } from './routes/admin.moderation'
+import { Route as ApiGuidanceRouteImport } from './routes/api/guidance'
+import { Route as GuidanceIndexRouteImport } from './routes/guidance.index'
+import { Route as GuidanceThreadIdRouteImport } from './routes/guidance.$threadId'
 import { Route as NotebooksIdRouteImport } from './routes/notebooks.$id'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
@@ -85,6 +89,11 @@ const GirlsRoute = GirlsRouteImport.update({
 const GoRoute = GoRouteImport.update({
   id: '/go',
   path: '/go',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidanceRoute = GuidanceRouteImport.update({
+  id: '/guidance',
+  path: '/guidance',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InboxRoute = InboxRouteImport.update({
@@ -162,6 +171,21 @@ const AdminModerationRoute = AdminModerationRouteImport.update({
   path: '/admin/moderation',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiGuidanceRoute = ApiGuidanceRouteImport.update({
+  id: '/api/guidance',
+  path: '/api/guidance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidanceIndexRoute = GuidanceIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => GuidanceRoute,
+} as any)
+const GuidanceThreadIdRoute = GuidanceThreadIdRouteImport.update({
+  id: '/$threadId',
+  path: '/$threadId',
+  getParentRoute: () => GuidanceRoute,
+} as any)
 const NotebooksIdRoute = NotebooksIdRouteImport.update({
   id: '/notebooks/$id',
   path: '/notebooks/$id',
@@ -185,6 +209,7 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof ForgotPasswordRoute
   '/girls': typeof GirlsRoute
   '/go': typeof GoRoute
+  '/guidance': typeof GuidanceRouteWithChildren
   '/inbox': typeof InboxRoute
   '/journal': typeof JournalRoute
   '/login': typeof LoginRoute
@@ -200,7 +225,10 @@ export interface FileRoutesByFullPath {
   '/women': typeof WomenRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/moderation': typeof AdminModerationRoute
+  '/api/guidance': typeof ApiGuidanceRoute
+  '/guidance/$threadId': typeof GuidanceThreadIdRoute
   '/notebooks/$id': typeof NotebooksIdRoute
+  '/guidance/': typeof GuidanceIndexRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesByTo {
@@ -229,7 +257,10 @@ export interface FileRoutesByTo {
   '/women': typeof WomenRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/moderation': typeof AdminModerationRoute
+  '/api/guidance': typeof ApiGuidanceRoute
+  '/guidance/$threadId': typeof GuidanceThreadIdRoute
   '/notebooks/$id': typeof NotebooksIdRoute
+  '/guidance': typeof GuidanceIndexRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesById {
@@ -244,6 +275,7 @@ export interface FileRoutesById {
   '/forgot-password': typeof ForgotPasswordRoute
   '/girls': typeof GirlsRoute
   '/go': typeof GoRoute
+  '/guidance': typeof GuidanceRouteWithChildren
   '/inbox': typeof InboxRoute
   '/journal': typeof JournalRoute
   '/login': typeof LoginRoute
@@ -259,7 +291,10 @@ export interface FileRoutesById {
   '/women': typeof WomenRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/moderation': typeof AdminModerationRoute
+  '/api/guidance': typeof ApiGuidanceRoute
+  '/guidance/$threadId': typeof GuidanceThreadIdRoute
   '/notebooks/$id': typeof NotebooksIdRoute
+  '/guidance/': typeof GuidanceIndexRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRouteTypes {
@@ -275,6 +310,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/girls'
     | '/go'
+    | '/guidance'
     | '/inbox'
     | '/journal'
     | '/login'
@@ -290,7 +326,10 @@ export interface FileRouteTypes {
     | '/women'
     | '/admin/messages'
     | '/admin/moderation'
+    | '/api/guidance'
+    | '/guidance/$threadId'
     | '/notebooks/$id'
+    | '/guidance/'
     | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -319,7 +358,10 @@ export interface FileRouteTypes {
     | '/women'
     | '/admin/messages'
     | '/admin/moderation'
+    | '/api/guidance'
+    | '/guidance/$threadId'
     | '/notebooks/$id'
+    | '/guidance'
     | '/lovable/email/transactional/preview'
   id:
     | '__root__'
@@ -333,6 +375,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/girls'
     | '/go'
+    | '/guidance'
     | '/inbox'
     | '/journal'
     | '/login'
@@ -348,7 +391,10 @@ export interface FileRouteTypes {
     | '/women'
     | '/admin/messages'
     | '/admin/moderation'
+    | '/api/guidance'
+    | '/guidance/$threadId'
     | '/notebooks/$id'
+    | '/guidance/'
     | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
 }
@@ -363,6 +409,7 @@ export interface RootRouteChildren {
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   GirlsRoute: typeof GirlsRoute
   GoRoute: typeof GoRoute
+  GuidanceRoute: typeof GuidanceRouteWithChildren
   InboxRoute: typeof InboxRoute
   JournalRoute: typeof JournalRoute
   LoginRoute: typeof LoginRoute
@@ -378,6 +425,7 @@ export interface RootRouteChildren {
   WomenRoute: typeof WomenRoute
   AdminMessagesRoute: typeof AdminMessagesRoute
   AdminModerationRoute: typeof AdminModerationRoute
+  ApiGuidanceRoute: typeof ApiGuidanceRoute
   NotebooksIdRoute: typeof NotebooksIdRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
@@ -452,6 +500,13 @@ declare module '@tanstack/react-router' {
       path: '/go'
       fullPath: '/go'
       preLoaderRoute: typeof GoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guidance': {
+      id: '/guidance'
+      path: '/guidance'
+      fullPath: '/guidance'
+      preLoaderRoute: typeof GuidanceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/inbox': {
@@ -559,6 +614,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminModerationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/guidance': {
+      id: '/api/guidance'
+      path: '/api/guidance'
+      fullPath: '/api/guidance'
+      preLoaderRoute: typeof ApiGuidanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guidance/': {
+      id: '/guidance/'
+      path: '/'
+      fullPath: '/guidance/'
+      preLoaderRoute: typeof GuidanceIndexRouteImport
+      parentRoute: typeof GuidanceRoute
+    }
+    '/guidance/$threadId': {
+      id: '/guidance/$threadId'
+      path: '/$threadId'
+      fullPath: '/guidance/$threadId'
+      preLoaderRoute: typeof GuidanceThreadIdRouteImport
+      parentRoute: typeof GuidanceRoute
+    }
     '/notebooks/$id': {
       id: '/notebooks/$id'
       path: '/notebooks/$id'
@@ -576,6 +652,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface GuidanceRouteChildren {
+  GuidanceThreadIdRoute: typeof GuidanceThreadIdRoute
+  GuidanceIndexRoute: typeof GuidanceIndexRoute
+}
+
+const GuidanceRouteChildren: GuidanceRouteChildren = {
+  GuidanceThreadIdRoute: GuidanceThreadIdRoute,
+  GuidanceIndexRoute: GuidanceIndexRoute,
+}
+
+const GuidanceRouteWithChildren = GuidanceRoute._addFileChildren(
+  GuidanceRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -587,6 +677,7 @@ const rootRouteChildren: RootRouteChildren = {
   ForgotPasswordRoute: ForgotPasswordRoute,
   GirlsRoute: GirlsRoute,
   GoRoute: GoRoute,
+  GuidanceRoute: GuidanceRouteWithChildren,
   InboxRoute: InboxRoute,
   JournalRoute: JournalRoute,
   LoginRoute: LoginRoute,
@@ -602,6 +693,7 @@ const rootRouteChildren: RootRouteChildren = {
   WomenRoute: WomenRoute,
   AdminMessagesRoute: AdminMessagesRoute,
   AdminModerationRoute: AdminModerationRoute,
+  ApiGuidanceRoute: ApiGuidanceRoute,
   NotebooksIdRoute: NotebooksIdRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
