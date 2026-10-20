@@ -74,12 +74,18 @@ export function Footer() {
               className="h-56 w-auto transition-transform group-hover:scale-[1.03] md:h-72"
               loading="lazy"
             />
-            <p className="pb-2 text-center font-serif text-4xl font-black leading-[1.25] tracking-tight text-rose-500 transition-colors group-hover:text-rose-600 md:text-6xl">
+            <p className="pb-1 text-center font-serif text-4xl font-black leading-[1.3] tracking-tight text-ink-900 md:text-6xl">
               Brought to you by
               <br className="md:hidden" />{" "}
-              MysticMinded
-              <sup className="text-2xl font-black text-ink-400 md:text-4xl">33</sup>
+              <span className="text-rose-500">
+                MysticMinded
+                <sup className="text-2xl font-black md:text-4xl">33</sup>
+              </span>
             </p>
+            <span className="font-serif text-lg font-bold tracking-wide text-rose-500 underline decoration-rose-500/40 decoration-2 underline-offset-8 group-hover:decoration-rose-500 md:text-xl">
+              mysticminded33.com
+            </span>
+
 
           </a>
 
