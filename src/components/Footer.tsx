@@ -75,7 +75,7 @@ export function Footer() {
               loading="lazy"
             />
 
-            <p className="pb-1 text-center font-serif text-4xl font-black leading-[1.3] tracking-tight text-ink-900 md:text-6xl">
+            <p className="pb-1 text-center font-serif text-4xl font-black leading-[1.15] tracking-tight text-ink-900 md:text-6xl">
               Brought to you by
               <br className="md:hidden" />{" "}
               <span className="text-rose-500">
