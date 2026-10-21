@@ -9,6 +9,7 @@ import { MascotChat } from "@/components/MascotChat";
 
 export function Footer() {
   const [chatOpen, setChatOpen] = useState(false);
+  const [brandOpen, setBrandOpen] = useState(false);
   const { lang } = useLanguage();
   const { country } = useRegion();
   const emergency = getEmergency(lang, country);
