@@ -9,6 +9,7 @@ import { MascotChat } from "@/components/MascotChat";
 
 export function Footer() {
   const [chatOpen, setChatOpen] = useState(false);
+  const [brandOpen, setBrandOpen] = useState(false);
   const { lang } = useLanguage();
   const { country } = useRegion();
   const emergency = getEmergency(lang, country);
@@ -73,37 +74,95 @@ export function Footer() {
             <span className="font-serif text-xl text-primary">Ask for app guidance</span>
           </button>
           <MascotChat open={chatOpen} onClose={() => setChatOpen(false)} />
-          <a
-            href="https://www.mysticminded33.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group mt-2 flex flex-col items-center gap-1 md:gap-3"
-            aria-label="Visit MysticMinded33"
-          >
-            <img
-              src={mysticMindedLogo}
-              alt="MysticMinded³³ logo"
-              className="h-[35vh] max-h-[420px] w-auto transition-transform group-hover:scale-[1.03]"
-              loading="lazy"
-            />
+          <div className="group mt-2 flex flex-col items-center gap-1 md:gap-3">
+            <button
+              type="button"
+              onClick={() => setBrandOpen(true)}
+              className="border-0 bg-transparent p-0"
+              aria-label="About MysticMinded33"
+            >
+              <img
+                src={mysticMindedLogo}
+                alt="MysticMinded³³ logo"
+                className="h-[35vh] max-h-[420px] w-auto cursor-pointer transition-transform hover:scale-[1.03]"
+                loading="lazy"
+              />
+            </button>
 
-            <p className="text-center font-serif text-4xl font-black leading-[1.05] tracking-tight text-ink-900 md:text-5xl lg:text-6xl">
-              Brought to you by
-              <br className="md:hidden" />{" "}
-              <span className="text-rose-500">
-                MysticMinded
-                <sup className="text-2xl font-black md:text-4xl">33</sup>
+            <a
+              href="https://www.mysticminded33.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group/a block"
+              aria-label="Visit MysticMinded33"
+            >
+              <p className="text-center font-serif text-4xl font-black leading-[1.05] tracking-tight text-ink-900 md:text-5xl lg:text-6xl">
+                Brought to you by
+                <br className="md:hidden" />{" "}
+                <span className="text-rose-500">
+                  MysticMinded
+                  <sup className="text-2xl font-black md:text-4xl">33</sup>
+                </span>
+              </p>
+              <span className="font-serif text-sm font-bold leading-none tracking-wide text-rose-500 underline decoration-rose-500/40 decoration-2 underline-offset-8 group-hover/a:decoration-rose-500 md:text-lg">
+                mysticminded33.com
               </span>
-            </p>
-            <span className="font-serif text-sm font-bold leading-none tracking-wide text-rose-500 underline decoration-rose-500/40 decoration-2 underline-offset-8 group-hover:decoration-rose-500 md:text-lg">
-              mysticminded33.com
-            </span>
-
-
-          </a>
+            </a>
+          </div>
 
         </div>
       </div>
+
+      {brandOpen && (
+        <div
+          className="fixed inset-0 z-[80] flex items-center justify-center bg-ink-900/60 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="About MysticMinded33"
+          onClick={() => setBrandOpen(false)}
+        >
+          <div
+            className="relative max-h-[80dvh] w-full max-w-md overflow-y-auto rounded-2xl border-2 border-rose-500 bg-white p-6 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setBrandOpen(false)}
+              className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full border border-ink-300 bg-white text-lg font-bold text-ink-900 hover:border-rose-500 hover:text-rose-500"
+              aria-label="Close"
+            >
+              ×
+            </button>
+            <img
+              src={mysticMindedLogo}
+              alt="MysticMinded³³ logo"
+              className="mx-auto h-24 w-24 rounded-full object-contain"
+            />
+            <h2 className="mt-3 text-center font-serif text-2xl font-black text-ink-900">
+              What is MysticMinded³³?
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-ink-700">
+              MysticMinded³³ is the independent creator brand behind MrsANONymous.org.
+              It builds free, anonymous safety tools for women and girls — designed to
+              protect privacy first: the app hides behind a calculator, there are no
+              names or emails required, and every feature is made so help is one tap
+              away when it matters most.
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-ink-700">
+              Visit <span className="font-bold text-rose-500">mysticminded33.com</span> to
+              learn more about the mission and what's next.
+            </p>
+            <a
+              href="https://www.mysticminded33.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-rose mt-5 block text-center"
+            >
+              Visit mysticminded33.com ↗
+            </a>
+          </div>
+        </div>
+      )}
     </footer>
   );
 }
