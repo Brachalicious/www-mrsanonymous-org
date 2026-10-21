@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Make the footer guidance mascot open its page directly and verify tapping the image.
+- [x] Make the footer guidance mascot open its page directly; verified image tap at 695×906 and guidance replies in preview and on the live site.
 - [x] Add clickable footer mascot and private account-saved guidance conversations.
 - [x] Verify mascot phone layout, guidance sign-in screen, message validation, and live AI replies.
 - [ ] Verify signed-in conversation switching, reload, deletion, and recovery locks — blocked pending a usable signed-in account; automated signup did not complete.
