@@ -56,10 +56,10 @@ export function Footer() {
 
         <div className="mt-10 flex flex-col items-center gap-2 border-t border-ink-300 pt-6">
           <Button asChild variant="ghost" className="mb-6 h-auto flex-col gap-2 p-3 hover:bg-secondary" title="Ask for app guidance">
-            <Link to="/guidance" aria-label="Ask the mascot for app guidance">
+            <a href="/guidance" aria-label="Ask the mascot for app guidance">
               <img src={mascotAsset.url} alt="MrsANONymous guidance mascot with a red bow" className="h-64 w-48 object-contain" loading="lazy" />
               <span className="font-serif text-xl text-primary">Ask for app guidance</span>
-            </Link>
+            </a>
           </Button>
           <a
             href="https://www.mysticminded33.com/"
