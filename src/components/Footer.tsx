@@ -1,12 +1,14 @@
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useRegion } from "@/hooks/use-region";
 import { getEmergency } from "@/lib/emergency-numbers";
 import mysticMindedLogo from "@/assets/mysticminded-logo-rbw-exact.png";
 import mascotAsset from "@/assets/app-guidance-mascot.jpeg.asset.json";
-import { Button } from "@/components/ui/button";
+import { MascotChat } from "@/components/MascotChat";
 
 export function Footer() {
+  const [chatOpen, setChatOpen] = useState(false);
   const { lang } = useLanguage();
   const { country } = useRegion();
   const emergency = getEmergency(lang, country);

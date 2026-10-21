@@ -59,7 +59,7 @@ export function GuidanceChat({
                 alt="MrsANONymous mascot"
                 className="mx-auto h-48 w-36 object-contain"
               />
-              <h2 className="mt-4 text-2xl">What would you like help finding?</h2>
+              <h2 className="mt-4 text-2xl">Hello, how can I help?</h2>
               <div className="mt-4 flex flex-wrap justify-center gap-2">
                 {[
                   "Where are my saved notes?",
