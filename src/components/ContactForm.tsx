@@ -77,7 +77,7 @@ export function ContactForm({ audience = "women" }: ContactFormProps) {
             rows={5}
             required
             maxLength={2000}
-            className="input-soft mt-1.5"
+            className="mt-1.5 block w-full resize-y rounded-md border border-input bg-background px-4 py-3 text-base leading-relaxed text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
             placeholder="Describe your app question, technical problem, or feedback…"
           />
         </label>

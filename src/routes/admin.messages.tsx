@@ -197,7 +197,7 @@ function MessageCard({ m, highlighted, onReplied }: { m: any; highlighted?: bool
             rows={10}
             maxLength={4000}
             aria-label="Reply to visitor"
-            className="input-soft min-h-64 resize-y text-base leading-relaxed"
+            className="block min-h-64 w-full resize-y rounded-md border border-input bg-background px-4 py-3 text-base leading-relaxed text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
             placeholder="Write a reply to this visitor's Inbox…"
           />
           <Button type="submit" disabled={mutation.isPending} className="btn-rose">
