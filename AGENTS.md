@@ -16,3 +16,5 @@
 - Resolve text parser dependencies per package without a global entities override or alias; email rendering and chat markdown require different compatible versions.
 - Defer database queries outside auth-state callbacks so session-lock acquisition cannot deadlock sign-in.
 - Board moderation requires authenticated server-side admin checks; remove public visibility without deleting private notebooks, and atomically deliver policy notices through existing owner-scoped support threads, deriving both writer and author inside the database function.
+- Persist trigger warnings on notebooks and pages and display their union before reader reveal; pinned_at orders only owner-scoped notebook pages, preserving independent board ranking.
+- Individual admin account deletion requires a server-verified admin, explicit confirmation, protected admin identities, and checked database/storage cleanup before deleting the auth identity.

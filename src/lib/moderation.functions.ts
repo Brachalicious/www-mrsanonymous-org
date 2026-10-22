@@ -5,6 +5,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 import { boardModerationSchema, requireAdminRole } from "./moderation-input";
+import { requireDeletableAccount } from "./board-options";
 
 const SESSION_COOKIE = "mrsanon_session";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
@@ -122,6 +123,45 @@ export const moderateBoardPost = createServerFn({ method: "POST" })
     });
     if (error) throw new Error(error.message);
     return { ok: true, threadId };
+  });
+
+export const listAccountsForAdmin = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: profiles, error } = await supabaseAdmin.from("profiles").select("id, nickname, created_at").order("nickname");
+    if (error) throw new Error(error.message);
+    const roles = await supabaseAdmin.from("user_roles").select("user_id").eq("role", "admin");
+    if (roles.error) throw new Error(roles.error.message);
+    const admins = new Set((roles.data ?? []).map((role) => role.user_id));
+    return (profiles ?? []).map((profile) => ({ ...profile, protected: admins.has(profile.id) || profile.id === context.userId }));
+  });
+
+export const deleteAccountForAdmin = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ userId: z.string().uuid(), confirmation: z.literal("DELETE") }).parse(input))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const target = await supabaseAdmin.from("profiles").select("id").eq("id", data.userId).single();
+    if (target.error || !target.data) throw new Error("Account not found");
+    const role = await supabaseAdmin.from("user_roles").select("id").eq("user_id", data.userId).eq("role", "admin");
+    if (role.error) throw new Error(role.error.message);
+    requireDeletableAccount(context.userId, data.userId, Boolean(role.data?.length));
+    const { deleteAccountData } = await import("./account-cleanup.server");
+    return deleteAccountData(data.userId);
+  });
+
+export const removeBoardPageForAdmin = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ id: z.string().uuid() }).parse(input))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.from("entries").update({ shared: false, shared_at: null }).eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
   });
 
 export const listStoryReports = createServerFn({ method: "GET" })
