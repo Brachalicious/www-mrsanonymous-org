@@ -3,7 +3,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
-import { listStoryReports, resolveStoryReport, listBoardPostsForAdmin, moderateBoardPost } from "@/lib/moderation.functions";
+import { listStoryReports, resolveStoryReport, listBoardPostsForAdmin, moderateBoardPost, removeBoardPageForAdmin } from "@/lib/moderation.functions";
+import { AdminAccounts } from "@/components/AdminAccounts";
 import { Button } from "@/components/ui/button";
 import { Trash2, MessageSquare, Shield } from "lucide-react";
 
@@ -100,6 +101,7 @@ function ModerationPage() {
           </div>
         ))}
       </div>
+      <AdminAccounts />
     </div>
   );
 }
@@ -113,6 +115,10 @@ function BoardPost({ post }: { post: BoardPostData }) {
   const [success, setSuccess] = useState("");
   const qc = useQueryClient();
   const moderate = useServerFn(moderateBoardPost);
+  const removePage = useServerFn(removeBoardPageForAdmin);
+  const pageMutation = useMutation({ mutationFn: removePage, onSuccess: () => {
+    for (const key of ["admin-board-posts", "shared-stories"]) void qc.invalidateQueries({ queryKey: [key] });
+  } });
   const mutation = useMutation({ mutationFn: (input: { data: { notebookId: string; remove: boolean; notice?: string } }) => moderate(input), onSuccess: (_, variables) => {
     setSuccess(variables.data.remove ? "Post removed from the board." : "Policy notice sent to the writer’s Inbox.");
     setEditing(false); setNotice("");
@@ -120,7 +126,8 @@ function BoardPost({ post }: { post: BoardPostData }) {
   } });
   return <article className="rounded-lg border border-border bg-card p-5 text-card-foreground">
     <div className="flex flex-wrap justify-between gap-2"><h3 className="break-words font-serif text-xl">{post.title}</h3><span className="text-sm text-muted-foreground">{post.hidden || !post.shared ? "Removed" : "On the board"}</span></div>
-    <details className="mt-3"><summary className="cursor-pointer text-sm font-semibold">Read shared pages ({post.pages.length})</summary><div className="mt-3 space-y-4">{post.pages.map((page) => <p key={page.id} className="whitespace-pre-wrap break-words text-sm">{page.content}</p>)}</div></details>
+    <details className="mt-3"><summary className="cursor-pointer text-sm font-semibold">Read shared pages ({post.pages.length})</summary><div className="mt-3 space-y-4">{post.pages.map((page) => <div key={page.id} className="border-t border-border pt-3"><p className="whitespace-pre-wrap break-words text-sm">{page.content}</p><Button className="mt-2" variant="destructive" size="sm" disabled={pageMutation.isPending} onClick={() => { if (window.confirm("Remove this page from the public board? The writer’s private page is kept.")) pageMutation.mutate({ data: { id: page.id } }); }}><Trash2 />Remove this page</Button></div>)}</div></details>
+    {pageMutation.isError && <p role="alert" className="mt-3 text-destructive">{pageMutation.error.message}</p>}
     <div className="mt-4 flex flex-wrap gap-2">
       <Button variant="destructive" disabled={mutation.isPending || post.hidden || !post.shared} onClick={() => { setEditing(true); setRemove(true); setSuccess(""); }}><Trash2 />Remove from board</Button>
       <Button variant="outline" disabled={mutation.isPending} onClick={() => { setEditing(true); setRemove(false); setSuccess(""); }}><MessageSquare />Message writer</Button>

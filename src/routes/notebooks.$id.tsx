@@ -9,6 +9,7 @@ import {
   updateNotebook,
   shareNotebook,
   shareEntry,
+  pinEntry,
 } from "@/lib/notebooks.functions";
 import { useAuth } from "@/contexts/AuthContext";
 import { EntryEditor } from "@/components/EntryEditor";
@@ -16,6 +17,9 @@ import { ArrowLeft, Lock, Globe, Share2, BookOpen, Palette, Check, X, MessageCir
 import { getCoverStyle, decodeTheme, isTheme, themePageStyle } from "@/lib/notebook-covers";
 import { CoverDesigner } from "@/components/CoverDesigner";
 import { CoverImage } from "@/components/CoverImage";
+import { TriggerWarningPicker } from "@/components/TriggerWarningPicker";
+import { Button } from "@/components/ui/button";
+import { Pin, PinOff } from "lucide-react";
 
 const MAX_TOPICS = 8;
 const TOPIC_OPTIONS = [
@@ -38,6 +42,10 @@ export const Route = createFileRoute("/notebooks/$id")({
     meta: [
       { title: "My Notebook — MrsANONymous.org" },
       { name: "description", content: "A private notebook on MrsANONymous. Your words, your choice." },
+      { property: "og:title", content: "My Notebook — MrsANONymous.org" },
+      { property: "og:description", content: "Your private notebook and shared page choices on MrsANONymous.org." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: NotebookDetailPage,
@@ -53,6 +61,9 @@ function NotebookDetailPage() {
   const update = useServerFn(updateNotebook);
   const shareNb = useServerFn(shareNotebook);
   const shareEn = useServerFn(shareEntry);
+  const pin = useServerFn(pinEntry);
+  const [pageToShare, setPageToShare] = useState<string | null>(null);
+  const [pageWarnings, setPageWarnings] = useState<string[]>([]);
 
   const [newTitle, setNewTitle] = useState("");
   const [editingTitle, setEditingTitle] = useState(false);
@@ -89,8 +100,16 @@ function NotebookDetailPage() {
 
   const shareEntryMutation = useMutation({
     mutationFn: shareEn,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["entries", id] }),
+    onSuccess: () => {
+      setPageToShare(null);
+      void queryClient.invalidateQueries({ queryKey: ["entries", id] });
+      void queryClient.invalidateQueries({ queryKey: ["shared-stories"] });
+    },
   });
+  const pinMutation = useMutation({ mutationFn: pin, onSuccess: () => {
+    void queryClient.invalidateQueries({ queryKey: ["entries", id] });
+    void queryClient.invalidateQueries({ queryKey: ["shared-stories"] });
+  } });
 
   const createMutation = useMutation({
     mutationFn: create,
@@ -249,14 +268,17 @@ function NotebookDetailPage() {
 
       <SharePanel
         notebook={notebook}
-        onShare={(shared, shareAs, topics) =>
-          shareNotebookMutation.mutate({ data: { id, shared, shareAs, topics } })
+        onShare={(shared, shareAs, topics, triggerWarnings) =>
+          shareNotebookMutation.mutate({ data: { id, shared, shareAs, topics, triggerWarnings } })
         }
       />
+      {shareNotebookMutation.isError && <p role="alert" className="mt-3 text-destructive">{shareNotebookMutation.error.message}</p>}
 
       <div className="mt-10">
         <h2 className="mb-5 font-serif text-2xl text-ink-900">Pages</h2>
         <EntryEditor notebookId={id} />
+        {pinMutation.isError && <p role="alert" className="mt-3 text-destructive">{pinMutation.error.message}</p>}
+        {shareEntryMutation.isError && <p role="alert" className="mt-3 text-destructive">{shareEntryMutation.error.message}</p>}
 
         <div className="mt-8 space-y-6">
           {entries.length === 0 && (
@@ -273,7 +295,8 @@ function NotebookDetailPage() {
                   {new Date(entry.created_at).toLocaleDateString()}
                   {entry.mood && <span className="ml-2">· {entry.mood}</span>}
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center justify-end gap-2">
+                  <Button size="sm" variant="ghost" title={entry.pinned_at ? "Unpin page" : "Pin page to top"} aria-label={entry.pinned_at ? "Unpin page" : "Pin page to top"} disabled={pinMutation.isPending} onClick={() => pinMutation.mutate({ data: { id: entry.id, pinned: !entry.pinned_at } })}>{entry.pinned_at ? <PinOff /> : <Pin />}</Button>
                   {entry.shared ? (
                     <span className="inline-flex items-center gap-1 text-xs text-rose-600">
                       <Globe className="h-3 w-3" />
@@ -288,21 +311,26 @@ function NotebookDetailPage() {
                   <RipOutMenu
                     text={entry.content}
                     shared={!!entry.shared}
-                    onToggleBoard={() =>
+                    onToggleBoard={() => {
+                      if (!entry.shared) { setPageToShare(entry.id); setPageWarnings(entry.trigger_warnings ?? []); return; }
                       shareEntryMutation.mutate({
                         data: {
                           id: entry.id,
                           shared: !entry.shared,
                           shareAs: entry.share_as || "anonymous",
                           topics: notebook.topics || [],
+                          triggerWarnings: entry.trigger_warnings ?? [],
                         },
                       })
-                    }
+                    }}
                   />
 
                 </div>
               </div>
               <p className="mt-3 whitespace-pre-line text-ink-800 leading-relaxed">{entry.content}</p>
+              {entry.shared && <p className="mt-3 text-xs text-muted-foreground">Trigger warnings: {entry.trigger_warnings.length ? entry.trigger_warnings.join(", ") : "None selected"}</p>}
+              {pageToShare === entry.id && <form className="mt-4 border-t border-border pt-3" onSubmit={(event) => { event.preventDefault(); shareEntryMutation.mutate({ data: { id: entry.id, shared: true, shareAs: "anonymous", topics: notebook.topics || [], triggerWarnings: pageWarnings } }); }}><TriggerWarningPicker value={pageWarnings} onChange={setPageWarnings} /><div className="mt-4 flex flex-wrap gap-2"><Button type="submit" disabled={shareEntryMutation.isPending}>{shareEntryMutation.isPending ? "Posting…" : "Post page to board"}</Button><Button type="button" variant="outline" onClick={() => setPageToShare(null)}>Cancel</Button></div></form>}
+              {entry.shared && pageToShare !== entry.id && <Button className="mt-2" size="sm" variant="outline" onClick={() => { setPageToShare(entry.id); setPageWarnings(entry.trigger_warnings); }}>Edit trigger warnings</Button>}
             </article>
           ))}
         </div>
@@ -428,10 +456,11 @@ function SharePanel({
   onShare,
 }: {
   notebook: Awaited<ReturnType<typeof getNotebook>>;
-  onShare: (shared: boolean, shareAs: "nickname" | "anonymous", topics: string[]) => void;
+  onShare: (shared: boolean, shareAs: "nickname" | "anonymous", topics: string[], triggerWarnings: string[]) => void;
 }) {
   const [shareAs, setShareAs] = useState<"nickname" | "anonymous">(notebook.share_as as "nickname" | "anonymous");
   const [topics, setTopics] = useState<string[]>(notebook.topics || []);
+  const [warnings, setWarnings] = useState<string[]>(notebook.trigger_warnings || []);
 
   return (
     <div className="note-card p-5">
@@ -497,15 +526,14 @@ function SharePanel({
         </div>
       </div>
 
-      <div className="mt-5 flex gap-3">
+      <TriggerWarningPicker value={warnings} onChange={setWarnings} />
+      <div className="mt-5 flex flex-wrap gap-3">
         {!notebook.shared ? (
-          <button onClick={() => onShare(true, shareAs, topics)} className="btn-rose">
+          <Button onClick={() => onShare(true, shareAs, topics, warnings)}>
             Share to board
-          </button>
+          </Button>
         ) : (
-          <button onClick={() => onShare(false, shareAs, topics)} className="btn-ghost">
-            Stop sharing
-          </button>
+          <><Button onClick={() => onShare(true, shareAs, topics, warnings)}>Save sharing choices</Button><Button variant="outline" onClick={() => onShare(false, shareAs, topics, warnings)}>Stop sharing</Button></>
         )}
       </div>
     </div>

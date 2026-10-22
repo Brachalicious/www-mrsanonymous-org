@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { getCookie, setCookie } from "@tanstack/react-start/server";
 import type { Database } from "@/integrations/supabase/types";
+import { orderPages } from "./board-options";
 
 const REACTIONS = [
   { key: "strong", label: "Strong", emoji: "🌿" },
@@ -74,7 +75,7 @@ export const listSharedStories = createServerFn({ method: "GET" }).handler(async
   );
 
   const [{ data: entries }, { data: reactionEvents }] = await Promise.all([
-    supabaseAdmin.from("entries").select("notebook_id, content").in("notebook_id", ids).eq("shared", true),
+    supabaseAdmin.from("entries").select("id, notebook_id, content, trigger_warnings, pinned_at, created_at").in("notebook_id", ids).eq("shared", true),
     supabaseAdmin.from("reaction_events").select("notebook_id, reaction, session_id").in("notebook_id", ids),
   ]);
 
@@ -89,12 +90,12 @@ export const listSharedStories = createServerFn({ method: "GET" }).handler(async
   const reactedMap = new Map<string, Set<string>>();
   (reactionEvents || []).forEach((row: { notebook_id: string; reaction: string; session_id: string }) => {
     if (!countsMap.has(row.notebook_id)) countsMap.set(row.notebook_id, new Map());
-    const m = countsMap.get(row.notebook_id)!;
-    m.set(row.reaction, (m.get(row.reaction) || 0) + 1);
+    const m = countsMap.get(row.notebook_id);
+    m?.set(row.reaction, (m.get(row.reaction) || 0) + 1);
 
     if (row.session_id === sessionId) {
       if (!reactedMap.has(row.notebook_id)) reactedMap.set(row.notebook_id, new Set());
-      reactedMap.get(row.notebook_id)!.add(row.reaction);
+      reactedMap.get(row.notebook_id)?.add(row.reaction);
     }
   });
 
@@ -111,6 +112,8 @@ export const listSharedStories = createServerFn({ method: "GET" }).handler(async
       created_at: s.created_at,
       shared_at: s.shared_at,
       preview: firstEntryMap.get(s.id) || "",
+      trigger_warnings: [...new Set([...(s.trigger_warnings ?? []), ...(entries ?? []).filter((page) => page.notebook_id === s.id).flatMap((page) => page.trigger_warnings ?? [])])],
+      pages: orderPages((entries ?? []).filter((page) => page.notebook_id === s.id)).map((page) => ({ id: page.id, content: page.content, pinned_at: page.pinned_at, trigger_warnings: page.trigger_warnings })),
       reactions: REACTIONS.map((r) => ({
         ...r,
         count: counts?.get(r.key) || 0,
@@ -168,11 +171,14 @@ export const getSharedStory = createServerFn({ method: "GET" })
       author: authorNickname || "Anonymous",
       created_at: story.created_at,
       shared_at: story.shared_at,
-      entries: (entries || []).map((e) => ({
+      trigger_warnings: story.trigger_warnings,
+      entries: orderPages(entries || []).map((e) => ({
         id: e.id,
         content: e.content,
         mood: e.mood,
         created_at: e.created_at,
+        trigger_warnings: e.trigger_warnings,
+        pinned_at: e.pinned_at,
       })),
       reactions: REACTIONS.map((r) => ({
         ...r,

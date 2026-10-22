@@ -3,6 +3,7 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database } from "@/integrations/supabase/types";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { triggerWarningsSchema, pinPageSchema, requirePageOwner } from "./board-options";
 
 type NotebookUpdate = Database["public"]["Tables"]["notebooks"]["Update"];
 type EntryUpdate = Database["public"]["Tables"]["entries"]["Update"];
@@ -56,6 +57,7 @@ const shareNotebookSchema = z.object({
   shared: z.boolean(),
   shareAs: z.enum(["nickname", "anonymous"]).default("anonymous"),
   topics: topicSchema,
+  triggerWarnings: triggerWarningsSchema,
 });
 
 const createEntrySchema = z.object({
@@ -75,6 +77,7 @@ const shareEntrySchema = z.object({
   shared: z.boolean(),
   shareAs: z.enum(["nickname", "anonymous"]).default("anonymous"),
   topics: topicSchema,
+  triggerWarnings: triggerWarningsSchema,
 });
 
 async function verifyEntryOwnership(context: FnContext, entryId: string) {
@@ -84,7 +87,7 @@ async function verifyEntryOwnership(context: FnContext, entryId: string) {
     .eq("id", entryId)
     .single<{ id: string; notebooks: { owner_id: string } }>();
   if (!row) throw new Error("Entry not found");
-  if (row.notebooks.owner_id !== context.userId) throw new Error("Forbidden");
+  requirePageOwner(row.notebooks.owner_id, context.userId);
 }
 
 export const listMyNotebooks = createServerFn({ method: "GET" })
@@ -183,6 +186,7 @@ export const shareNotebook = createServerFn({ method: "POST" })
       share_as: data.shared ? data.shareAs : "anonymous",
       shared_at: data.shared ? new Date().toISOString() : null,
       topics: data.shared ? normalizeTopics(data.topics) : [],
+      trigger_warnings: data.triggerWarnings,
     };
     const { data: updated, error } = await context.supabase
       .from("notebooks")
@@ -211,6 +215,7 @@ export const listEntries = createServerFn({ method: "GET" })
       .from("entries")
       .select("*")
       .eq("notebook_id", data.id)
+      .order("pinned_at", { ascending: false, nullsFirst: false })
       .order("created_at", { ascending: false });
     if (error) throw new Error(error.message);
     return entries || [];
@@ -282,6 +287,7 @@ export const shareEntry = createServerFn({ method: "POST" })
       share_as: data.shared ? data.shareAs : "anonymous",
       shared_at: data.shared ? new Date().toISOString() : null,
       topics: data.shared ? normalizeTopics(data.topics) : [],
+      trigger_warnings: data.triggerWarnings,
     };
     const { data: updated, error } = await context.supabase
       .from("entries")
@@ -293,12 +299,23 @@ export const shareEntry = createServerFn({ method: "POST" })
     // The board lists shared notebooks; sharing a page must make its notebook
     // visible there too (only shared pages are ever shown).
     if (data.shared && updated?.notebook_id) {
-      await context.supabase
+      const { error: parentError } = await context.supabase
         .from("notebooks")
         .update({ shared: true, share_as: data.shareAs, shared_at: new Date().toISOString() })
         .eq("id", updated.notebook_id)
         .eq("owner_id", context.userId)
         .eq("shared", false);
+      if (parentError) throw new Error(parentError.message);
     }
     return updated;
+  });
+
+export const pinEntry = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data) => pinPageSchema.parse(data))
+  .handler(async ({ data, context }) => {
+    await verifyEntryOwnership(context, data.id);
+    const { error } = await context.supabase.from("entries").update({ pinned_at: data.pinned ? new Date().toISOString() : null }).eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
   });

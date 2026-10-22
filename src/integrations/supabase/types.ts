@@ -48,10 +48,12 @@ export type Database = {
           id: string
           mood: string | null
           notebook_id: string
+          pinned_at: string | null
           share_as: string
           shared: boolean
           shared_at: string | null
           topics: string[]
+          trigger_warnings: string[]
           updated_at: string
         }
         Insert: {
@@ -60,10 +62,12 @@ export type Database = {
           id?: string
           mood?: string | null
           notebook_id: string
+          pinned_at?: string | null
           share_as?: string
           shared?: boolean
           shared_at?: string | null
           topics?: string[]
+          trigger_warnings?: string[]
           updated_at?: string
         }
         Update: {
@@ -72,10 +76,12 @@ export type Database = {
           id?: string
           mood?: string | null
           notebook_id?: string
+          pinned_at?: string | null
           share_as?: string
           shared?: boolean
           shared_at?: string | null
           topics?: string[]
+          trigger_warnings?: string[]
           updated_at?: string
         }
         Relationships: [
@@ -277,6 +283,7 @@ export type Database = {
           shared_at: string | null
           title: string
           topics: string[]
+          trigger_warnings: string[]
           updated_at: string
         }
         Insert: {
@@ -290,6 +297,7 @@ export type Database = {
           shared_at?: string | null
           title: string
           topics?: string[]
+          trigger_warnings?: string[]
           updated_at?: string
         }
         Update: {
@@ -303,6 +311,7 @@ export type Database = {
           shared_at?: string | null
           title?: string
           topics?: string[]
+          trigger_warnings?: string[]
           updated_at?: string
         }
         Relationships: []
