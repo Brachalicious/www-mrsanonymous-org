@@ -113,7 +113,7 @@ function BoardPost({ post }: { post: BoardPostData }) {
   const [success, setSuccess] = useState("");
   const qc = useQueryClient();
   const moderate = useServerFn(moderateBoardPost);
-  const mutation = useMutation({ mutationFn: moderate, onSuccess: (_, variables) => {
+  const mutation = useMutation({ mutationFn: (input: { data: { notebookId: string; remove: boolean; notice?: string } }) => moderate(input), onSuccess: (_, variables) => {
     setSuccess(variables.data.remove ? "Post removed from the board." : "Policy notice sent to the writer’s Inbox.");
     setEditing(false); setNotice("");
     for (const key of ["admin-board-posts", "story-reports", "shared-stories", "shared-story", "admin-messages"]) void qc.invalidateQueries({ queryKey: [key] });
