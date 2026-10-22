@@ -1,4 +1,7 @@
 # Roadmap
+- [x] Add admin board removal and private policy notices; signed-in admin UI verified removal, preserved private notebook, and read back the notice in the support inbox.
+- [ ] Activate admin for rki — blocked because no app account with this nickname exists; owner must create it and confirm before granting access.
+- [x] Inspect account separation: sign-in nicknames are unique, authentication identifies each account independently, and ownership is user-ID scoped; identical passwords do not merge accounts.
 
 - [x] Make the footer guidance mascot open its page directly; verified image tap at 695×906 and guidance replies in preview and on the live site.
 - [x] Add clickable footer mascot and private account-saved guidance conversations.

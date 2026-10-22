@@ -506,6 +506,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      moderate_board_post: {
+        Args: { p_notebook_id: string; p_notice?: string; p_remove: boolean }
+        Returns: string
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"

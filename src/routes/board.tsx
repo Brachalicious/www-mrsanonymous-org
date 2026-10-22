@@ -1,4 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
 import { StoriesBoard } from "@/components/StoriesBoard";
 import cork from "@/assets/corkboard.png.asset.json";
 
@@ -9,12 +11,15 @@ export const Route = createFileRoute("/board")({
       { name: "description", content: "Read anonymous, blurred stories from women and girls. No identifying details, no comments, just community." },
       { property: "og:title", content: "The Board — MrsANONymous.org" },
       { property: "og:description", content: "Read anonymous, blurred stories from women and girls. No identifying details." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: BoardPage,
 });
 
 function BoardPage() {
+  const { isAdmin } = useAuth();
   return (
     <div
       className="min-h-screen w-full bg-cover bg-center bg-no-repeat"
@@ -30,6 +35,7 @@ function BoardPage() {
           </p>
         </div>
         <StoriesBoard />
+        {isAdmin && <div className="mt-6 text-center"><Button asChild><Link to="/admin/moderation">Moderate board posts</Link></Button></div>}
       </div>
     </div>
   );

@@ -2,6 +2,9 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { getCookie, setCookie } from "@tanstack/react-start/server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/integrations/supabase/types";
+import { boardModerationSchema, requireAdminRole } from "./moderation-input";
 
 const SESSION_COOKIE = "mrsanon_session";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
@@ -81,13 +84,45 @@ export const blockStoryAuthor = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
-async function assertAdmin(context: { supabase: any; userId: string }) {
-  const { data: isAdmin } = await context.supabase.rpc("has_role", {
+async function assertAdmin(context: { supabase: SupabaseClient<Database>; userId: string }) {
+  const { data: isAdmin, error } = await context.supabase.rpc("has_role", {
     _user_id: context.userId,
     _role: "admin",
   });
-  if (!isAdmin) throw new Error("Forbidden");
+  requireAdminRole(isAdmin, error);
 }
+
+export const listBoardPostsForAdmin = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: posts, error } = await supabaseAdmin.from("notebooks")
+      .select("id, title, shared, hidden, shared_at")
+      .or("shared.eq.true,hidden.eq.true")
+      .order("shared_at", { ascending: false });
+    if (error) throw new Error(error.message);
+    const ids = (posts ?? []).map((post) => post.id);
+    if (!ids.length) return [];
+    const { data: pages, error: pageError } = await supabaseAdmin.from("entries")
+      .select("id, notebook_id, content").in("notebook_id", ids).eq("shared", true);
+    if (pageError) throw new Error(pageError.message);
+    return (posts ?? []).map((post) => ({ ...post, pages: (pages ?? []).filter((page) => page.notebook_id === post.id) }));
+  });
+
+export const moderateBoardPost = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data) => boardModerationSchema.parse(data))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const { data: threadId, error } = await context.supabase.rpc("moderate_board_post", {
+      p_notebook_id: data.notebookId,
+      p_remove: data.remove,
+      p_notice: data.notice,
+    });
+    if (error) throw new Error(error.message);
+    return { ok: true, threadId };
+  });
 
 export const listStoryReports = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -123,13 +158,15 @@ export const resolveStoryReport = createServerFn({ method: "POST" })
       .maybeSingle();
     if (!report) throw new Error("Report not found");
 
-    await supabaseAdmin
+    const { error: notebookError } = await supabaseAdmin
       .from("notebooks")
-      .update({ hidden: data.action === "remove" })
+      .update(data.action === "remove" ? { hidden: true, shared: false } : { hidden: false })
       .eq("id", report.notebook_id);
-    await supabaseAdmin
+    if (notebookError) throw new Error(notebookError.message);
+    const { error: reportError } = await supabaseAdmin
       .from("story_reports")
       .update({ status: data.action === "remove" ? "removed" : "dismissed" })
       .eq("id", data.reportId);
+    if (reportError) throw new Error(reportError.message);
     return { ok: true };
   });

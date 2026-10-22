@@ -15,3 +15,4 @@
 - The AI guidance assistant stays switched off while the app is public: no UI entry point, and the guidance API route must answer without ever reaching the AI gateway so no credits can be spent.
 - Resolve text parser dependencies per package without a global entities override or alias; email rendering and chat markdown require different compatible versions.
 - Defer database queries outside auth-state callbacks so session-lock acquisition cannot deadlock sign-in.
+- Board moderation requires authenticated server-side admin checks; remove public visibility without deleting private notebooks, and atomically deliver policy notices through existing owner-scoped support threads, deriving both writer and author inside the database function.
