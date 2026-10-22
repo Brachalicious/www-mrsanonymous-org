@@ -1,18 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { GuidanceWorkspace } from "@/components/GuidanceWorkspace";
+import { GuidanceClosed } from "@/components/GuidanceClosed";
 export const Route = createFileRoute("/guidance/")({
   head: () => ({
     meta: [
-      { title: "Mascot App Guidance — MrsANONymous" },
+      { title: "App Guidance — MrsANONymous" },
       {
         name: "description",
-        content: "Ask the MrsANONymous mascot for help finding your way around the app.",
+        content: "App guidance is currently turned off. Support and safety tools remain available.",
       },
-      { property: "og:title", content: "Mascot App Guidance — MrsANONymous" },
-      { property: "og:description", content: "Private, account-saved app guidance conversations." },
+      { property: "og:title", content: "App Guidance — MrsANONymous" },
+      {
+        property: "og:description",
+        content: "App guidance is currently turned off. Support and safety tools remain available.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "robots", content: "noindex, nofollow" },
     ],
   }),
-  component: GuidanceWorkspace,
+  component: GuidanceClosed,
 });

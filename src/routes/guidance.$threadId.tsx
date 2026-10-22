@@ -1,26 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { GuidanceWorkspace } from "@/components/GuidanceWorkspace";
+import { GuidanceClosed } from "@/components/GuidanceClosed";
 export const Route = createFileRoute("/guidance/$threadId")({
   head: () => ({
     meta: [
-      { title: "Your Guidance Conversation — MrsANONymous" },
+      { title: "App Guidance — MrsANONymous" },
       {
         name: "description",
-        content: "Continue your private MrsANONymous app guidance conversation.",
+        content: "App guidance is currently turned off. Support and safety tools remain available.",
       },
-      { property: "og:title", content: "Your Guidance Conversation — MrsANONymous" },
+      { property: "og:title", content: "App Guidance — MrsANONymous" },
       {
         property: "og:description",
-        content: "Get help navigating MrsANONymous from the app mascot.",
+        content: "App guidance is currently turned off. Support and safety tools remain available.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
-  component: ThreadPage,
+  component: GuidanceClosed,
 });
-function ThreadPage() {
-  const { threadId } = Route.useParams();
-  return <GuidanceWorkspace threadId={threadId} />;
-}
