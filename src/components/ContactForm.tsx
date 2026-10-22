@@ -55,6 +55,11 @@ export function ContactForm({ audience = "women" }: ContactFormProps) {
       <p className="mt-2 text-ink-700">
         We do not provide therapy, counseling, medical advice, or crisis support. This inbox is not monitored for emergencies.
       </p>
+      <p className="mt-3 text-ink-700">
+        We <span className="font-semibold text-ink-900">can</span> help with technical issues, site guidance,
+        account support, and feedback.
+      </p>
+
       <a href="https://www.psychologytoday.com/us/therapists" target="_blank" rel="noopener noreferrer" className="mt-3 inline-block font-semibold text-rose-500 underline underline-offset-4">
         Find a therapist on Psychology Today ↗
       </a>
