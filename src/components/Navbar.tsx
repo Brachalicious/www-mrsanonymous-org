@@ -195,6 +195,7 @@ export function Navbar() {
             <>
               <span className="text-xs text-ink-500">
                 Hello, <span className="font-semibold text-ink-900">{profile?.nickname || "friend"}</span>
+                {isAdmin && <span className="ml-2 font-bold text-rose-500">Admin</span>}
               </span>
               <Link
                 to={isAdmin ? "/admin/messages" : "/inbox"}
@@ -427,7 +428,7 @@ export function Navbar() {
                 }}
                 className="rounded-lg px-3 py-2 text-left text-sm text-ink-900 hover:bg-ink-100"
               >
-                Log out ({profile?.nickname || "friend"})
+                Log out ({profile?.nickname || "friend"}{isAdmin ? " · Admin" : ""})
               </button>
             ) : (
               <></>

@@ -4,10 +4,12 @@ import { ContactForm } from "@/components/ContactForm";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — MrsANONymous.org" },
-      { name: "description", content: "Reach out to MrsANONymous.org. We do not require your name or email." },
-      { property: "og:title", content: "Contact — MrsANONymous.org" },
-      { property: "og:description", content: "Reach out to MrsANONymous.org. We do not require your name or email." },
+      { title: "App Support — MrsANONymous.org" },
+      { name: "description", content: "Contact MrsANONymous.org for app questions, technical problems, and feedback. Not therapy or crisis counseling." },
+      { property: "og:title", content: "App Support — MrsANONymous.org" },
+      { property: "og:description", content: "App support and feedback only. MrsANONymous.org does not provide therapy or emergency response." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: ContactPage,
@@ -17,10 +19,9 @@ function ContactPage() {
   return (
     <div className="mx-auto max-w-3xl px-5 py-12 lg:px-10">
       <div className="mb-8 text-center">
-        <span className="hand-note text-2xl">we are listening</span>
-        <h1 className="mt-2 font-serif text-4xl text-ink-900">Contact us</h1>
+        <h1 className="mt-2 font-serif text-4xl text-ink-900">App support</h1>
         <p className="mx-auto mt-4 max-w-2xl text-ink-600">
-          If you have a question, feedback, or a safety concern, please reach out. You do not need to share your real name or email.
+          Questions about MrsANONymous.org or trouble using the app? Contact us below. For personal support, contact a qualified professional or a crisis hotline directly.
         </p>
       </div>
       <ContactForm audience="women" />
