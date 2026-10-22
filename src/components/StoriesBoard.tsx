@@ -4,6 +4,8 @@ import { useServerFn } from "@tanstack/react-start";
 import { listSharedStories, sendReaction, storyReactions } from "@/lib/stories.functions";
 import { Eye, EyeOff, AlertTriangle, Flag, Ban } from "lucide-react";
 import { reportStory, blockStoryAuthor, REPORT_REASONS } from "@/lib/moderation.functions";
+import { Button } from "@/components/ui/button";
+import { Pin, ChevronLeft, ChevronRight } from "lucide-react";
 
 export function StoriesBoard() {
   const queryClient = useQueryClient();
@@ -157,6 +159,8 @@ function StoryCard({
   onReact: (reaction: string) => void;
 }) {
   const [revealed, setRevealed] = useState(false);
+  const [pageIndex, setPageIndex] = useState(0);
+  const page = story.pages[pageIndex];
   const tilt = [-1.5, 1.2, -0.8, 1.8][index % 4];
 
   return (
@@ -168,7 +172,7 @@ function StoryCard({
       <div className="safety-callout flex items-start gap-3">
         <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-rose-600" />
         <p className="text-sm text-ink-700">
-          This may contain details about abuse. Tap to read when you feel ready.
+          <strong>Trigger warnings</strong><br />{story.trigger_warnings.length ? story.trigger_warnings.join(" · ") : "Abuse-related content; no specific triggers selected."}
         </p>
       </div>
       <div className="p-5">
@@ -176,22 +180,20 @@ function StoryCard({
           <span className="text-xs font-semibold uppercase tracking-wider text-ink-500">
             {story.author}
           </span>
-          <button
+          <Button variant="ghost" size="sm"
             onClick={() => setRevealed((r) => !r)}
             className="inline-flex items-center gap-1 text-xs text-rose-600 hover:text-rose-700"
             aria-label={revealed ? "Blur story" : "Reveal story"}
           >
             {revealed ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             {revealed ? "Blur" : "Reveal"}
-          </button>
+          </Button>
         </div>
-        <div className={revealed ? "" : "blur-story"} data-revealed={revealed}>
-          <h3 className="mt-3 font-serif text-xl text-ink-900">{story.title}</h3>
-          <p className="mt-3 whitespace-pre-line text-ink-700 leading-relaxed">
-            {story.preview}
-            {story.preview.length >= 240 && "…"}
-          </p>
-        </div>
+        {revealed ? <div data-revealed="true"><h3 className="mt-3 break-words font-serif text-xl text-ink-900">{story.title}</h3>
+          {page?.pinned_at && <span className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground"><Pin className="h-3 w-3" />Pinned page</span>}
+          <p className="mt-3 max-h-96 overflow-y-auto whitespace-pre-wrap break-words leading-relaxed text-foreground">{page?.content || "No shared pages yet."}</p>
+          {story.pages.length > 1 && <div className="mt-4 flex items-center justify-between gap-2"><Button variant="outline" size="icon" aria-label="Previous page" disabled={pageIndex === 0} onClick={() => setPageIndex((value) => value - 1)}><ChevronLeft /></Button><span className="text-xs text-muted-foreground">Page {pageIndex + 1} of {story.pages.length}</span><Button variant="outline" size="icon" aria-label="Next page" disabled={pageIndex >= story.pages.length - 1} onClick={() => setPageIndex((value) => value + 1)}><ChevronRight /></Button></div>}
+        </div> : <div data-revealed="false" className="mt-3 border-y border-border py-6 text-center text-sm text-muted-foreground">Story hidden · {story.pages.length} shared {story.pages.length === 1 ? "page" : "pages"}</div>}
 
         {story.topics.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-2">
