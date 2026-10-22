@@ -55,22 +55,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-col items-center gap-2 border-t border-ink-300 pt-6">
-          <button
-            type="button"
-            onClick={() => setChatOpen(true)}
-            className="group mb-6 flex flex-col items-center gap-2 border-0 bg-transparent p-0"
-            title="Ask for app guidance"
-            aria-label="Ask the mascot for app guidance"
-          >
-            <img
-              src={mascotAsset.url}
-              alt="MrsANONymous guidance mascot with a red bow"
-              className="h-64 w-48 object-contain transition-transform group-hover:scale-[1.03]"
-              loading="lazy"
-            />
-            <span className="font-serif text-xl text-primary">Ask for app guidance</span>
-          </button>
-          <MascotChat open={chatOpen} onClose={() => setChatOpen(false)} />
+
           <div className="group mt-2 flex flex-col items-center gap-1 md:gap-3">
             <button
               type="button"
