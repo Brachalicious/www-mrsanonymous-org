@@ -1,4 +1,6 @@
 # Roadmap
+- [ ] Add admin board removal and private policy notices; activate admin for rki after confirming the account exists.
+- [ ] Verify unique sign-in nicknames and independent account ownership.
 
 - [x] Make the footer guidance mascot open its page directly; verified image tap at 695×906 and guidance replies in preview and on the live site.
 - [x] Add clickable footer mascot and private account-saved guidance conversations.
