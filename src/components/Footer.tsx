@@ -104,7 +104,7 @@ export function Footer() {
           onClick={() => setBrandOpen(false)}
         >
           <div
-            className="relative max-h-[80dvh] w-full max-w-md overflow-y-auto rounded-2xl border-2 border-rose-500 bg-white p-6 shadow-2xl"
+            className="relative max-h-[80dvh] w-full max-w-lg overflow-y-auto rounded-2xl border-2 border-rose-500 bg-white p-6 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <button
