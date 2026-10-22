@@ -355,6 +355,8 @@ function ContactSection() {
         <h2 className="text-[1.7rem] text-rose-400">Contact App Support</h2>
         <p className="mt-4 text-lg font-bold text-primary-foreground">We are not therapists.</p>
         <p className="mt-3 text-sm text-primary-foreground">We do not provide therapy, counseling, medical advice, or crisis support. This inbox is not monitored for emergencies. Contact emergency services or a crisis hotline directly for urgent help.</p>
+        <p className="mt-3 text-sm text-primary-foreground">We can help with technical issues, site guidance, account support, and feedback.</p>
+
         <a href="https://www.psychologytoday.com/us/therapists" target="_blank" rel="noopener noreferrer" className="mt-3 inline-block font-semibold text-rose-400 underline underline-offset-4">Find a therapist on Psychology Today ↗</a>
 
         <p className="mt-3 text-[13px] leading-relaxed text-rose-400">
