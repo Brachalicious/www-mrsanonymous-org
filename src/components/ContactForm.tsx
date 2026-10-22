@@ -50,7 +50,7 @@ export function ContactForm({ audience = "women" }: ContactFormProps) {
     <div className="note-card p-7" data-testid={`contact-form-${audience}`}>
       <div className="text-sm font-bold uppercase tracking-widest text-rose-500">Contact app support</div>
       <p className="mt-3 text-lg font-bold text-ink-900">
-        We are not therapists. This inbox is for app questions, technical problems, and feedback only.
+        We are not therapists.
       </p>
       <p className="mt-2 text-ink-700">
         We do not provide therapy, counseling, medical advice, or crisis support. This inbox is not monitored for emergencies.

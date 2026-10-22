@@ -5,9 +5,9 @@ export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title: "App Support — MrsANONymous.org" },
-      { name: "description", content: "Contact MrsANONymous.org for app questions, technical problems, and feedback. Not therapy or crisis counseling." },
+      { name: "description", content: "Contact MrsANONymous.org app support. Not therapy or crisis counseling." },
       { property: "og:title", content: "App Support — MrsANONymous.org" },
-      { property: "og:description", content: "App support and feedback only. MrsANONymous.org does not provide therapy or emergency response." },
+      { property: "og:description", content: "MrsANONymous.org app support. We do not provide therapy or emergency response." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

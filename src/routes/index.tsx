@@ -353,7 +353,7 @@ function ContactSection() {
         className="mx-auto max-w-[600px] rounded-2xl bg-ink-900 p-7 text-center text-white shadow-[0_0_25px_rgba(196,139,129,0.2)]"
       >
         <h2 className="text-[1.7rem] text-rose-400">Contact App Support</h2>
-        <p className="mt-4 text-lg font-bold text-primary-foreground">We are not therapists. App questions, technical problems, and feedback only.</p>
+        <p className="mt-4 text-lg font-bold text-primary-foreground">We are not therapists.</p>
         <p className="mt-3 text-sm text-primary-foreground">We do not provide therapy, counseling, medical advice, or crisis support. This inbox is not monitored for emergencies. Contact emergency services or a crisis hotline directly for urgent help.</p>
         <a href="https://www.psychologytoday.com/us/therapists" target="_blank" rel="noopener noreferrer" className="mt-3 inline-block font-semibold text-rose-400 underline underline-offset-4">Find a therapist on Psychology Today ↗</a>
 
