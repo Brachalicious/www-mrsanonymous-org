@@ -54,7 +54,7 @@ function Index() {
                 Tell Your Story
               </Link>
               <a href="#contact" data-testid="home-cta-contact" className="btn-ghost">
-                Contact Us Anonymously
+                Contact App Support
               </a>
               <Link to="/download" data-testid="home-cta-download" className="btn-ghost">
                 📱 Download the App
@@ -336,7 +336,7 @@ function ContactSection() {
       setStatus(
         user
           ? "✓ Message received. Any reply from support will appear in your Inbox."
-          : "✓ Message received. Thank you for trusting us with it."
+          : "✓ App support message received. Sign in before sending if you need a reply in your Inbox."
       );
       setMessage("");
     } catch (err) {
@@ -352,7 +352,10 @@ function ContactSection() {
         data-testid="home-contact-card"
         className="mx-auto max-w-[600px] rounded-2xl bg-ink-900 p-7 text-center text-white shadow-[0_0_25px_rgba(196,139,129,0.2)]"
       >
-        <h2 className="text-[1.7rem] text-rose-400">Contact Us Anonymously</h2>
+        <h2 className="text-[1.7rem] text-rose-400">Contact App Support</h2>
+        <p className="mt-4 text-lg font-bold text-primary-foreground">We are not therapists. App questions, technical problems, and feedback only.</p>
+        <p className="mt-3 text-sm text-primary-foreground">We do not provide therapy, counseling, medical advice, or crisis support. This inbox is not monitored for emergencies. Contact emergency services or a crisis hotline directly for urgent help.</p>
+        <a href="https://www.psychologytoday.com/us/therapists" target="_blank" rel="noopener noreferrer" className="mt-3 inline-block font-semibold text-rose-400 underline underline-offset-4">Find a therapist on Psychology Today ↗</a>
 
         <p className="mt-3 text-[13px] leading-relaxed text-rose-400">
           You can send a message without an account. Create a completely anonymous account
@@ -370,7 +373,7 @@ function ContactSection() {
           data-testid="home-contact-message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Write your message..."
+          placeholder="Describe your app question, technical problem, or feedback…"
           className="mt-5 w-full rounded-lg border-none bg-ink-700 p-3.5 text-sm text-white placeholder:text-ink-400 focus:outline-none"
           style={{ minHeight: "120px", resize: "none" }}
         />
@@ -382,7 +385,7 @@ function ContactSection() {
           disabled={sending}
           className="mt-4 w-full rounded-lg bg-emergency px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
         >
-          {sending ? "Sending..." : "Send Message"}
+          {sending ? "Sending..." : "Send to App Support"}
         </button>
 
         <Link

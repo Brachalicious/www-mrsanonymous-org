@@ -103,7 +103,7 @@ export function AudiencePage({ audience }: AudiencePageProps) {
             Get Help Now
           </a>
           <a href={`#contact-${audience}`} data-testid={`audience-cta-contact-${audience}`} className="btn-ghost">
-            Contact us anonymously
+            Contact app support
           </a>
         </section>
 

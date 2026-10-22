@@ -26,7 +26,7 @@ export const Route = createFileRoute("/admin/messages")({
 });
 
 function AdminMessages() {
-  const { user, isAdmin, loading, session } = useAuth();
+  const { user, profile, isAdmin, loading, session } = useAuth();
   const { thread } = Route.useSearch();
   const list = useServerFn(listAllMessages);
   const qc = useQueryClient();
@@ -67,6 +67,7 @@ function AdminMessages() {
           📬 My Inbox
         </Link>
       </div>
+      <p className="mt-3 font-semibold text-ink-900">{profile?.nickname || "Your account"} · Admin</p>
       <LockPanel enabled={isClient && !!user && !!session && isAdmin} />
 
       <p className="mt-2 text-ink-700">Reply to visitor messages. Replies appear in the visitor's Inbox — no email is sent or required.</p>
@@ -193,13 +194,15 @@ function MessageCard({ m, highlighted, onReplied }: { m: any; highlighted?: bool
           <textarea
             value={body}
             onChange={(e) => setBody(e.target.value)}
-            rows={3}
-            className="input-soft"
+            rows={10}
+            maxLength={4000}
+            aria-label="Reply to visitor"
+            className="input-soft min-h-64 resize-y text-base leading-relaxed"
             placeholder="Write a reply to this visitor's Inbox…"
           />
-          <button type="submit" disabled={mutation.isPending} className="btn-rose">
+          <Button type="submit" disabled={mutation.isPending} className="btn-rose">
             {mutation.isPending ? "Sending…" : "Send reply"}
-          </button>
+          </Button>
           {mutation.error && (
             <div className="rounded-md bg-emergency/10 px-3 py-2 text-sm text-emergency">
               {(mutation.error as Error).message}

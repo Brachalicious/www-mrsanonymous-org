@@ -6,6 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useRegion } from "@/hooks/use-region";
 import { getEmergency } from "@/lib/emergency-numbers";
+import { Button } from "@/components/ui/button";
 
 interface ContactFormProps {
   audience?: "women" | "girls";
@@ -26,7 +27,7 @@ export function ContactForm({ audience = "women" }: ContactFormProps) {
       setStatus(
         user
           ? "✓ Message received. Any reply from support will appear in your Inbox."
-          : "✓ Message received. Thank you for trusting us with it."
+          : "✓ App support message received. Sign in before sending if you need a reply in your Inbox."
       );
       setMessage("");
     },
@@ -47,14 +48,24 @@ export function ContactForm({ audience = "women" }: ContactFormProps) {
 
   return (
     <div className="note-card p-7" data-testid={`contact-form-${audience}`}>
-      <div className="text-xs font-bold uppercase tracking-[0.3em] text-rose-500">Contact us anonymously</div>
+      <div className="text-sm font-bold uppercase tracking-widest text-rose-500">Contact app support</div>
+      <p className="mt-3 text-lg font-bold text-ink-900">
+        We are not therapists. This inbox is for app questions, technical problems, and feedback only.
+      </p>
       <p className="mt-2 text-ink-700">
-        We do not ask for your name or email. This message is for this visit only.
+        We do not provide therapy, counseling, medical advice, or crisis support. This inbox is not monitored for emergencies.
+      </p>
+      <a href="https://www.psychologytoday.com/us/therapists" target="_blank" rel="noopener noreferrer" className="mt-3 inline-block font-semibold text-rose-500 underline underline-offset-4">
+        Find a therapist on Psychology Today ↗
+      </a>
+      <p className="mt-2 text-ink-700">
+        You do not need to share your real name or email. Messages are saved so we can handle app support.
         {user && (
           <>
             {" "}You are signed in — replies from support will appear in your Inbox.
           </>
         )}
+        {!user && " You are not signed in, so we cannot send you a reply. Sign in first if you need one."}
       </p>
 
       <form onSubmit={submit} className="mt-5 space-y-4">
@@ -67,7 +78,7 @@ export function ContactForm({ audience = "women" }: ContactFormProps) {
             required
             maxLength={2000}
             className="input-soft mt-1.5"
-            placeholder={`I am reaching out because... (${audience === "girls" ? "anything you say stays private" : "you are in control of what you share"})`}
+            placeholder="Describe your app question, technical problem, or feedback…"
           />
         </label>
 
@@ -79,12 +90,12 @@ export function ContactForm({ audience = "women" }: ContactFormProps) {
           </div>
         )}
 
-        <button type="submit" disabled={mutation.isPending} className="btn-rose w-full">
-          {mutation.isPending ? "Sending…" : "Send message anonymously"}
-        </button>
+        <Button type="submit" disabled={mutation.isPending} className="btn-rose w-full">
+          {mutation.isPending ? "Sending…" : "Send to app support"}
+        </Button>
 
         <p className="text-[11px] leading-relaxed text-ink-500">
-          This message is not stored or linked to an identity. If you are in immediate danger, please contact emergency
+          Signed-in messages are linked to your account. If you are in immediate danger, please contact emergency
           services or a crisis hotline directly.
         </p>
         <a
