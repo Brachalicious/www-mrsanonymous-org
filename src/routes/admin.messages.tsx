@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { listAllMessages, replyToMessage } from "@/lib/contact.functions";
 import { listInboxLocks, setInboxLockStatus } from "@/lib/inbox-lock.functions";
 import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/admin/messages")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -15,6 +16,10 @@ export const Route = createFileRoute("/admin/messages")({
       { title: "Admin — Support Messages" },
       { name: "description", content: "Support inbox for MrsANONymous administrators." },
       { name: "robots", content: "noindex, nofollow" },
+      { property: "og:title", content: "Admin Support Inbox — MrsANONymous" },
+      { property: "og:description", content: "Private support messages and board policy notices for MrsANONymous administrators." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: AdminMessages,
@@ -53,6 +58,7 @@ function AdminMessages() {
     <div className="mx-auto max-w-4xl px-5 py-12">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="font-serif text-4xl text-ink-900">Support Inbox</h1>
+        <Button asChild variant="outline"><Link to="/admin/moderation">Board moderation</Link></Button>
         <Link
           to="/inbox"
           data-testid="admin-my-inbox"
@@ -68,7 +74,7 @@ function AdminMessages() {
       {q.isLoading && <p className="mt-6 text-ink-500">Loading…</p>}
       {q.isError && (
         <div role="alert" className="mt-6 rounded-md bg-emergency/10 px-4 py-3 text-sm text-emergency">
-          Support messages could not load. Please log out, log back into the BrittanyJ admin account, and try again.
+          Support messages could not load. Please log out, log back into your admin account, and try again.
         </div>
       )}
       {messages.length === 0 && !q.isLoading && (
