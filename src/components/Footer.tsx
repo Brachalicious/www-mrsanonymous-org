@@ -104,7 +104,7 @@ export function Footer() {
           onClick={() => setBrandOpen(false)}
         >
           <div
-            className="relative max-h-[80dvh] w-full max-w-md overflow-y-auto rounded-2xl border-2 border-rose-500 bg-white p-6 shadow-2xl"
+            className="relative max-h-[80dvh] w-full max-w-lg overflow-y-auto rounded-2xl border-2 border-rose-500 bg-white p-6 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -124,16 +124,27 @@ export function Footer() {
               What is MysticMinded³³?
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-ink-700">
-              MysticMinded³³ is the independent creator brand behind MrsANONymous.org.
-              It builds free, anonymous safety tools for women and girls — designed to
-              protect privacy first: the app hides behind a calculator, there are no
-              names or emails required, and every feature is made so help is one tap
-              away when it matters most.
+              MysticMinded³³ is the overarching parent brand and creative engine behind a
+              diverse ecosystem of mind, body, and soul initiatives. Rooted in holistic
+              wellness, spirituality, and mental health, MysticMinded³³ serves as the
+              umbrella for a wide range of forward-thinking projects—spanning intuitive
+              spiritual readings and personal transformation tools to innovative digital
+              applications.
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-ink-700">
+              Under this broader mission of personal empowerment and mental well-being sits
+              dedicated ventures like MrsANONymous.org—a specialized app designed to provide
+              free, anonymous safety tools for women and girls with privacy-first features—as
+              well as upcoming mental health resources, including an anti-suicide platform.
+              MysticMinded³³ ties all these endeavors together under one unifying goal:
+              nurturing the mind, protecting the individual, and elevating the soul.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-ink-700">
               Visit <span className="font-bold text-rose-500">mysticminded33.com</span> to
-              learn more about the mission and what's next.
+              explore the full vision, dive into spiritual offerings, and see what's next on
+              the horizon.
             </p>
+
             <a
               href="https://www.mysticminded33.com/"
               target="_blank"
