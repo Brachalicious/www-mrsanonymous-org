@@ -55,7 +55,7 @@ function AdminMessages() {
   const messages = (q.data as any[]) ?? [];
 
   return (
-    <div className="mx-auto max-w-4xl px-5 py-12">
+    <div className="mx-auto w-full max-w-6xl px-5 py-12">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="font-serif text-4xl text-ink-900">Support Inbox</h1>
         <Button asChild variant="outline"><Link to="/admin/moderation">Board moderation</Link></Button>
