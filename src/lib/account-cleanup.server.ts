@@ -15,7 +15,7 @@ async function clearStorage(bucket: "evidence" | "notebook-covers", prefix: stri
     if (files.length) {
       const result = await supabaseAdmin.storage.from(bucket).remove(files);
       if (result.error) throw new Error(result.error.message);
-    } else return;
+    }
   }
 }
 

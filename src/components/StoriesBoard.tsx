@@ -169,6 +169,7 @@ function StoryCard({
       style={{ transform: `rotate(${tilt}deg)` }}
     >
       <PushPin index={index} />
+      {story.pages.length > 1 && <><span aria-hidden className="pointer-events-none absolute inset-x-1 -bottom-2 -z-10 h-full rounded-sm border border-border bg-card" /><span aria-hidden className="pointer-events-none absolute inset-x-2 -bottom-4 -z-20 h-full rounded-sm border border-border bg-card" /></>}
       <div className="safety-callout flex items-start gap-3">
         <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-rose-600" />
         <p className="text-sm text-ink-700">
