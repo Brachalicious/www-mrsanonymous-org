@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      account_restrictions: {
+        Row: {
+          blocked: boolean
+          blocked_by: string
+          created_at: string
+          nickname_key: string
+          user_id: string
+        }
+        Insert: {
+          blocked?: boolean
+          blocked_by: string
+          created_at?: string
+          nickname_key: string
+          user_id: string
+        }
+        Update: {
+          blocked?: boolean
+          blocked_by?: string
+          created_at?: string
+          nickname_key?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       contact_messages: {
         Row: {
           audience: string
@@ -384,6 +408,24 @@ export type Database = {
           },
         ]
       }
+      registration_devices: {
+        Row: {
+          created_at: string
+          device_key: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_key: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          device_key?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       security_questions: {
         Row: {
           answer_1_hash: string
@@ -508,6 +550,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      board_safety_reason: { Args: { p_text: string }; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
