@@ -38,6 +38,35 @@ export type Database = {
         }
         Relationships: []
       }
+      board_text_approvals: {
+        Row: {
+          notebook_id: string
+          reviewed_at: string
+          reviewed_by: string
+          text_hash: string
+        }
+        Insert: {
+          notebook_id: string
+          reviewed_at?: string
+          reviewed_by: string
+          text_hash: string
+        }
+        Update: {
+          notebook_id?: string
+          reviewed_at?: string
+          reviewed_by?: string
+          text_hash?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "board_text_approvals_notebook_id_fkey"
+            columns: ["notebook_id"]
+            isOneToOne: false
+            referencedRelation: "notebooks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contact_messages: {
         Row: {
           audience: string
@@ -561,6 +590,10 @@ export type Database = {
       moderate_board_post: {
         Args: { p_notebook_id: string; p_notice?: string; p_remove: boolean }
         Returns: string
+      }
+      resolve_board_report: {
+        Args: { p_action: string; p_report_id: string }
+        Returns: undefined
       }
     }
     Enums: {

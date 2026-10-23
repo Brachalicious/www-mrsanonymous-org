@@ -12,6 +12,8 @@ export const Route = createFileRoute("/forgot-password")({
       { name: "description", content: "Recover your anonymous MrsAnonymous account using your security questions. No email needed." },
       { property: "og:title", content: "Reset Password — MrsAnonymous" },
       { property: "og:description", content: "Recover your MrsAnonymous account with your security questions." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: ForgotPasswordPage,

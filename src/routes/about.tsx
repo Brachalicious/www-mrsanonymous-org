@@ -7,6 +7,8 @@ export const Route = createFileRoute("/about")({
       { name: "description", content: "MrsAnonymous is an anonymous support platform for women and girls experiencing domestic violence." },
       { property: "og:title", content: "About Us — MrsAnonymous" },
       { property: "og:description", content: "Learn about MrsAnonymous and our commitment to safety, anonymity, and voice." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: AboutPage,

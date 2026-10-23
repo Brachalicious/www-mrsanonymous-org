@@ -29,6 +29,13 @@
       "when": 1792744710340,
       "tag": "0003_account_blocks_board_screening_support_acknowledgments",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792745222011,
+      "tag": "0004_board_screening_human_review",
+      "breakpoints": true
     }
   ]
 }

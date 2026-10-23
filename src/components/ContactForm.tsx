@@ -26,7 +26,7 @@ export function ContactForm({ audience = "women" }: ContactFormProps) {
     onSuccess: (result) => {
       setStatus(
         "✓ " + result.acknowledgment + " " + (user
-          ? "✓ Message received. Any reply from support will appear in your Inbox."
+          ? "Any reply from support will appear in your Inbox."
           : "Sign in before sending if you need a reply in your Inbox.")
       );
       setMessage("");

@@ -8,6 +8,8 @@ export const Route = createFileRoute("/women")({
       { name: "description", content: "A private space for women to be heard, on their terms. Anonymous support, resources, and tools." },
       { property: "og:title", content: "For Women — MrsAnonymous" },
       { property: "og:description", content: "A private space for women to be heard, on their terms." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: WomenPage,
