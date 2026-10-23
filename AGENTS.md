@@ -20,6 +20,6 @@
 - Persist trigger warnings on notebooks and pages and display their union before reader reveal; pinned_at orders only owner-scoped notebook pages, preserving independent board ranking.
 - Individual admin account deletion requires a server-verified admin, explicit confirmation, protected admin identities, and checked database/storage cleanup before deleting the auth identity.
 - Account bans use server-verified admin actions, Auth bans, and minimal retained nickname/browser registration identifiers; do not fingerprint devices or claim anonymous people cannot evade bans.
-- Board text screening runs in database write triggers, hides flags for human review, and never calls the AI gateway; private unshared content is not screened.
+- Board text screening runs in database write triggers, hides flags for human review, and never calls the AI gateway; private unshared content is not screened. Admin approval records exact-text hashes atomically with report resolution, so edited text is screened again without granting writers approval access.
 - App support acknowledgments are generated atomically by database triggers with null authors; contact ownership is derived from a verified bearer token, never caller-supplied IDs.
 - The public installation page bypasses the terms overlay but not the calculator lock; installation never requires an account.

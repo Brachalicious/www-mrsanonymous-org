@@ -215,24 +215,11 @@ export const resolveStoryReport = createServerFn({ method: "POST" })
       .parse(data)
   )
   .handler(async ({ data, context }) => {
-    await assertAdmin(context as any);
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: report } = await supabaseAdmin
-      .from("story_reports")
-      .select("notebook_id")
-      .eq("id", data.reportId)
-      .maybeSingle();
-    if (!report) throw new Error("Report not found");
-
-    const { error: notebookError } = await supabaseAdmin
-      .from("notebooks")
-      .update(data.action === "remove" ? { hidden: true, shared: false } : { hidden: false })
-      .eq("id", report.notebook_id);
-    if (notebookError) throw new Error(notebookError.message);
-    const { error: reportError } = await supabaseAdmin
-      .from("story_reports")
-      .update({ status: data.action === "remove" ? "removed" : "dismissed" })
-      .eq("id", data.reportId);
-    if (reportError) throw new Error(reportError.message);
+    await assertAdmin(context);
+    const { error } = await context.supabase.rpc("resolve_board_report", {
+      p_report_id: data.reportId,
+      p_action: data.action,
+    });
+    if (error) throw new Error(error.message);
     return { ok: true };
   });
