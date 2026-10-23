@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 - Render the phone navigation overlay through a portal into document.body, with a viewport-height shell and independently scrolling links; the blurred sticky header otherwise confines fixed descendants to its own height.
+- Keep both install manifests on the same URL-based identity and set calculator installation metadata globally, not through temporary page effects, so navigation cannot revert the launcher appearance.
 - Anchor the emergency options panel independently to viewport top and bottom safe bounds, with internal scrolling, so trigger size and text wrapping cannot push its top off-screen.
 - Guidance uses route-addressed threads, owner-scoped Cloud storage and recovery-lock checks; AI SDK/AI Elements stream replies through a server-only gateway boundary so secrets and private app data never enter the client or prompts.
 - The AI guidance assistant stays switched off while the app is public: no UI entry point, and the guidance API route must answer without ever reaching the AI gateway so no credits can be spent.

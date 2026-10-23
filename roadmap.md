@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Restore persistent Calculator install name/icon without replacing the enlarged red artwork; tests and browser checks verified install metadata, passcode setup, and covered relaunch.
 - [x] Add selectable trigger warnings before board reveals, individual admin account deletion, and owner-only pinned page stacks; verified warning selection, reveal, persistent pin order, page/post removal, and temporary account deletion through signed-in UI.
 - [x] Clarify contact is app support, not therapy; add Psychology Today resource, enlarge admin reply box, and show role beside account name.
 - [x] Add admin board removal and private policy notices; signed-in admin UI verified removal, preserved private notebook, and read back the notice in the support inbox.

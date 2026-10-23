@@ -14,6 +14,7 @@ export const Route = createFileRoute("/download")({
       { property: "og:title", content: "Download the MrsANONymous App" },
       { property: "og:description", content: "Install as a private safety app on iPhone or Android in under 30 seconds." },
       { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { property: "og:url", content: "/download" },
     ],
     links: [{ rel: "canonical", href: "/download" }],
@@ -34,7 +35,7 @@ function DownloadPage() {
   const [platform, setPlatform] = useState<Platform>("desktop");
   const [installEvent, setInstallEvent] = useState<any>(null);
   const [installed, setInstalled] = useState(false);
-  const [disguise, setDisguise] = useState(false);
+  const disguise = true;
   const [gateOn, setGateOn] = useState(false);
   const { lang } = useLanguage();
   const { country } = useRegion();
@@ -81,21 +82,6 @@ function DownloadPage() {
     };
   }, []);
 
-  useEffect(() => {
-    const link = document.querySelector<HTMLLinkElement>('link[rel="manifest"]');
-    if (!link) return;
-    const original = link.getAttribute("href") || "/manifest.webmanifest";
-    link.setAttribute("href", disguise ? "/manifest-calc.webmanifest" : "/manifest.webmanifest");
-    // update apple touch icon too so iOS Add-to-Home uses calc icon
-    const apple = document.querySelector<HTMLLinkElement>('link[rel="apple-touch-icon"]');
-    const appleOrig = apple?.getAttribute("href") || "/apple-touch-icon.png";
-    if (apple) apple.setAttribute("href", disguise ? "/calc-icon-192.png" : "/apple-touch-icon.png");
-    return () => {
-      link.setAttribute("href", original);
-      if (apple) apple.setAttribute("href", appleOrig);
-    };
-  }, [disguise]);
-
   async function handleInstall() {
     if (!installEvent) return;
     installEvent.prompt();
@@ -130,21 +116,9 @@ function DownloadPage() {
               <p className="mt-1 text-sm text-ink-700">
                 Install the app so it shows up on your home screen as a plain
                 <strong> Calculator</strong> — calculator icon, calculator name.
-                Only you know what it really opens. Turn this on <em>before</em> you install.
+                Calculator is the default name and icon when you install.
               </p>
             </div>
-            <label className="flex shrink-0 cursor-pointer items-center gap-2">
-              <input
-                type="checkbox"
-                checked={disguise}
-                onChange={(e) => setDisguise(e.target.checked)}
-                className="h-5 w-5 accent-rose-600"
-                data-testid="toggle-disguise"
-              />
-              <span className="text-sm font-semibold text-ink-900">
-                {disguise ? "On" : "Off"}
-              </span>
-            </label>
           </div>
           {disguise && (
             <p className="mt-3 rounded-lg bg-amber-50 p-3 text-xs text-ink-700">
@@ -198,7 +172,7 @@ function DownloadPage() {
         {installed && (
           <div className="mt-8 rounded-xl border-2 border-green-600 bg-green-50 p-6 text-center">
             <p className="text-xl font-semibold text-green-900">✓ Installed on this device</p>
-            <p className="mt-1 text-sm text-green-800">Look for the MrsANON icon on your home screen.</p>
+            <p className="mt-1 text-sm text-green-800">Look for the Calculator icon on your home screen.</p>
           </div>
         )}
 
@@ -221,7 +195,7 @@ function DownloadPage() {
               <li>Open <strong>mrsanonymous.org</strong> in <strong>Safari</strong> (not Chrome).</li>
               <li>Tap the <strong>Share</strong> button <span aria-label="share icon">⬆️</span> at the bottom.</li>
               <li>Scroll and tap <strong>“Add to Home Screen”</strong>.</li>
-              <li>Tap <strong>Add</strong>. The MrsANON icon will appear on your home screen.</li>
+              <li>Keep the name <strong>Calculator</strong>, then tap <strong>Add</strong>.</li>
             </ol>
           </Card>
 
@@ -230,7 +204,7 @@ function DownloadPage() {
               <li>Open <strong>mrsanonymous.org</strong> in <strong>Chrome</strong>.</li>
               <li>Tap the <strong>⋮</strong> menu (top-right).</li>
               <li>Tap <strong>“Install app”</strong> or <strong>“Add to Home screen”</strong>.</li>
-              <li>Confirm. The MrsANON icon will appear on your home screen.</li>
+              <li>Confirm. The Calculator icon will appear on your home screen.</li>
             </ol>
           </Card>
         </div>

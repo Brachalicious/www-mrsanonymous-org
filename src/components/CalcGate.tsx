@@ -51,6 +51,11 @@ export function CalcGate() {
   }, []);
 
   useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("m") === "calc") {
+      window.localStorage.setItem(LS_ENABLED, "1");
+      // An installed Calculator launch always starts covered, even in a reused session.
+      window.sessionStorage.removeItem(SS_UNLOCKED);
+    }
     setHydrated(true);
     refresh();
     const handler = () => refresh();
