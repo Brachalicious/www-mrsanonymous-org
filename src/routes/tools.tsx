@@ -17,6 +17,7 @@ import handSignalAsset from "@/assets/help-signal-button.png.asset.json";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useRegion } from "@/hooks/use-region";
 import { getEmergency } from "@/lib/emergency-numbers";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/tools")({
 
@@ -26,6 +27,8 @@ export const Route = createFileRoute("/tools")({
       { name: "description", content: "Quick exit, silent panic, and other safety tools for private browsing." },
       { property: "og:title", content: "Safety tools — MrsANONymous.org" },
       { property: "og:description", content: "Quick exit, silent panic, and other safety tools for private browsing." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: ToolsPage,
@@ -48,6 +51,10 @@ function ToolsPage() {
       </div>
 
       <div className="mx-auto flex max-w-3xl flex-col gap-3">
+        <section className="border-y border-border py-5 text-foreground">
+          <h2 className="font-serif text-2xl font-bold">First aid & CPR</h2>
+          <Button asChild className="mt-3"><Link to="/first-aid">Open First Aid & CPR</Link></Button>
+        </section>
         <ToolCard
           icon={<AlertTriangle className="h-6 w-6 text-white" />}
           title="Quick Exit"

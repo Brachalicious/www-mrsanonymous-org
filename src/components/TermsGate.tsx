@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import { isDisguiseLocked } from "./CalcGate";
 
 const LS_TERMS = "terms_accepted_v1";
@@ -20,6 +20,7 @@ export function resetTermsAcceptance() {
  * and before any of the app content becomes usable.
  */
 export function TermsGate() {
+  const { pathname } = useLocation();
   const [hydrated, setHydrated] = useState(false);
   const [accepted, setAccepted] = useState(true);
   const [calcLocked, setCalcLocked] = useState(true);
@@ -46,7 +47,7 @@ export function TermsGate() {
   }, [refresh]);
 
   // Lock background scroll while the gate is up.
-  const visible = hydrated && !accepted && !calcLocked;
+  const visible = pathname !== "/download" && hydrated && !accepted && !calcLocked;
   useEffect(() => {
     if (!visible) return;
     const prev = document.body.style.overflow;

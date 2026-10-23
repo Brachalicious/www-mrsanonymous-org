@@ -4,13 +4,14 @@ import { isDisguiseEnabled, setDisguiseEnabled } from "@/components/CalcGate";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useRegion } from "@/hooks/use-region";
 import { getEmergency } from "@/lib/emergency-numbers";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/download")({
   component: DownloadPage,
   head: () => ({
     meta: [
-      { title: "Download the MrsANONymous App — iOS & Android" },
-      { name: "description", content: "Install MrsANONymous.org as a free safety app on your iPhone or Android in under 30 seconds. No app store, no traces, 100% anonymous." },
+      { title: "Install Calculator — MrsANONymous.org" },
+      { name: "description", content: "Add the discreet Calculator app to your home screen without an account. Installation options depend on your browser and device." },
       { property: "og:title", content: "Download the MrsANONymous App" },
       { property: "og:description", content: "Install as a private safety app on iPhone or Android in under 30 seconds." },
       { property: "og:type", content: "website" },
@@ -105,9 +106,15 @@ function DownloadPage() {
             {disguise ? "Install as “Calculator” (disguised)" : "Download the MrsANONymous App"}
           </h1>
           <p className="mt-3 text-lg text-ink-700">
-            A discreet safety companion for your phone. Free. No app store. No account traces. 100% anonymous.
+            Free. No account needed to install. Keep the name Calculator and the red calculator icon.
           </p>
         </div>
+
+        <section className="mt-6 border-y border-border py-6 text-foreground" aria-label="Quick installation">
+          <h2 className="text-xl font-bold">Add Calculator to your home screen</h2>
+          {installed ? <p className="mt-3">Opened as an installed app on this device.</p> : installEvent ? <Button className="mt-4" onClick={handleInstall} data-testid="quick-install-calculator">Install Calculator</Button> : <p className="mt-3">{platform === "ios" ? "In Safari: Share → Add to Home Screen → keep Calculator → Add." : platform === "android" ? "In Chrome: ⋮ → Install app or Add to Home screen → confirm Calculator." : "Use your browser’s install icon or menu. If installation is unavailable, use a bookmark; mobile instructions are below."}</p>}
+          <p className="mt-3 text-sm text-muted-foreground">Your browser controls installation and may require several taps. There is no account or waiting period imposed by this app. The icon is a disguise, not a guarantee of secrecy; device settings and browsing records may still identify the site. Existing installations may need reinstalling to refresh the name and icon.</p>
+        </section>
 
         <div className="mt-6 rounded-xl border-2 border-ink-300 bg-white p-5">
           <div className="flex items-start justify-between gap-4">
@@ -216,7 +223,7 @@ function DownloadPage() {
             <li>🌐 Works in 17+ languages with auto-translation for 911 texts.</li>
             <li>🔒 Quick Exit and history-clearing safety features built in.</li>
             <li>📓 Your private notebooks — always with you, always anonymous.</li>
-            <li>📶 Opens instantly like a native app — no browser bar, no bookmarks needed.</li>
+            <li>Opens from your home screen; loading depends on your device and connection. Offline access is not included.</li>
           </ul>
         </div>
 
