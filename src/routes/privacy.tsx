@@ -31,7 +31,12 @@ function PrivacyPage() {
           <li><strong>Security question answers</strong>, stored only as one-way hashes so we cannot read them.</li>
           <li><strong>Anything you write or record</strong> in your notebooks, including voice recordings and files you attach.</li>
           <li><strong>An anonymous session identifier</strong> in a cookie, used to remember your reactions and blocks.</li>
+          <li><strong>A random registration-browser cookie and its account link</strong>, used to restrict new registrations from a known blocked browser. We do not fingerprint devices.</li>
         </ul>
+      </Section>
+
+      <Section title="Board safety screening and account restrictions">
+        Text submitted for public sharing is screened for a limited set of sexual and coercive solicitation patterns. Flagged stories are hidden for human review. Screening can be wrong and does not identify predators or analyze media. Admins may block accounts. Blocking restricts sign-in, posting, and reuse of a known nickname or registration browser, but cannot reliably identify someone on a different browser or device.
       </Section>
 
       <Section title="What we never collect">
@@ -67,7 +72,7 @@ function PrivacyPage() {
       <Section title="Deleting your account">
         You can permanently delete your account and everything in it at any time from{" "}
         <a href="/settings" className="text-rose-600 underline">Settings</a>. Deletion is immediate and
-        cannot be undone.
+        cannot be undone. For an actively blocked account, minimal ban records (account ID, normalized nickname, known random registration-browser identifier, administrator ID and restriction date) are retained while the ban remains active to enforce the restriction. Private content is still deleted. Ordinary account deletion removes its registration-browser link.
       </Section>
 
       <Section title="Children">

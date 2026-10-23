@@ -12,6 +12,8 @@ export const Route = createFileRoute("/signup")({
       { name: "description", content: "Create an anonymous MrsAnonymous account. No email or real name needed." },
       { property: "og:title", content: "Create Account — MrsAnonymous" },
       { property: "og:description", content: "Create an anonymous MrsAnonymous account." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: SignupPage,
@@ -219,7 +221,7 @@ function SignupPage() {
           </button>
 
           <p className="text-[11px] leading-relaxed text-ink-500">
-            We store only your nickname and a one-way hash of your password. On the next screen you'll set 3
+            We store your nickname, a protected password hash, any optional region information, and a random browser registration identifier for account safety. On the next screen you'll set 3
             security questions — the only way to recover your account if you forget your password.
           </p>
         </form>

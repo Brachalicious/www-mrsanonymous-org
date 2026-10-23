@@ -64,6 +64,7 @@ function ModerationPage() {
         <div className="mt-4 space-y-4">{posts.data?.map((post) => <BoardPost key={post.id} post={post} />)}</div>
       </section>
       <h2 className="mt-12 font-serif text-2xl text-foreground">Reported posts</h2>
+      <p className="mt-3 text-sm text-muted-foreground">Automatic text screening flags some sexual or coercive solicitation and hides it for review. It can miss harmful content or flag survivor accounts incorrectly; it does not identify predators or inspect images, recordings, or videos. Review context before taking action.</p>
       {q.isError && <p role="alert" className="mt-4 text-destructive">Could not load reports.</p>}
       {mutation.isError && <p role="alert" className="mt-4 text-destructive">{mutation.error.message}</p>}
 

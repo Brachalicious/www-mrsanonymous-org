@@ -19,3 +19,7 @@
 - Board moderation requires authenticated server-side admin checks; remove public visibility without deleting private notebooks, and atomically deliver policy notices through existing owner-scoped support threads, deriving both writer and author inside the database function.
 - Persist trigger warnings on notebooks and pages and display their union before reader reveal; pinned_at orders only owner-scoped notebook pages, preserving independent board ranking.
 - Individual admin account deletion requires a server-verified admin, explicit confirmation, protected admin identities, and checked database/storage cleanup before deleting the auth identity.
+- Account bans use server-verified admin actions, Auth bans, and minimal retained nickname/browser registration identifiers; do not fingerprint devices or claim anonymous people cannot evade bans.
+- Board text screening runs in database write triggers, hides flags for human review, and never calls the AI gateway; private unshared content is not screened.
+- App support acknowledgments are generated atomically by database triggers with null authors; contact ownership is derived from a verified bearer token, never caller-supplied IDs.
+- The public installation page bypasses the terms overlay but not the calculator lock; installation never requires an account.

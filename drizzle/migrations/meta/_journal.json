@@ -22,6 +22,13 @@
       "when": 1792702327070,
       "tag": "0002_board_warnings_page_pins",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792744710340,
+      "tag": "0003_account_blocks_board_screening_support_acknowledgments",
+      "breakpoints": true
     }
   ]
 }

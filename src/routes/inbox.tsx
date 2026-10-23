@@ -94,7 +94,7 @@ function InboxPage() {
                     <div
                       className={`text-[11px] uppercase tracking-widest ${r.fromMe ? "text-ink-500" : "text-rose-500"}`}
                     >
-                      {r.fromMe ? "You" : "Support"} · {new Date(r.created_at).toLocaleString()}
+                      {r.fromMe ? "You" : r.author_user_id === null ? "Automatic acknowledgment" : "Support"} · {new Date(r.created_at).toLocaleString()}
                     </div>
                     <p className="mt-1 whitespace-pre-wrap text-ink-900">{r.body}</p>
                   </div>

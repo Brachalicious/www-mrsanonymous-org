@@ -1,9 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-
-function nicknameToEmail(nickname: string) {
-  return `${nickname.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-")}@mrsanonymous.local`;
-}
+import { getCookie, setCookie } from "@tanstack/react-start/server";
+import { nicknameKey as nicknameToEmail } from "./account-safety";
 
 const registerSchema = z.object({
   nickname: z.string().min(2).max(40),
@@ -21,6 +19,22 @@ export const registerAnonymousUser = createServerFn({ method: "POST" })
 
     const email = nicknameToEmail(data.nickname);
     const normalizedNickname = data.nickname.toLowerCase().trim();
+    let deviceKey = getCookie("mrsanon_registration_device");
+    if (!deviceKey || !z.string().uuid().safeParse(deviceKey).success) {
+      deviceKey = crypto.randomUUID();
+      setCookie("mrsanon_registration_device", deviceKey, { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/", maxAge: 31536000 });
+    }
+    const restriction = await supabaseAdmin.from("account_restrictions").select("user_id").eq("nickname_key", email).eq("blocked", true);
+    if (restriction.error) throw new Error("Registration unavailable. Please try again later.");
+    const devices = await supabaseAdmin.from("registration_devices").select("user_id").eq("device_key", deviceKey);
+    if (devices.error) throw new Error("Registration unavailable. Please try again later.");
+    let deviceBlocked = false;
+    if (devices.data?.length) {
+      const bans = await supabaseAdmin.from("account_restrictions").select("user_id").in("user_id", devices.data.map((row) => row.user_id)).eq("blocked", true);
+      if (bans.error) throw new Error("Registration unavailable. Please try again later.");
+      deviceBlocked = Boolean(bans.data?.length);
+    }
+    if (restriction.data?.length || deviceBlocked) throw new Error("Account registration unavailable. Contact app support if you believe this is an error.");
 
     // Check if a profile already exists for this nickname.
     const { data: existing } = await supabaseAdmin
@@ -62,6 +76,12 @@ export const registerAnonymousUser = createServerFn({ method: "POST" })
       throw new Error(profileError.message);
     }
 
+    const deviceSaved = await supabaseAdmin.from("registration_devices").insert({ user_id: userData.user.id, device_key: deviceKey });
+    if (deviceSaved.error) {
+      await supabaseAdmin.from("profiles").delete().eq("id", userData.user.id);
+      await supabaseAdmin.auth.admin.deleteUser(userData.user.id);
+      throw new Error("Could not finish registration. Please try again.");
+    }
     return { email };
   });
 

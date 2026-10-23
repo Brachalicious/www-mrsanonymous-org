@@ -6,6 +6,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 import { boardModerationSchema, requireAdminRole } from "./moderation-input";
 import { requireDeletableAccount } from "./board-options";
+import { accountBlockSchema, nicknameKey } from "./account-safety";
 
 const SESSION_COOKIE = "mrsanon_session";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
@@ -135,7 +136,32 @@ export const listAccountsForAdmin = createServerFn({ method: "GET" })
     const roles = await supabaseAdmin.from("user_roles").select("user_id").eq("role", "admin");
     if (roles.error) throw new Error(roles.error.message);
     const admins = new Set((roles.data ?? []).map((role) => role.user_id));
-    return (profiles ?? []).map((profile) => ({ ...profile, protected: admins.has(profile.id) || profile.id === context.userId }));
+    const restrictions = await supabaseAdmin.from("account_restrictions").select("user_id").eq("blocked", true);
+    if (restrictions.error) throw new Error(restrictions.error.message);
+    const blocked = new Set((restrictions.data ?? []).map((row) => row.user_id));
+    return (profiles ?? []).map((profile) => ({ ...profile, blocked: blocked.has(profile.id), protected: admins.has(profile.id) || profile.id === context.userId }));
+  });
+
+export const setAccountBlocked = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => accountBlockSchema.parse(input))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const target = await supabaseAdmin.from("profiles").select("nickname").eq("id", data.userId).single();
+    if (target.error || !target.data) throw new Error("Account not found");
+    const roles = await supabaseAdmin.from("user_roles").select("id").eq("user_id", data.userId).eq("role", "admin");
+    if (roles.error) throw new Error(roles.error.message);
+    requireDeletableAccount(context.userId, data.userId, Boolean(roles.data?.length));
+    const auth = await supabaseAdmin.auth.admin.updateUserById(data.userId, { ban_duration: data.blocked ? "876000h" : "none" });
+    if (auth.error) throw new Error(auth.error.message);
+    const restriction = await supabaseAdmin.from("account_restrictions").upsert({ user_id: data.userId, nickname_key: nicknameKey(target.data.nickname), blocked: data.blocked, blocked_by: context.userId });
+    if (restriction.error) throw new Error(restriction.error.message);
+    if (data.blocked) {
+      const hidden = await supabaseAdmin.from("notebooks").update({ hidden: true, shared: false }).eq("owner_id", data.userId);
+      if (hidden.error) throw new Error(hidden.error.message);
+    }
+    return { ok: true };
   });
 
 export const deleteAccountForAdmin = createServerFn({ method: "POST" })

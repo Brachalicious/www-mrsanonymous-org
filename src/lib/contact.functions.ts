@@ -1,23 +1,33 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { getRequestHeader } from "@tanstack/react-start/server";
+import { SUPPORT_ACKNOWLEDGMENT } from "./account-safety";
 
 export const sendContactMessage = createServerFn({ method: "POST" })
   .inputValidator((data) =>
     z.object({
-      message: z.string().min(1).max(2000),
+      message: z.string().trim().min(1).max(2000),
       audience: z.enum(["women", "girls"]).default("women"),
       userId: z.string().uuid().nullable().optional(),
     }).parse(data)
   )
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const authorization = getRequestHeader("authorization");
+    let senderId: string | null = null;
+    if (authorization) {
+      if (!authorization.startsWith("Bearer ") || !authorization.slice(7)) throw new Error("Unauthorized");
+      const verified = await supabaseAdmin.auth.getUser(authorization.slice(7));
+      if (verified.error || !verified.data.user) throw new Error("Unauthorized");
+      senderId = verified.data.user.id;
+    }
     const { data: inserted, error } = await supabaseAdmin
       .from("contact_messages")
       .insert({
         message: data.message,
         audience: data.audience,
-        sender_user_id: data.userId ?? null,
+        sender_user_id: senderId,
       })
       .select("id, created_at")
       .single();
@@ -30,7 +40,7 @@ export const sendContactMessage = createServerFn({ method: "POST" })
           message: data.message,
           audience: data.audience,
           receivedAt: inserted?.created_at ?? new Date().toISOString(),
-          accountLinked: Boolean(data.userId),
+          accountLinked: Boolean(senderId),
           threadId: inserted?.id ?? undefined,
         },
         idempotencyKey: `contact-notification-${inserted?.id ?? crypto.randomUUID()}`,
@@ -39,7 +49,7 @@ export const sendContactMessage = createServerFn({ method: "POST" })
       // Never fail the user's submission because of a notification email problem.
       console.error("contact notification email failed", e);
     }
-    return { ok: true };
+    return { ok: true, acknowledgment: SUPPORT_ACKNOWLEDGMENT };
   });
 
 export const getUnreadMessageCount = createServerFn({ method: "GET" })
