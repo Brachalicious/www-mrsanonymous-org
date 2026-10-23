@@ -15,7 +15,7 @@ export function AdminAccounts() {
   const [confirmation, setConfirmation] = useState("");
   const [success, setSuccess] = useState("");
   const accounts = useQuery({ queryKey: ["admin-accounts"], queryFn: () => fetchAccounts(), retry: false });
-  const blocking = useMutation({ mutationFn: block, onSuccess: (_, variables) => {
+  const blocking = useMutation({ mutationFn: (input: { data: { userId: string; blocked: boolean; confirmation: "BLOCK" | "UNBLOCK" } }) => block(input), onSuccess: (_, variables) => {
     setSuccess(variables.data.blocked ? "Account blocked. Its posts are hidden and known registration identifiers are restricted." : "Account unblocked. Removed posts remain hidden.");
     for (const key of ["admin-accounts", "admin-board-posts", "shared-stories"]) void qc.invalidateQueries({ queryKey: [key] });
   } });
