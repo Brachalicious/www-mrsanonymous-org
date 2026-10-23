@@ -50,6 +50,13 @@ export async function deleteAccountData(userId: string) {
   checked(await supabaseAdmin.from("security_questions").delete().eq("user_id", userId));
   checked(await supabaseAdmin.from("inbox_recovery_locks").delete().eq("user_id", userId));
   checked(await supabaseAdmin.from("story_blocks").delete().eq("owner_id", userId));
+  // Keep only active ban identifiers so deleting a banned account cannot undo its restriction.
+  const restriction = await supabaseAdmin.from("account_restrictions").select("blocked").eq("user_id", userId).maybeSingle();
+  checked(restriction);
+  if (!restriction.data?.blocked) {
+    checked(await supabaseAdmin.from("registration_devices").delete().eq("user_id", userId));
+    checked(await supabaseAdmin.from("account_restrictions").delete().eq("user_id", userId));
+  }
   checked(await supabaseAdmin.from("user_roles").delete().eq("user_id", userId));
   checked(await supabaseAdmin.from("profiles").delete().eq("id", userId));
   checked(await supabaseAdmin.auth.admin.deleteUser(userId));

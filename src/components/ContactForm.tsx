@@ -23,11 +23,11 @@ export function ContactForm({ audience = "women" }: ContactFormProps) {
 
   const mutation = useMutation({
     mutationFn: send,
-    onSuccess: () => {
+    onSuccess: (result) => {
       setStatus(
-        user
+        "✓ " + result.acknowledgment + " " + (user
           ? "✓ Message received. Any reply from support will appear in your Inbox."
-          : "✓ App support message received. Sign in before sending if you need a reply in your Inbox."
+          : "Sign in before sending if you need a reply in your Inbox.")
       );
       setMessage("");
     },
