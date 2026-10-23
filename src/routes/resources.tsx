@@ -959,6 +959,8 @@ export const Route = createFileRoute("/resources")({
       { name: "description", content: "Crisis hotlines, shelters, text support, and safety resources for women and girls." },
       { property: "og:title", content: "Resources — MrsAnonymous" },
       { property: "og:description", content: "Crisis hotlines, shelters, text support, and safety resources." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: ResourcesPage,

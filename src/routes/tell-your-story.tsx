@@ -14,6 +14,8 @@ export const Route = createFileRoute("/tell-your-story")({
       { name: "description", content: "Share your story in your own private notebook, or read blurred stories from the community board. No names required." },
       { property: "og:title", content: "Tell Your Story — MrsANONymous.org" },
       { property: "og:description", content: "Share your story in your own private notebook. No names required." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: TellYourStoryPage,

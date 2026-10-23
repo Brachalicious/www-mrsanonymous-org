@@ -18,6 +18,8 @@ export const Route = createFileRoute("/go")({
       { property: "og:title", content: "Opening a resource — MrsANONymous.org" },
       { property: "og:description", content: "Outside support resources open inside MrsANONymous with a one-tap way back." },
       { name: "robots", content: "noindex" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: GoPage,

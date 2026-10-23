@@ -19,6 +19,8 @@ export const Route = createFileRoute("/security-questions")({
       { name: "description", content: "Set the security questions used to recover your anonymous MrsAnonymous account." },
       { property: "og:title", content: "Security Questions — MrsAnonymous" },
       { property: "og:description", content: "Set up account recovery for your anonymous MrsAnonymous account." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: SecurityQuestionsPage,

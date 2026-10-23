@@ -12,6 +12,8 @@ export const Route = createFileRoute("/login")({
       { name: "description", content: "Log in to your anonymous MrsAnonymous account. No email or real name needed." },
       { property: "og:title", content: "Log In — MrsAnonymous" },
       { property: "og:description", content: "Log in to your anonymous MrsAnonymous account." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: LoginPage,

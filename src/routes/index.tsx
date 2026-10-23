@@ -330,13 +330,13 @@ function ContactSection() {
     setSending(true);
     setStatus("");
     try {
-      await sendFn({
+      const result = await sendFn({
         data: { message: message.trim(), audience: "women", userId: user?.id ?? null },
       });
       setStatus(
-        user
+        "✓ " + result.acknowledgment + " " + (user
           ? "✓ Message received. Any reply from support will appear in your Inbox."
-          : "✓ App support message received. Sign in before sending if you need a reply in your Inbox."
+          : "Sign in before sending if you need a reply in your Inbox.")
       );
       setMessage("");
     } catch (err) {
