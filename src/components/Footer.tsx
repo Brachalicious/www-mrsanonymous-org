@@ -40,9 +40,9 @@ export function Footer() {
           </div>
         </div>
 
-        <p className="mx-auto mt-8 max-w-3xl text-center text-xs text-ink-400">
+        <p className="mx-auto mt-8 max-w-4xl text-center text-base font-bold leading-relaxed text-ink-900 md:text-xl lg:text-2xl">
           This site is not a substitute for professional help or emergency services. If you are in danger,
-          please call {emergency.policeLabel} or a trusted crisis line. All shared stories are anonymous and no identifying
+          please call <span className="text-rose-500">{emergency.policeLabel}</span> or a trusted crisis line. All shared stories are anonymous and no identifying
           information is stored.
         </p>
         <div className="mt-3 text-center">
