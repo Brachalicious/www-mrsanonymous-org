@@ -64,6 +64,7 @@ export function EmergencyWidget() {
   const [loc, setLoc] = useState<Loc | null>(null);
   const [locError, setLocError] = useState<string | null>(null);
   const [locLoading, setLocLoading] = useState(false);
+  const [unit, setUnit] = useState("");
   const [editMsg, setEditMsg] = useState(false);
   const [message, setMessage] = useState(DEFAULT_MSG);
   const [msgLang, setMsgLang] = useState<LangCode>("en");
@@ -165,6 +166,23 @@ export function EmergencyWidget() {
     } catch {}
   }
 
+  async function reverseGeocode(lat: number, lon: number) {
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`,
+        { headers: { Accept: "application/json" } },
+      );
+      if (!res.ok) return;
+      const data = await res.json();
+      const a = data?.address ?? {};
+      const street = [a.house_number, a.road].filter(Boolean).join(" ");
+      const city = a.city || a.town || a.village || a.suburb || a.hamlet || "";
+      const line2 = [city, [a.state, a.postcode].filter(Boolean).join(" ")].filter(Boolean).join(", ");
+      const text = street && line2 ? `${street}, ${line2}` : data?.display_name;
+      if (text) setLoc((prev) => (prev ? { ...prev, address: text } : prev));
+    } catch {}
+  }
+
   async function getLocation() {
     if (!("geolocation" in navigator)) {
       setLocError("Location not supported on this device.");
@@ -172,87 +190,92 @@ export function EmergencyWidget() {
     }
     setLocLoading(true);
     setLocError(null);
-    setLoc(null);
 
-    // Sample repeatedly and keep the tightest fix — the first GPS reading is
-    // often a coarse wifi/cell estimate that can be miles off.
     let best: GeolocationPosition | null = null;
+    let geocodedAcc = Infinity;
     let settled = false;
 
-    const finish = async () => {
+    const lookup = (pos: GeolocationPosition) => {
+      // Re-geocode only when accuracy improves meaningfully.
+      if (pos.coords.accuracy < geocodedAcc / 2 || geocodedAcc === Infinity) {
+        geocodedAcc = pos.coords.accuracy;
+        void reverseGeocode(pos.coords.latitude, pos.coords.longitude);
+      }
+    };
+
+    const finish = () => {
       if (settled) return;
       settled = true;
       navigator.geolocation.clearWatch(watchId);
       clearTimeout(timer);
-      if (!best) {
-        setLocLoading(false);
-        setLocError("Could not get an accurate location. Move near a window and try again.");
-        return;
-      }
-      const { latitude, longitude, accuracy } = best.coords;
-      const next: Loc = { lat: latitude, lon: longitude, accuracy, at: Date.now() };
-      if (accuracy <= ADDRESS_ACCURACY_LIMIT_M) {
-        try {
-          const res = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18`,
-            { headers: { Accept: "application/json" } },
-          );
-          if (res.ok) {
-            const data = await res.json();
-            if (data?.display_name) next.address = data.display_name;
-          }
-        } catch {}
-      }
-      setLoc(next);
       setLocLoading(false);
+      if (!best) setLocError("Could not get GPS. Your saved address will be used.");
     };
 
     const watchId = navigator.geolocation.watchPosition(
       (pos) => {
-        if (!best || pos.coords.accuracy < best.coords.accuracy) best = pos;
-        // Show coordinates instantly — refine in the background.
-        const { latitude, longitude, accuracy } = (best as GeolocationPosition).coords;
-        setLoc((prev) => ({ ...(prev ?? {}), lat: latitude, lon: longitude, accuracy, at: Date.now() }));
+        if (best && pos.coords.accuracy >= best.coords.accuracy) return;
+        best = pos;
+        const { latitude, longitude, accuracy } = pos.coords;
+        setLoc((prev) => ({ address: prev?.address, lat: latitude, lon: longitude, accuracy, at: Date.now() }));
         setLocLoading(false);
-        if (pos.coords.accuracy <= GOOD_ACCURACY_M) void finish();
+        lookup(pos);
+        if (accuracy <= GOOD_ACCURACY_M) finish();
       },
       (err) => {
-        if (best) return; // keep whatever we already have
+        if (best) return;
         settled = true;
         navigator.geolocation.clearWatch(watchId);
         clearTimeout(timer);
-        setLocError(err.message || "Could not get location.");
+        setLocError((err.message || "Could not get location.") + " Your saved address will be used.");
         setLocLoading(false);
       },
-      { enableHighAccuracy: true, timeout: 7000, maximumAge: 15000 },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 15000 },
     );
 
-    const timer = setTimeout(() => void finish(), 6000);
-
+    const timer = setTimeout(finish, 20000);
   }
 
+  // Start locating the moment the emergency panel opens.
+  useEffect(() => {
+    if (open && !loc && !locLoading) void getLocation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
   function buildSmsBody(englishMessage: string, original?: string) {
-    const parts: string[] = [englishMessage.trim() || DEFAULT_MSG];
-    if (original && original.trim() && original.trim() !== englishMessage.trim()) {
-      const langLabel = LANGUAGES.find((l) => l.code === msgLang)?.label ?? msgLang;
-      parts.push(`[Original (${langLabel}): ${original.trim()}]`);
-    }
-    if (loc) {
-      // GPS coordinates first: dispatch trusts these, not a guessed address.
-      parts.push(
-        `GPS: ${loc.lat.toFixed(6)}, ${loc.lon.toFixed(6)} (accurate to ~${Math.round(loc.accuracy)}m)`,
-      );
-      parts.push(`Map: https://maps.google.com/?q=${loc.lat},${loc.lon}`);
-      if (loc.address) {
-        parts.push(`Approx address (unverified): ${loc.address}`);
-      }
-      const ageMin = Math.round((Date.now() - loc.at) / 60000);
-      if (ageMin >= 1) parts.push(`Location taken ${ageMin} min ago.`);
+    const parts: string[] = ["EMERGENCY — SEND POLICE IMMEDIATELY", ""];
+    const unitText = unit.trim() ? `Apt/Unit: ${unit.trim()}` : "";
+    // Plain-text address first: many dispatch terminals cannot open links.
+    parts.push("LOCATION / ADDRESS:");
+    if (loc?.address) {
+      parts.push(loc.address);
+      if (unitText) parts.push(unitText);
+      if (loc.accuracy > ADDRESS_ACCURACY_LIMIT_M)
+        parts.push(`(approximate — GPS accurate to ~${Math.round(loc.accuracy)}m)`);
     }
     if (selectedAddress) {
       parts.push(
-        `${loc ? "Saved" : "Saved (no GPS)"} address — ${selectedAddress.label}: ${selectedAddress.address}`,
+        `${loc?.address ? "Saved address" : "Saved address" + (loc ? "" : " (GPS unavailable)")} — ${selectedAddress.label}: ${selectedAddress.address}`,
       );
+      if (unitText && !loc?.address) parts.push(unitText);
+    }
+    if (!loc?.address && !selectedAddress) {
+      parts.push(loc ? "Street address not found — see GPS below." : "GPS unavailable. No saved address.");
+      if (unitText) parts.push(unitText);
+    }
+    if (loc) {
+      parts.push("", "COORDINATES (BACKUP):");
+      parts.push(
+        `GPS: ${loc.lat.toFixed(6)}, ${loc.lon.toFixed(6)} (±${Math.round(loc.accuracy)}m)`,
+      );
+      parts.push(`Map: https://maps.google.com/?q=${loc.lat},${loc.lon}`);
+      const ageMin = Math.round((Date.now() - loc.at) / 60000);
+      if (ageMin >= 1) parts.push(`Location taken ${ageMin} min ago.`);
+    }
+    parts.push("", englishMessage.trim() || DEFAULT_MSG);
+    if (original && original.trim() && original.trim() !== englishMessage.trim()) {
+      const langLabel = LANGUAGES.find((l) => l.code === msgLang)?.label ?? msgLang;
+      parts.push(`[Original (${langLabel}): ${original.trim()}]`);
     }
     return parts.join("\n");
   }
@@ -557,6 +580,20 @@ export function EmergencyWidget() {
                     {loc ? t("emg.refresh") : t("emg.getLocation")}
                   </button>
                 </div>
+                {loc?.address && (
+                  <p className="mt-1 text-[10px] font-semibold text-ink-900">
+                    Address found: {loc.address}
+                  </p>
+                )}
+                <label className="mt-1.5 block text-[10px] font-semibold text-ink-700">
+                  Apt / Room / Floor # (optional)
+                  <input
+                    value={unit}
+                    onChange={(e) => setUnit(e.target.value.slice(0, 40))}
+                    placeholder="e.g. 3B, Basement"
+                    className="mt-0.5 w-full rounded border border-ink-300 bg-white px-2 py-1 text-[11px] font-normal text-ink-900"
+                  />
+                </label>
                 {locError && <p className="mt-1 text-[10px] text-rose-600">{locError}</p>}
                 <p className="mt-1 text-[10px] text-ink-500">
                   Change the address any time before sending.
