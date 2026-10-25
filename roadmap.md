@@ -1,5 +1,5 @@
 # Roadmap
-- [ ] Assign permanent admin-only account numbers to existing and new accounts; show searchable numbers in account administration, board moderation, and support inbox.
+- [x] Assign permanent admin-only account numbers to existing and new accounts; show searchable numbers in account administration, board moderation, and support inbox. Verified all existing accounts numbered, new signup assignment, stable refresh, exact lookup, admin-only RLS and temporary-account deletion; UI awaits publishing.
 - [x] Add individual admin account blocking and bounded re-registration prevention; preserve protected admins. Verified admin UI block, non-admin denial, blocked-browser registration denial, blocked posting, and deletion with ban retained.
 - [x] Screen shared board text for high-risk solicitation and queue flags for human review without AI spending. Verified hidden flagged posts, exact-text human approval, and re-screening changed content.
 - [x] Add automatic non-emergency acknowledgments to app support submissions and replies. Verified signed-in inbox acknowledgment, verified bearer ownership despite spoofed owner input, and guest acknowledgment with null ownership.
