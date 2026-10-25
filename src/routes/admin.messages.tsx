@@ -157,6 +157,7 @@ function MessageCard({ m, highlighted, onReplied }: { m: any; highlighted?: bool
       <div className="flex items-center justify-between text-xs uppercase tracking-widest text-ink-500">
         <span>
           {m.sender_nickname ? `From ${m.sender_nickname}` : "Anonymous visitor"} · {m.audience}
+          {m.sender_account_number && <span className="mt-1 block font-mono">Account #{m.sender_account_number}</span>}
         </span>
         <span>{new Date(m.created_at).toLocaleString()}</span>
       </div>

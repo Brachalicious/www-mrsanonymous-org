@@ -100,7 +100,7 @@ export const listBoardPostsForAdmin = createServerFn({ method: "GET" })
     await assertAdmin(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: posts, error } = await supabaseAdmin.from("notebooks")
-      .select("id, title, shared, hidden, shared_at")
+      .select("id, title, shared, hidden, shared_at, owner_id")
       .or("shared.eq.true,hidden.eq.true")
       .order("shared_at", { ascending: false });
     if (error) throw new Error(error.message);
@@ -109,7 +109,9 @@ export const listBoardPostsForAdmin = createServerFn({ method: "GET" })
     const { data: pages, error: pageError } = await supabaseAdmin.from("entries")
       .select("id, notebook_id, content").in("notebook_id", ids).eq("shared", true);
     if (pageError) throw new Error(pageError.message);
-    return (posts ?? []).map((post) => ({ ...post, pages: (pages ?? []).filter((page) => page.notebook_id === post.id) }));
+    const { getAccountNumbers } = await import("./account-numbers.server");
+    const numbers = await getAccountNumbers(context.supabase, (posts ?? []).map((post) => post.owner_id));
+    return (posts ?? []).map((post) => ({ ...post, accountNumber: numbers.get(post.owner_id) ?? null, pages: (pages ?? []).filter((page) => page.notebook_id === post.id) }));
   });
 
 export const moderateBoardPost = createServerFn({ method: "POST" })
@@ -139,7 +141,9 @@ export const listAccountsForAdmin = createServerFn({ method: "GET" })
     const restrictions = await supabaseAdmin.from("account_restrictions").select("user_id").eq("blocked", true);
     if (restrictions.error) throw new Error(restrictions.error.message);
     const blocked = new Set((restrictions.data ?? []).map((row) => row.user_id));
-    return (profiles ?? []).map((profile) => ({ ...profile, blocked: blocked.has(profile.id), protected: admins.has(profile.id) || profile.id === context.userId }));
+    const { getAccountNumbers } = await import("./account-numbers.server");
+    const numbers = await getAccountNumbers(context.supabase, (profiles ?? []).map((profile) => profile.id));
+    return (profiles ?? []).map((profile) => ({ ...profile, accountNumber: numbers.get(profile.id) ?? null, blocked: blocked.has(profile.id), protected: admins.has(profile.id) || profile.id === context.userId }));
   });
 
 export const setAccountBlocked = createServerFn({ method: "POST" })

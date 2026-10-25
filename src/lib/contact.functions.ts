@@ -141,8 +141,11 @@ export const listAllMessages = createServerFn({ method: "GET" })
       const { data: profs } = await supabaseAdmin.from("profiles").select("id, nickname").in("id", userIds);
       for (const p of (profs ?? []) as any[]) nicks[p.id] = p.nickname ?? "friend";
     }
+    const { getAccountNumbers } = await import("./account-numbers.server");
+    const numbers = await getAccountNumbers(supabase, userIds);
     return (messages ?? []).map((m: any) => ({
       ...m,
+      sender_account_number: m.sender_user_id ? numbers.get(m.sender_user_id) ?? null : null,
       sender_nickname: m.sender_user_id ? nicks[m.sender_user_id] ?? null : null,
       replies: replies.filter((r) => r.message_id === m.id),
     }));

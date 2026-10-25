@@ -23,3 +23,4 @@
 - Board text screening runs in database write triggers, hides flags for human review, and never calls the AI gateway; private unshared content is not screened. Admin approval records exact-text hashes atomically with report resolution, so edited text is screened again without granting writers approval access.
 - App support acknowledgments are generated atomically by database triggers with null authors; contact ownership is derived from a verified bearer token, never caller-supplied IDs.
 - The public installation page bypasses the terms overlay but not the calculator lock; installation never requires an account.
+- Assign immutable sequential account numbers through profile lifecycle triggers in a separate admin-only RLS table; admin-verified account, board, and support fetchers read references with the caller's RLS client, keeping identifiers out of public and owner profile responses. Delete references with profiles without resetting the sequence.
