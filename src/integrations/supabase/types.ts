@@ -14,6 +14,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      account_numbers: {
+        Row: {
+          account_number: number
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          account_number?: never
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          account_number?: never
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       account_restrictions: {
         Row: {
           blocked: boolean
