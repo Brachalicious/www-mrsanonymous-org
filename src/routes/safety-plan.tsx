@@ -138,6 +138,7 @@ function SafetyPlanPage() {
   const [savedAt, setSavedAt] = useState<string>("");
   const [busy, setBusy] = useState<string>("");
   const [exportNote, setExportNote] = useState<string>("");
+  const [saveNote, setSaveNote] = useState<string>("");
 
   useEffect(() => {
     try {
@@ -225,6 +226,28 @@ function SafetyPlanPage() {
 
         {/* Actions */}
         <div className="mt-10 flex flex-wrap gap-3 print:hidden">
+          <button
+            type="button"
+            data-testid="safety-plan-save"
+            className="btn-rose"
+            onClick={() => {
+              try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+                const withAnswers = SECTIONS.filter((s) =>
+                  s.fields.some((f) => (values[f.id] ?? "").trim()),
+                ).map((s) => s.tab);
+                setSaveNote(
+                  withAnswers.length
+                    ? `Saved ✓ ${filled} answer${filled === 1 ? "" : "s"} kept on this device at ${new Date().toLocaleTimeString()} — sections: ${withAnswers.join(", ")}.`
+                    : "Nothing to save yet — write an answer first, then press Save.",
+                );
+              } catch {
+                setSaveNote("Could not save on this device — storage may be blocked. Try Download a copy instead.");
+              }
+            }}
+          >
+            💾 Save my plan
+          </button>
           <button type="button" onClick={() => window.print()} data-testid="safety-plan-print" className="btn-rose">
             🖨️ Print my plan
           </button>
@@ -292,6 +315,11 @@ function SafetyPlanPage() {
             Talk it through: 1-800-799-7233
           </a>
         </div>
+        {saveNote && (
+          <p className="mt-3 text-sm text-ink-800 print:hidden" data-testid="safety-plan-save-note">
+            {saveNote}
+          </p>
+        )}
         {exportNote && (
           <p className="mt-3 text-sm text-rose-500 print:hidden" data-testid="safety-plan-export-note">
             {exportNote}

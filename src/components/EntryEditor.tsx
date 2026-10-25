@@ -63,6 +63,7 @@ export function EntryEditor({ notebookId, onAdded }: EntryEditorProps) {
   const create = useServerFn(createEntry);
   const [content, setContent] = useState("");
   const [mood, setMood] = useState("");
+  const [savedNote, setSavedNote] = useState("");
 
   const mutation = useMutation({
     mutationFn: create,
@@ -70,6 +71,7 @@ export function EntryEditor({ notebookId, onAdded }: EntryEditorProps) {
       queryClient.invalidateQueries({ queryKey: ["entries", notebookId] });
       setContent("");
       setMood("");
+      setSavedNote(`Saved to your notebook at ${new Date().toLocaleTimeString()}`);
       onAdded?.();
     },
   });
@@ -135,6 +137,11 @@ export function EntryEditor({ notebookId, onAdded }: EntryEditorProps) {
           {mutation.isPending ? "Saving…" : "Save to notebook"}
         </button>
       </div>
+      {savedNote && (
+        <p className="mt-3 text-sm font-semibold text-ink-700" data-testid="entry-saved-note">
+          ✓ {savedNote} — it now appears in your notebook pages below.
+        </p>
+      )}
       {mutation.error && (
         <p className="mt-3 text-sm text-emergency">{(mutation.error as Error).message}</p>
       )}

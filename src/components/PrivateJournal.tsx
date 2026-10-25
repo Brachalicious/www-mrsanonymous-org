@@ -101,6 +101,7 @@ export function PrivateJournal() {
   const [chats, setChats] = useState<ReportConversation[]>([]);
   const [selectedChats, setSelectedChats] = useState<string[]>([]);
   const [showRealName, setShowRealName] = useState(false);
+  const [savedSummary, setSavedSummary] = useState<string[] | null>(null);
 
   const recorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
@@ -312,12 +313,26 @@ export function PrivateJournal() {
         },
       });
 
+      const summary: string[] = [];
+      for (const f of fields) {
+        const v = (form[f.key] ?? "").trim();
+        if (v) summary.push(`${f.label}: ${v.length > 90 ? `${v.slice(0, 90)}…` : v}`);
+      }
+      if (pendingFiles.length)
+        summary.push(`Photos & files: ${pendingFiles.map((f) => f.name).join(", ")}`);
+      if (audioBlob) summary.push("Voice note: recorded and saved");
+      if (includedChats.length)
+        summary.push(`Support conversations included: ${includedChats.map((c) => c.title).join(", ")}`);
+
       setForm(emptyFor(fields));
       setPendingFiles([]);
       setSelectedChats([]);
       setAudioBlob(null);
       setAudioUrl(null);
-      setStatus("Saved to your private journal.");
+      setSavedSummary(summary);
+      setStatus(
+        `Saved to your private journal — ${summary.length} item${summary.length === 1 ? "" : "s"} kept safe.`,
+      );
       refresh();
     } catch (e) {
       setStatus(e instanceof Error ? e.message : "Could not save. Please try again.");
@@ -406,6 +421,17 @@ export function PrivateJournal() {
           ))}
         </div>
 
+        {fields.some((f) => (form[f.key] ?? "").trim()) && (
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <button type="button" onClick={save} disabled={saving} className="btn-rose text-sm">
+              {saving ? "Saving…" : "Save what I've written"}
+            </button>
+            <span className="text-xs text-ink-500">
+              Saves instantly to your private journal — only your account can open it.
+            </span>
+          </div>
+        )}
+
         <div className="mt-6 grid gap-4 md:grid-cols-2">
           <div className="rounded-xl border border-dashed border-ink-300 p-4">
             <h3 className="text-sm font-semibold text-ink-900">📎 Photos & files</h3>
@@ -463,6 +489,25 @@ export function PrivateJournal() {
           </button>
           {status && <span className="text-xs text-ink-600">{status}</span>}
         </div>
+
+        {savedSummary && (
+          <div
+            className="mt-3 rounded-xl border border-ink-300 bg-cream-100 p-4"
+            data-testid="journal-saved-summary"
+          >
+            <p className="text-sm font-semibold text-ink-900">
+              ✓ Saved at {new Date().toLocaleTimeString()} — here is everything that was saved:
+            </p>
+            <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-ink-700">
+              {savedSummary.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+            <p className="mt-2 text-xs text-ink-500">
+              Open <strong>Saved entries</strong> above any time to read, share or delete what you kept.
+            </p>
+          </div>
+        )}
 
         <div className="mt-5 rounded-xl border border-ink-300/70 bg-cream-100 p-4">
           <h3 className="text-sm font-semibold text-ink-900">📄 Incident report</h3>
