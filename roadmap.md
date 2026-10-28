@@ -4,7 +4,7 @@
 - [x] Screen shared board text for high-risk solicitation and queue flags for human review without AI spending. Verified hidden flagged posts, exact-text human approval, and re-screening changed content.
 - [x] Add automatic non-emergency acknowledgments to app support submissions and replies. Verified signed-in inbox acknowledgment, verified bearer ownership despite spoofed owner input, and guest acknowledgment with null ownership.
 - [x] Verify no-account Calculator installation and shorten access to home-screen instructions. Verified public download without terms delay; platform-native installation requires device-specific taps.
-- [x] Add authoritative first-aid and CPR guidance under Tools. Verified desktop and phone layout, adult/infant cautions, and Red Cross/AHA references.
+- [ ] Remove first-aid and CPR guidance and its Tools link following the owner's Google Play policy notice.
 - [x] Restore persistent Calculator install name/icon without replacing the enlarged red artwork; tests and browser checks verified install metadata, passcode setup, and covered relaunch.
 - [x] Add selectable trigger warnings before board reveals, individual admin account deletion, and owner-only pinned page stacks; verified warning selection, reveal, persistent pin order, page/post removal, and temporary account deletion through signed-in UI.
 - [x] Clarify contact is app support, not therapy; add Psychology Today resource, enlarge admin reply box, and show role beside account name.
