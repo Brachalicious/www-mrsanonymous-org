@@ -17,7 +17,6 @@ import handSignalAsset from "@/assets/help-signal-button.png.asset.json";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useRegion } from "@/hooks/use-region";
 import { getEmergency } from "@/lib/emergency-numbers";
-import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/tools")({
 
@@ -51,10 +50,6 @@ function ToolsPage() {
       </div>
 
       <div className="mx-auto flex max-w-3xl flex-col gap-3">
-        <section className="border-y border-border py-5 text-foreground">
-          <h2 className="font-serif text-2xl font-bold">First aid & CPR</h2>
-          <Button asChild className="mt-3"><Link to="/first-aid">Open First Aid & CPR</Link></Button>
-        </section>
         <ToolCard
           icon={<AlertTriangle className="h-6 w-6 text-white" />}
           title="Quick Exit"
