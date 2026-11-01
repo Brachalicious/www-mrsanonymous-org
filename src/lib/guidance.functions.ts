@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { normalizeStoredMessages } from "@/lib/guidance/messages";
 
 const threadInput = (data: unknown) => z.object({ threadId: z.string().uuid() }).parse(data);
 
@@ -55,7 +56,7 @@ export const loadGuidanceThread = createServerFn({ method: "GET" })
       .eq("thread_id", data.threadId)
       .order("created_at", { ascending: true });
     if (readError) throw new Error("Unable to load your conversation.");
-    return { ...thread, messagesJson: JSON.stringify((rows ?? []).map((row) => row.message)) };
+    return { ...thread, messages: normalizeStoredMessages((rows ?? []).map((row) => row.message)) };
   });
 
 export const deleteGuidanceThread = createServerFn({ method: "POST" })
@@ -68,5 +69,67 @@ export const deleteGuidanceThread = createServerFn({ method: "POST" })
       .eq("id", data.threadId)
       .eq("owner_id", context.userId);
     if (error) throw new Error("Unable to delete this conversation.");
+    return { ok: true };
+  });
+
+const appendInput = (data: unknown) =>
+  z
+    .object({
+      threadId: z.string().uuid(),
+      messages: z
+        .array(
+          z.object({
+            id: z.string().min(1).max(120),
+            role: z.enum(["user", "assistant"]),
+            text: z.string().min(1).max(4000),
+          }),
+        )
+        .min(1)
+        .max(4),
+    })
+    .parse(data);
+
+export const appendGuidanceMessages = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(appendInput)
+  .handler(async ({ data, context }) => {
+    const { data: lock, error: lockError } = await context.supabase
+      .from("inbox_recovery_locks")
+      .select("status")
+      .eq("user_id", context.userId)
+      .maybeSingle();
+    if (lockError) throw new Error("Unable to check account verification.");
+    if (lock?.status === "pending")
+      throw new Error("Your conversations are hidden until support verifies your account.");
+    const { data: thread, error: threadError } = await context.supabase
+      .from("guidance_threads")
+      .select("id, title")
+      .eq("id", data.threadId)
+      .eq("owner_id", context.userId)
+      .maybeSingle();
+    if (threadError || !thread)
+      throw new Error("Conversation unavailable or awaiting account verification.");
+    const { error: saveError } = await context.supabase
+      .from("guidance_messages")
+      .upsert(
+        data.messages.map((message) => ({
+          thread_id: thread.id,
+          sdk_id: message.id,
+          message: { id: message.id, role: message.role, text: message.text },
+        })),
+        { onConflict: "thread_id,sdk_id" },
+      );
+    if (saveError) throw new Error("Your conversation could not be saved. Please try again.");
+    const firstQuestion = data.messages.find((message) => message.role === "user");
+    const { error: titleError } = await context.supabase
+      .from("guidance_threads")
+      .update({
+        updated_at: new Date().toISOString(),
+        ...(thread.title === "New conversation" && firstQuestion
+          ? { title: firstQuestion.text.slice(0, 70) }
+          : {}),
+      })
+      .eq("id", thread.id);
+    if (titleError) throw new Error("Your conversation could not be updated.");
     return { ok: true };
   });
