@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Recheck monitoring safety reports: phone menu already portals to body; reject delayed street-address replies for different current GPS coordinates. Verify simulated SMS drafts without sending to emergency services.
 - [x] Expand built-in guidance for navigation, incident reports, recordings, saved confirmations, addresses, location problems, SOFY, conversations, and technical questions; improve specific-phrase matching. Verified 19 tests and signed-in answer persistence after reload.
 - [ ] Enable free-tier-only AI fallback — blocked on a suitable provider connection and privacy/cost verification; free Gemini may use disclosures for product improvement, so automatic forwarding remains off.
 - [x] Assign permanent admin-only account numbers to existing and new accounts; show searchable numbers in account administration, board moderation, and support inbox. Verified all existing accounts numbered, new signup assignment, stable refresh, exact lookup, admin-only RLS and temporary-account deletion; UI awaits publishing.

@@ -18,6 +18,7 @@ import { SafeExternalButton } from "@/components/SafeExternalButton";
 import { useAuth } from "@/contexts/AuthContext";
 import { listJournalEntries } from "@/lib/journal.functions";
 import { buildReportText } from "@/lib/incident-report";
+import { canApplyEmergencyAddress } from "@/lib/emergency-location";
 
 const STORY_KEY = "mrsanon:panic-story";
 
@@ -191,7 +192,7 @@ export function EmergencyWidget() {
       if (!text) return false;
       let applied = false;
       setLoc((prev) => {
-        if (!prev || seq !== geoSeq.current) return prev;
+        if (!prev || !canApplyEmergencyAddress(prev, { lat, lon }, seq, geoSeq.current)) return prev;
         applied = true;
         return { ...prev, address: text, addressLat: lat, addressLon: lon, addressAccuracy: accuracy };
       });
@@ -254,10 +255,10 @@ export function EmergencyWidget() {
           const keep =
             prev?.address != null && prev.addressLat === latitude && prev.addressLon === longitude;
           return {
-            address: keep ? prev!.address : undefined,
-            addressLat: keep ? prev!.addressLat : undefined,
-            addressLon: keep ? prev!.addressLon : undefined,
-            addressAccuracy: keep ? prev!.addressAccuracy : undefined,
+            address: keep ? prev?.address : undefined,
+            addressLat: keep ? prev?.addressLat : undefined,
+            addressLon: keep ? prev?.addressLon : undefined,
+            addressAccuracy: keep ? prev?.addressAccuracy : undefined,
             lat: latitude,
             lon: longitude,
             accuracy,
