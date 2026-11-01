@@ -26,4 +26,4 @@
 - [x] Typecheck passed; verified via browser screenshots
 - [x] Footer branding: black/white/red MysticMinded33 credit, large and bold, clickable to mysticminded33.com (verified phone + desktop clearance).
 - [x] Enlarged footer logo circle (viewport-scaled) and verified clearance on 7 screen sizes.
-- [ ] Choose and build a free guidance helper: built-in scripted guide (no AI, zero cost, no key) or free-tier Google Gemini using the owner's own key with per-person daily caps. Awaiting owner's choice; caps never incur charges.
+- [x] Built the free built-in guide: the mascot opens a chat answered from written answers inside the app — no AI, no cost, no key. Answers still save to the account; verified hello state, answers, save on reload, and zero AI-gateway calls.
