@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] Expand built-in guidance for site navigation and common questions; enable only a free-tier AI fallback after provider access and sensitive-data safeguards are configured.
 - [x] Assign permanent admin-only account numbers to existing and new accounts; show searchable numbers in account administration, board moderation, and support inbox. Verified all existing accounts numbered, new signup assignment, stable refresh, exact lookup, admin-only RLS and temporary-account deletion; UI awaits publishing.
 - [x] Add individual admin account blocking and bounded re-registration prevention; preserve protected admins. Verified admin UI block, non-admin denial, blocked-browser registration denial, blocked posting, and deletion with ban retained.
 - [x] Screen shared board text for high-risk solicitation and queue flags for human review without AI spending. Verified hidden flagged posts, exact-text human approval, and re-screening changed content.
