@@ -16,7 +16,7 @@
 - [x] Add clickable footer mascot and private account-saved guidance conversations.
 - [x] Verify mascot phone layout, guidance sign-in screen, message validation, and live AI replies.
 - [x] Switch the AI guidance assistant off for the public app: mascot removed from the footer, guidance pages show a closed notice, and the guidance API returns 410 without reaching the AI gateway (verified no credits spent).
-- [ ] Re-enable guidance only if the owner asks — restore the footer mascot, the chat popup, and the streaming handler.
+- [x] Restored the footer mascot and chat popup as the free built-in guide; the AI path stays switched off and the guidance API still refuses without reaching the AI gateway.
 - [ ] Publish the pending frontend batch (guidance off, footer branding, safety-plan export, board and phone fixes) once the owner says publish.
 
 - [x] Clickable label box at bottom of notebook cover to rename (NotebookCover)
