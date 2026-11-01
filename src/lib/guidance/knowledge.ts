@@ -395,8 +395,10 @@ const IMMEDIATE_DANGER_PHRASES = [
   "im dying",
   "i am dying",
   "help me please",
-  "he has a",
-  "she has a",
+  "he has a gun",
+  "she has a gun",
+  "he has a knife",
+  "she has a knife",
 ];
 
 const DANGER_ANSWER =
@@ -420,6 +422,11 @@ function isImmediateDanger(text: string): boolean {
   return IMMEDIATE_DANGER_PHRASES.some((phrase) => text.includes(phrase));
 }
 
+function keywordMatches(normalized: string, keyword: string): boolean {
+  const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`(^| )${escaped}( |$)`).test(normalized);
+}
+
 export function matchGuidanceTopic(text: string): GuidanceTopic | null {
   const normalized = normalizeGuidanceText(text);
   if (!normalized) return null;
@@ -427,7 +434,7 @@ export function matchGuidanceTopic(text: string): GuidanceTopic | null {
   let bestScore = 0;
   for (const topic of GUIDANCE_TOPICS) {
     const score = topic.keywords.reduce(
-      (total, keyword) => (normalized.includes(keyword) ? total + 1 : total),
+      (total, keyword) => (keywordMatches(normalized, keyword) ? total + 1 : total),
       0,
     );
     if (score > bestScore) {
