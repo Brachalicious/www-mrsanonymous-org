@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Phone, X, MapPin, MessageSquare, Settings, Home, Plus, Trash2 } from "lucide-react";
 import {
   loadAddresses,
@@ -49,6 +49,11 @@ type Loc = {
   lon: number;
   accuracy: number;
   address?: string;
+  // The exact fix the address was looked up for — an address is only ever
+  // shown or sent together with the coordinates that produced it.
+  addressLat?: number;
+  addressLon?: number;
+  addressAccuracy?: number;
   at: number;
 };
 
