@@ -65,4 +65,14 @@ describe("built-in guidance answers", () => {
     assert.match(answer, /pin/i);
     assert.match(answer, /does not move anyone else/);
   });
+
+  test("a bare greeting gets the hello answer", () => {
+    assert.match(answerGuidanceQuestion("hi there"), /Hello, how can I help\?/);
+  });
+
+  test("a question that merely contains the word this is not treated as a greeting", () => {
+    const answer = answerGuidanceQuestion("is this my notebook private");
+    assert.doesNotMatch(answer, /Hello, how can I help\?/);
+    assert.match(answer, /private/i);
+  });
 });
