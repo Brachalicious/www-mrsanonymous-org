@@ -296,8 +296,10 @@ export function EmergencyWidget() {
     if (loc?.address) {
       parts.push(loc.address);
       if (unitText) parts.push(unitText);
-      if (loc.accuracy > ADDRESS_ACCURACY_LIMIT_M)
-        parts.push(`(approximate — GPS accurate to ~${Math.round(loc.accuracy)}m)`);
+      // Warn based on the accuracy of the fix that produced the address.
+      const addrAcc = loc.addressAccuracy ?? loc.accuracy;
+      if (addrAcc > ADDRESS_ACCURACY_LIMIT_M)
+        parts.push(`(approximate — GPS accurate to ~${Math.round(addrAcc)}m)`);
     }
     if (selectedAddress) {
       parts.push(
