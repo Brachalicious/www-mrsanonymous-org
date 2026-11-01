@@ -171,21 +171,34 @@ export function EmergencyWidget() {
     } catch {}
   }
 
-  async function reverseGeocode(lat: number, lon: number) {
+  // Increments every time a new lookup starts; a late response from an older
+  // lookup is discarded so a rough fix can never overwrite a precise address.
+  const geoSeq = useRef(0);
+
+  async function reverseGeocode(lat: number, lon: number, accuracy: number, seq: number): Promise<boolean> {
     try {
       const res = await fetch(
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`,
         { headers: { Accept: "application/json" } },
       );
-      if (!res.ok) return;
+      if (!res.ok) return false;
       const data = await res.json();
       const a = data?.address ?? {};
       const street = [a.house_number, a.road].filter(Boolean).join(" ");
       const city = a.city || a.town || a.village || a.suburb || a.hamlet || "";
       const line2 = [city, [a.state, a.postcode].filter(Boolean).join(" ")].filter(Boolean).join(", ");
       const text = street && line2 ? `${street}, ${line2}` : data?.display_name;
-      if (text) setLoc((prev) => (prev ? { ...prev, address: text } : prev));
-    } catch {}
+      if (!text) return false;
+      let applied = false;
+      setLoc((prev) => {
+        if (!prev || seq !== geoSeq.current) return prev;
+        applied = true;
+        return { ...prev, address: text, addressLat: lat, addressLon: lon, addressAccuracy: accuracy };
+      });
+      return applied;
+    } catch {
+      return false;
+    }
   }
 
   async function getLocation() {
@@ -195,16 +208,30 @@ export function EmergencyWidget() {
     }
     setLocLoading(true);
     setLocError(null);
+    // Clear any previous spot so an old address can never be sent for a new one.
+    setLoc(null);
+    geoSeq.current += 1;
 
     let best: GeolocationPosition | null = null;
     let geocodedAcc = Infinity;
+    let geocodedKey = "";
     let settled = false;
 
     const lookup = (pos: GeolocationPosition) => {
-      // Re-geocode only when accuracy improves meaningfully.
+      const key = `${pos.coords.latitude.toFixed(5)},${pos.coords.longitude.toFixed(5)}`;
+      if (key === geocodedKey) return;
+      // Re-geocode when accuracy improves meaningfully or nothing geocoded yet.
       if (pos.coords.accuracy < geocodedAcc / 2 || geocodedAcc === Infinity) {
         geocodedAcc = pos.coords.accuracy;
-        void reverseGeocode(pos.coords.latitude, pos.coords.longitude);
+        geocodedKey = key;
+        const seq = ++geoSeq.current;
+        void reverseGeocode(pos.coords.latitude, pos.coords.longitude, pos.coords.accuracy, seq).then((ok) => {
+          // Allow a later, better fix to retry if this lookup failed.
+          if (!ok && seq === geoSeq.current) {
+            geocodedAcc = Infinity;
+            geocodedKey = "";
+          }
+        });
       }
     };
 
@@ -222,7 +249,21 @@ export function EmergencyWidget() {
         if (best && pos.coords.accuracy >= best.coords.accuracy) return;
         best = pos;
         const { latitude, longitude, accuracy } = pos.coords;
-        setLoc((prev) => ({ address: prev?.address, lat: latitude, lon: longitude, accuracy, at: Date.now() }));
+        setLoc((prev) => {
+          // Keep the address only if it was looked up for these exact coordinates.
+          const keep =
+            prev?.address != null && prev.addressLat === latitude && prev.addressLon === longitude;
+          return {
+            address: keep ? prev!.address : undefined,
+            addressLat: keep ? prev!.addressLat : undefined,
+            addressLon: keep ? prev!.addressLon : undefined,
+            addressAccuracy: keep ? prev!.addressAccuracy : undefined,
+            lat: latitude,
+            lon: longitude,
+            accuracy,
+            at: Date.now(),
+          };
+        });
         setLocLoading(false);
         lookup(pos);
         if (accuracy <= GOOD_ACCURACY_M) finish();
