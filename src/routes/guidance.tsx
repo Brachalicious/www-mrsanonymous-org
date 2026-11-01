@@ -1,10 +1,10 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 export const Route = createFileRoute("/guidance")({
   head: () => ({ meta: [
-    { title: "App guidance unavailable — MrsANONymous.org" },
-    { name: "description", content: "AI app guidance is currently switched off. Contact app support for help." },
-    { property: "og:title", content: "App guidance unavailable — MrsANONymous.org" },
-    { property: "og:description", content: "AI guidance is switched off; app support remains available." },
+    { title: "App Guidance — MrsANONymous.org" },
+    { name: "description", content: "Ask the built-in MrsANONymous guide how to use the app. Free, no AI, no cost." },
+    { property: "og:title", content: "App Guidance — MrsANONymous.org" },
+    { property: "og:description", content: "A free built-in guide to using MrsANONymous." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
   ] }),

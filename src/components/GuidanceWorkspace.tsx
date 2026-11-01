@@ -3,7 +3,6 @@ import { useServerFn } from "@tanstack/react-start";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Plus, Trash2, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import type { UIMessage } from "ai";
 import {
   listGuidanceThreads,
   loadGuidanceThread,
@@ -129,7 +128,7 @@ export function GuidanceWorkspace({ threadId }: { threadId?: string }) {
               <GuidanceChat
                 key={`${user.id}:${threadId}`}
                 threadId={threadId}
-                initialMessages={JSON.parse(thread.data.messagesJson) as UIMessage[]}
+                initialMessages={thread.data.messages}
                 onSaved={() => {
                   queryClient.invalidateQueries({ queryKey: key });
                   queryClient.invalidateQueries({

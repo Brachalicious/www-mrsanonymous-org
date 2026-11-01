@@ -4,9 +4,12 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useRegion } from "@/hooks/use-region";
 import { getEmergency } from "@/lib/emergency-numbers";
 import mysticMindedLogo from "@/assets/mysticminded-logo-rbw-exact.png";
+import mascot from "@/assets/app-guidance-mascot.jpeg.asset.json";
+import { MascotChat } from "./MascotChat";
 
 export function Footer() {
   const [brandOpen, setBrandOpen] = useState(false);
+  const [guidanceOpen, setGuidanceOpen] = useState(false);
   const { lang } = useLanguage();
   const { country } = useRegion();
   const emergency = getEmergency(lang, country);
@@ -55,6 +58,23 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-col items-center gap-2 border-t border-ink-300 pt-6">
+
+          <button
+            type="button"
+            onClick={() => setGuidanceOpen(true)}
+            className="flex flex-col items-center gap-1 border-0 bg-transparent p-0"
+            aria-label="Ask the MrsANONymous mascot for help using the app"
+          >
+            <img
+              src={mascot.url}
+              alt="MrsANONymous mascot"
+              className="h-40 w-auto object-contain transition-transform hover:scale-[1.03] md:h-48"
+              loading="lazy"
+            />
+            <span className="font-serif text-lg text-ink-900 underline decoration-rose-500/40 decoration-2 underline-offset-4">
+              Need a hand? Ask me
+            </span>
+          </button>
 
           <div className="group mt-2 flex flex-col items-center gap-1 md:gap-3">
             <button
@@ -156,6 +176,7 @@ export function Footer() {
           </div>
         </div>
       )}
+      <MascotChat open={guidanceOpen} onClose={() => setGuidanceOpen(false)} />
     </footer>
   );
 }

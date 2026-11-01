@@ -4,7 +4,6 @@ import { useServerFn } from "@tanstack/react-start";
 import { Link } from "@tanstack/react-router";
 import { X } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import type { UIMessage } from "ai";
 import {
   listGuidanceThreads,
   loadGuidanceThread,
@@ -93,7 +92,7 @@ export function MascotChat({ open, onClose }: { open: boolean; onClose: () => vo
           <GuidanceChat
             key={`${user.id}:${threadId}`}
             threadId={threadId!}
-            initialMessages={JSON.parse(thread.data.messagesJson) as UIMessage[]}
+            initialMessages={thread.data.messages}
             onSaved={() => {
               queryClient.invalidateQueries({ queryKey: key });
               queryClient.invalidateQueries({
