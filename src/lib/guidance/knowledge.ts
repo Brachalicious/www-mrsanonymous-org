@@ -380,7 +380,7 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
   },
   {
     id: "pin_page",
-    keywords: ["pin", "pinned", "stack", "order pages", "move up"],
+    keywords: ["pin", "pinned", "pin my pages", "pin pages", "stack", "order pages", "move up"],
     answer:
       "You can pin your own pages so they sit on top of the others in your notebook. Pinning only changes your own pages, and it does not move anyone else's post on THE BOARD.",
   },
