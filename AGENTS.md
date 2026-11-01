@@ -12,7 +12,7 @@
 - Render the phone navigation overlay through a portal into document.body, with a viewport-height shell and independently scrolling links; the blurred sticky header otherwise confines fixed descendants to its own height.
 - Keep both install manifests on the same URL-based identity and set calculator installation metadata globally, not through temporary page effects, so navigation cannot revert the launcher appearance.
 - Anchor the emergency options panel independently to viewport top and bottom safe bounds, with internal scrolling, so trigger size and text wrapping cannot push its top off-screen.
-- Guidance uses route-addressed threads, owner-scoped Cloud storage and recovery-lock checks; answers come from a browser-safe keyword knowledge base under `src/lib/guidance/`, so no AI gateway, no key, and no cost per reply.
+- Guidance uses route-addressed threads, owner-scoped Cloud storage and recovery-lock checks; a browser-safe knowledge base under `src/lib/guidance/` ranks specific phrases above generic keywords so common site questions stay local. Any external AI fallback must fail closed until provider access, cost restrictions, and sensitive-data safeguards are verified.
 - The AI guidance path stays switched off while the app is public: the guidance API route must answer without ever reaching the AI gateway so no credits can be spent.
 - Resolve text parser dependencies per package without a global entities override or alias; email rendering and chat markdown require different compatible versions.
 - Defer database queries outside auth-state callbacks so session-lock acquisition cannot deadlock sign-in.

@@ -9,6 +9,51 @@ export interface GuidanceTopic {
 
 export const GUIDANCE_TOPICS: GuidanceTopic[] = [
   {
+    id: "navigation",
+    keywords: ["navigate", "navigation", "find my way", "dashboard", "menu", "where do i start", "getting started", "site guide"],
+    answer: "Start at Dashboard in the menu. Your notebooks and pages are there. Choose Go to THE BOARD! for shared stories.\n\nThe menu also opens Tools, Resources, My Safety Plan, Private Journal, your support Inbox, Contact, and Settings. Tell me what you want to do and I can give you the steps.",
+  },
+  {
+    id: "incident_reports",
+    keywords: ["incident report", "incident reports", "document an incident", "evidence", "incident", "attach recording"],
+    answer: "Open Private Journal from Tools or the menu. Use the incident-report section to record what happened and add the details and evidence you want to keep. Save, then check the saved report before leaving.\n\nOnly share details when it is safe. Opening a report or preparing a message does not send it to police or anyone else.",
+  },
+  {
+    id: "body_cam",
+    keywords: ["body cam", "bodycam", "start recording", "record video", "camera", "microphone", "camera permission"],
+    answer: "Open Private Journal and find Body Cam. Read the warning before starting, then allow camera and microphone access if you choose to record. Stop when finished and check that the recording appears in your saved items.\n\nYou can attach saved recordings to an incident report. Device permissions, storage, internet access, and closing the app can affect recording or saving; do not assume a recording was kept until you check it. Consider whether recording is safe and lawful where you are.",
+  },
+  {
+    id: "save_confirmation",
+    keywords: ["save button", "saved successfully", "did it save", "save my work", "save what", "unsaved", "save data", "save writing"],
+    answer: "For notebook pages and journal writing, press Save and wait for the saved confirmation. Reopen the saved item to check it. If an error appears, keep the page open and try again when you have a connection.\n\nMy Safety Plan has its own Save button and saved-answer summary. Safety plans and saved emergency addresses stay on that device; account-saved writing can be read after signing in.",
+  },
+  {
+    id: "saved_addresses",
+    keywords: ["saved addresses", "save address", "save my address", "save an address", "manage addresses"],
+    answer: "Open the emergency options at the bottom of the page, then Saved addresses. Enter an address and press Save address. Check the saved list and select the address you want to use.\n\nSaved addresses stay on this device. Before sending an emergency text, check the written address and add any apartment, room, or floor details. A saved address may not be where you are now.",
+  },
+  {
+    id: "location_permission",
+    keywords: ["location permission", "location not working", "gps not working", "wrong address", "inaccurate location", "address not found"],
+    answer: "Allow location access for this site in your browser or phone settings, then reopen the emergency options. If GPS is weak indoors, try the high-accuracy retry if available.\n\nAlways check the displayed address yourself. If it is wrong or unavailable, type the correct address or choose a saved one and add apartment, room, or floor details. Do not wait for GPS if you need urgent help.",
+  },
+  {
+    id: "sofy",
+    keywords: ["sofy", "sofy mode", "mask stories", "mask board"],
+    answer: "Open Tools and choose Turn SOFY mode ON to mask sensitive Board cards. You can choose whether to reveal a card.\n\nSOFY masking is separate from trigger warnings and your support inbox verification lock; it does not make a shared post private.",
+  },
+  {
+    id: "guidance_threads",
+    keywords: ["new conversation", "delete conversation", "chat history", "saved conversations", "guidance history", "mascot", "guide chat"],
+    answer: "Tap the girl at the bottom of a page to open the guide, or open App guidance. Choose New conversation to keep another question separate.\n\nYour guidance conversations save in your account. On App guidance, use the trash icon beside a conversation and confirm to delete it. This is separate from Contact App Support; an admin does not receive your guide questions as support requests.",
+  },
+  {
+    id: "technical_problem",
+    keywords: ["not working", "blank page", "wont open", "doesnt open", "cut off", "cant scroll", "cannot scroll", "bug", "error", "loading forever"],
+    answer: "If you have unsaved writing, keep a safe copy before refreshing. Check your internet connection, then close and reopen the menu or page. If the problem continues, use Contact App Support.\n\nTell support which page or button failed, what you expected, what happened, and your phone/browser type. Do not include passwords, calculator passcodes, security answers, or identifying details in screenshots.",
+  },
+  {
     id: "greeting",
     keywords: ["hi", "hello", "hey", "good morning", "good afternoon", "good evening"],
     answer:
@@ -25,7 +70,6 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
     keywords: [
       "calculator",
       "passcode",
-      "code",
       "disguise",
       "unlock",
       "lock",
@@ -35,7 +79,7 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
       "hide the app",
     ],
     answer:
-      "The calculator is your disguise. On setup you pick a calculation, and that answer is your passcode. Anyone who opens the app sees a normal calculator until you type it.\n\nIf you forget it, use the recovery questions you set up. Your real app stays locked until the right answer is typed.",
+      "The calculator disguise uses the calculation you entered during setup as its passcode. Enter the same calculation and press = to unlock; entering only its numeric answer is not the same.\n\nThe calculator passcode is stored on this device. Account security questions reset your account password, not this calculator passcode. The disguise is not a guarantee that your device or browsing history is hidden.",
   },
   {
     id: "quick_exit",
@@ -57,7 +101,7 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
       "x button",
     ],
     answer:
-      "To leave fast: press ESC on a keyboard, or tap the ✕ Quick Exit button.\n\nThat takes the tab to Google. Once you have used Quick Exit, the back button will not bring this site back.",
+      "To leave fast: press ESC or X on a keyboard, or tap the ✕ Quick Exit button.\n\nThat replaces the current page with Google and activates an exit lock. The back button should not uncover the app while that lock applies, but Quick Exit cannot erase earlier browser history, screenshots, device activity, or downloaded files. Normal Back browsing is separate from Quick Exit.",
   },
   {
     id: "emergency_text",
@@ -122,11 +166,10 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
       "body cam",
       "bodycam",
       "video",
-      "where are my",
       "what did i save",
     ],
     answer:
-      "Your saved writing, photos, voice notes and recordings live in your private journal. Open it from the dashboard.\n\nEvery place you type has a Save button right where you write, and after saving it tells you exactly what was kept. Nothing there is public unless you choose to share it.",
+      "Open Private Journal from the menu or Tools for your journal writing, photos, voice notes, and recordings. Notebook pages are separate: find your notebooks on Dashboard.\n\nUse the Save button and check the saved-items list or reopen the item to confirm. Private writing is not public unless you choose to share it.",
   },
   {
     id: "notebook",
@@ -151,7 +194,6 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
       "board",
       "the board",
       "share story",
-      "shared",
       "public",
       "post",
       "story",
@@ -196,7 +238,6 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
     keywords: [
       "inbox",
       "reply",
-      "answer",
       "message from admin",
       "support",
       "app support",
@@ -265,7 +306,7 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
       "delete account",
     ],
     answer:
-      "You can ask for your account and data to be deleted from Settings, or from the Delete account page.\n\nYou can also choose to delete your data and keep your account open. Deletion takes effect once support processes the request.",
+      "To delete your account yourself: open Settings, find Delete my account, type DELETE, and choose Permanently delete my account. This cannot be undone.\n\nThe Delete account page also accepts deletion requests, including Delete data — keep your account. Requests are processed by support. Safety plans, saved addresses, and downloaded copies on your device need separate removal from that device.",
   },
   {
     id: "privacy",
@@ -324,7 +365,6 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
       "home screen",
       "iphone",
       "android",
-      "app",
       "add to home",
       "pwa",
       "no account",
@@ -340,7 +380,7 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
   },
   {
     id: "pin_page",
-    keywords: ["pin", "pinned", "top", "stack", "order pages", "move up"],
+    keywords: ["pin", "pinned", "pin my pages", "pin pages", "stack", "order pages", "move up"],
     answer:
       "You can pin your own pages so they sit on top of the others in your notebook. Pinning only changes your own pages, and it does not move anyone else's post on THE BOARD.",
   },
@@ -348,7 +388,7 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
     id: "block_user",
     keywords: ["block", "blocked", "block someone", "stop someone", "ban"],
     answer:
-      "Readers can report a post, and admins can block a person. A blocked account cannot sign in, post, or register again from the same browser.\n\nIf someone is hurting you, tell app support through the Contact page and include the post link.",
+      "On THE BOARD, choose Block this person on a story card to hide that storyteller's stories from your view. To flag a policy violation for admins, also use Report. Blocking someone from your view does not suspend their account.\n\nAdmins can separately block an account from signing in or posting. Known nickname/browser registration checks discourage re-registration, but cannot prevent someone trying a different device or browser.",
   },
   {
     id: "cost",
@@ -434,7 +474,12 @@ export function matchGuidanceTopic(text: string): GuidanceTopic | null {
   let bestScore = 0;
   for (const topic of GUIDANCE_TOPICS) {
     const score = topic.keywords.reduce(
-      (total, keyword) => (keywordMatches(normalized, keyword) ? total + 1 : total),
+      (total, keyword) => {
+        const phrase = normalizeGuidanceText(keyword);
+        return keywordMatches(normalized, phrase)
+          ? total + phrase.split(" ").length ** 2
+          : total;
+      },
       0,
     );
     if (score > bestScore) {

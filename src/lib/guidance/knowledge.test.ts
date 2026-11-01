@@ -75,4 +75,32 @@ describe("built-in guidance answers", () => {
     assert.doesNotMatch(answer, /Hello, how can I help\?/);
     assert.match(answer, /private/i);
   });
+
+  test("specific incident questions select incident guidance, not board moderation", () => {
+    assert.equal(matchGuidanceTopic("how do I make an incident report")?.id, "incident_reports");
+  });
+
+  test("specific recording questions select body cam guidance", () => {
+    assert.equal(matchGuidanceTopic("how do I start recording with body cam")?.id, "body_cam");
+  });
+
+  test("location troubleshooting is not mistaken for general GPS guidance", () => {
+    assert.equal(matchGuidanceTopic("my location is wrong address not found")?.id, "location_permission");
+  });
+
+  test("saving an address selects address management", () => {
+    assert.equal(matchGuidanceTopic("how do I save my address")?.id, "saved_addresses");
+  });
+
+  test("unrelated questions mentioning app do not match installation", () => {
+    assert.equal(matchGuidanceTopic("can the app predict tomorrow's weather"), null);
+  });
+
+  test("deleting a conversation selects chat management, not account deletion", () => {
+    assert.equal(matchGuidanceTopic("how do I delete conversation history")?.id, "guidance_threads");
+  });
+
+  test("a body cam app question is not swallowed by generic install terms", () => {
+    assert.equal(matchGuidanceTopic("where is the body cam in this app")?.id, "body_cam");
+  });
 });
