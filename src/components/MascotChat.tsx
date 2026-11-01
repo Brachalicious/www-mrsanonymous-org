@@ -4,7 +4,6 @@ import { useServerFn } from "@tanstack/react-start";
 import { Link } from "@tanstack/react-router";
 import { X } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import type { GuidanceMessage } from "@/lib/guidance/messages";
 import {
   listGuidanceThreads,
   loadGuidanceThread,

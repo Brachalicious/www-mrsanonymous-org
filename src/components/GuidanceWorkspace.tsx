@@ -3,7 +3,6 @@ import { useServerFn } from "@tanstack/react-start";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Plus, Trash2, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import type { GuidanceMessage } from "@/lib/guidance/messages";
 import {
   listGuidanceThreads,
   loadGuidanceThread,
