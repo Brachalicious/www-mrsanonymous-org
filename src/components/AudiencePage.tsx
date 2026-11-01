@@ -33,7 +33,7 @@ export function AudiencePage({ audience }: AudiencePageProps) {
         title: "Women",
         subtitle: "A place to be heard, on your terms.",
         intro:
-          "Welcome to our dedicated space for women. We aim to provide resources and support to help you thrive in every aspect of your life.",
+          "Welcome to our dedicated space for women. We aim to provide resources and support to help guide you through challenging moments where you may be facing abuse or have survived it.",
         promises: [
           "We do not store names, emails, or phone numbers.",
           "Anything you write stays in your private notebook unless YOU choose to share it.",
