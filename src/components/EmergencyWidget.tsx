@@ -18,7 +18,12 @@ import { SafeExternalButton } from "@/components/SafeExternalButton";
 import { useAuth } from "@/contexts/AuthContext";
 import { listJournalEntries } from "@/lib/journal.functions";
 import { buildReportText } from "@/lib/incident-report";
-import { canApplyEmergencyAddress } from "@/lib/emergency-location";
+import {
+  canApplyEmergencyAddress,
+  shouldKeepEmergencyAddress,
+  shouldRegeocode,
+  type Fix,
+} from "@/lib/emergency-location";
 
 const STORY_KEY = "mrsanon:panic-story";
 
@@ -175,6 +180,8 @@ export function EmergencyWidget() {
   // Increments every time a new lookup starts; a late response from an older
   // lookup is discarded so a rough fix can never overwrite a precise address.
   const geoSeq = useRef(0);
+  // The GPS reading the address currently on screen was looked up for.
+  const addressFixRef = useRef<Fix | null>(null);
 
   async function reverseGeocode(lat: number, lon: number, accuracy: number, seq: number): Promise<boolean> {
     try {
@@ -190,10 +197,12 @@ export function EmergencyWidget() {
       const line2 = [city, [a.state, a.postcode].filter(Boolean).join(" ")].filter(Boolean).join(", ");
       const text = street && line2 ? `${street}, ${line2}` : data?.display_name;
       if (!text) return false;
+      const fix: Fix = { lat, lon, accuracy };
       let applied = false;
       setLoc((prev) => {
-        if (!prev || !canApplyEmergencyAddress(prev, { lat, lon }, seq, geoSeq.current)) return prev;
+        if (!prev || !canApplyEmergencyAddress(prev, fix, seq, geoSeq.current)) return prev;
         applied = true;
+        addressFixRef.current = fix;
         return { ...prev, address: text, addressLat: lat, addressLon: lon, addressAccuracy: accuracy };
       });
       return applied;
@@ -211,6 +220,7 @@ export function EmergencyWidget() {
     setLocError(null);
     // Clear any previous spot so an old address can never be sent for a new one.
     setLoc(null);
+    addressFixRef.current = null;
     geoSeq.current += 1;
 
     let best: GeolocationPosition | null = null;
@@ -219,21 +229,24 @@ export function EmergencyWidget() {
     let settled = false;
 
     const lookup = (pos: GeolocationPosition) => {
-      const key = `${pos.coords.latitude.toFixed(5)},${pos.coords.longitude.toFixed(5)}`;
+      const { latitude, longitude, accuracy } = pos.coords;
+      const next: Fix = { lat: latitude, lon: longitude, accuracy };
+      const key = `${latitude.toFixed(5)},${longitude.toFixed(5)}`;
       if (key === geocodedKey) return;
-      // Re-geocode when accuracy improves meaningfully or nothing geocoded yet.
-      if (pos.coords.accuracy < geocodedAcc / 2 || geocodedAcc === Infinity) {
-        geocodedAcc = pos.coords.accuracy;
-        geocodedKey = key;
-        const seq = ++geoSeq.current;
-        void reverseGeocode(pos.coords.latitude, pos.coords.longitude, pos.coords.accuracy, seq).then((ok) => {
-          // Allow a later, better fix to retry if this lookup failed.
-          if (!ok && seq === geoSeq.current) {
-            geocodedAcc = Infinity;
-            geocodedKey = "";
-          }
-        });
-      }
+      // Look up again only when there is no usable address, the reader moved to
+      // a different place, or GPS got meaningfully tighter than the fix used.
+      const addressStillValid = shouldKeepEmergencyAddress(addressFixRef.current, next);
+      if (addressStillValid && !shouldRegeocode(geocodedAcc, next)) return;
+      geocodedAcc = accuracy;
+      geocodedKey = key;
+      const seq = ++geoSeq.current;
+      void reverseGeocode(latitude, longitude, accuracy, seq).then((ok) => {
+        // Allow a later, better fix to retry if this lookup failed.
+        if (!ok && seq === geoSeq.current) {
+          geocodedAcc = Infinity;
+          geocodedKey = "";
+        }
+      });
     };
 
     const finish = () => {
@@ -251,9 +264,22 @@ export function EmergencyWidget() {
         best = pos;
         const { latitude, longitude, accuracy } = pos.coords;
         setLoc((prev) => {
-          // Keep the address only if it was looked up for these exact coordinates.
-          const keep =
-            prev?.address != null && prev.addressLat === latitude && prev.addressLon === longitude;
+          // Keep the address while the reader is still inside the radius of the
+          // fix it was looked up for; ordinary GPS jitter must not wipe it.
+          const previousFix: Fix | null =
+            prev?.address != null && prev.addressLat != null && prev.addressLon != null
+              ? {
+                  lat: prev.addressLat,
+                  lon: prev.addressLon,
+                  accuracy: prev.addressAccuracy ?? ADDRESS_ACCURACY_LIMIT_M,
+                }
+              : null;
+          const keep = shouldKeepEmergencyAddress(previousFix, {
+            lat: latitude,
+            lon: longitude,
+            accuracy,
+          });
+          if (!keep) addressFixRef.current = null;
           return {
             address: keep ? prev?.address : undefined,
             addressLat: keep ? prev?.addressLat : undefined,
