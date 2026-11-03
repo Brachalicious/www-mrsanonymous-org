@@ -1,5 +1,5 @@
 # Roadmap
-- [ ] Provide Android APK/AAB for the owner's stated "Firestore" destination — waiting for clarification of Firebase App Distribution, Amazon Fire, or Firestore database use; preserve existing Play signing identity.
+- [ ] Provide Android APK/AAB for the owner's Firebase project — waiting to confirm App Distribution upload screen and access to the existing Android build/signing project; preserve existing Play signing identity.
 - [x] Recheck monitoring safety reports: phone menu already portals to body; reject delayed street-address replies for different current GPS coordinates. Verify simulated SMS drafts without sending to emergency services.
 - [x] Fix 911 text losing its street address when GPS sharpens: keep the address inside the fix's uncertainty radius, re-look-up on a real move or a meaningful accuracy gain. Verified 12 unit tests and browser drafts (same spot keeps address; 1km move swaps address).
 - [x] Expand built-in guidance for navigation, incident reports, recordings, saved confirmations, addresses, location problems, SOFY, conversations, and technical questions; improve specific-phrase matching. Verified 19 tests and signed-in answer persistence after reload.
