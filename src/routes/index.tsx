@@ -229,6 +229,7 @@ function Index() {
           </div>
         </div>
       </section>
+      <MascotChat open={guidanceOpen} onClose={() => setGuidanceOpen(false)} />
     </div>
   );
 }
