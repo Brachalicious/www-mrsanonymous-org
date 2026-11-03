@@ -9,6 +9,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useRegion } from "@/hooks/use-region";
 import { getEmergency } from "@/lib/emergency-numbers";
 import { PrivateLetter } from "@/components/PrivateLetter";
+import { MascotChat } from "@/components/MascotChat";
+import mascot from "@/assets/app-guidance-mascot.jpeg.asset.json";
 import signalForHelp from "@/assets/signal-for-help.png.asset.json";
 import helpSignalButton from "@/assets/help-signal-button.png.asset.json";
 
@@ -28,6 +30,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { user, profile } = useAuth();
+  const [guidanceOpen, setGuidanceOpen] = useState(false);
 
   return (
     <div className="paper-bg">
@@ -77,6 +80,23 @@ function Index() {
           {/* Private Letter card */}
           <div className="lg:col-span-5 lg:-mt-10 lg:self-start">
             <PrivateLetter />
+            <button
+              type="button"
+              onClick={() => setGuidanceOpen(true)}
+              data-testid="home-mascot-guide"
+              className="mx-auto mt-6 flex flex-col items-center gap-1 border-0 bg-transparent p-0"
+              aria-label="Ask the MrsANONymous mascot for help using the app"
+            >
+              <img
+                src={mascot.url}
+                alt="MrsANONymous mascot"
+                className="h-40 w-auto object-contain transition-transform hover:scale-[1.03] md:h-48"
+                loading="lazy"
+              />
+              <span className="font-serif text-lg text-ink-900 underline decoration-rose-500/40 decoration-2 underline-offset-4">
+                Need a hand? Ask me
+              </span>
+            </button>
           </div>
         </div>
       </section>
