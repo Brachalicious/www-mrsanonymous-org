@@ -34,3 +34,4 @@
 - [x] Footer branding: black/white/red MysticMinded33 credit, large and bold, clickable to mysticminded33.com (verified phone + desktop clearance).
 - [x] Enlarged footer logo circle (viewport-scaled) and verified clearance on 7 screen sizes.
 - [x] Built the free built-in guide: the mascot opens a chat answered from written answers inside the app — no AI, no cost, no key. Answers still save to the account; verified hello state, answers, save on reload, and zero AI-gateway calls.
+- [ ] Make blocked hotline sites (thehotline.org) usable in-app: show Call/Text/Chat action card instead of a dead-end warning.
