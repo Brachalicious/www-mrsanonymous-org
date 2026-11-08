@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Send, X } from "lucide-react";
-import mascot from "@/assets/app-guidance-mascot.jpeg.asset.json";
+import mascot from "@/assets/app-guidance-mascot-transparent.png";
 import { Button } from "@/components/ui/button";
 import { appendGuidanceMessages } from "@/lib/guidance.functions";
 import { answerGuidanceQuestion } from "@/lib/guidance/knowledge";

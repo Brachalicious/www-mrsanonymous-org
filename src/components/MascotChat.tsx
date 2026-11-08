@@ -11,7 +11,7 @@ import {
 } from "@/lib/guidance.functions";
 import { Button } from "@/components/ui/button";
 import { GuidanceChat } from "@/components/GuidanceChat";
-import mascot from "@/assets/app-guidance-mascot.jpeg.asset.json";
+import mascot from "@/assets/app-guidance-mascot-transparent.png";
 
 export function MascotChat({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { user } = useAuth();

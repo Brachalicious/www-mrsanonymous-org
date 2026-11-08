@@ -10,7 +10,7 @@ import { useRegion } from "@/hooks/use-region";
 import { getEmergency } from "@/lib/emergency-numbers";
 import { PrivateLetter } from "@/components/PrivateLetter";
 import { MascotChat } from "@/components/MascotChat";
-import mascot from "@/assets/app-guidance-mascot.jpeg.asset.json";
+import mascot from "@/assets/app-guidance-mascot-transparent.png";
 import signalForHelp from "@/assets/signal-for-help.png.asset.json";
 import helpSignalButton from "@/assets/help-signal-button.png.asset.json";
 
