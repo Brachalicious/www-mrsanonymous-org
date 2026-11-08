@@ -444,7 +444,7 @@ export function EmergencyWidget() {
       {open && (
         <div
           data-testid="emergency-options-panel"
-          className="note-card fixed top-[max(0.75rem,env(safe-area-inset-top))] right-3 bottom-[calc(11rem+env(safe-area-inset-bottom))] w-80 max-w-[calc(100vw-1.5rem)] overflow-y-auto overscroll-contain p-4 sm:right-5"
+          className="note-card fixed top-[max(0.75rem,env(safe-area-inset-top))] right-3 bottom-[calc(6.5rem+env(safe-area-inset-bottom))] w-80 max-w-[calc(100vw-1.5rem)] overflow-y-auto overscroll-contain p-4 sm:right-5 sm:bottom-[calc(9rem+env(safe-area-inset-bottom))]"
         >
           <div className="flex items-center justify-between">
             <h3 className="font-serif text-lg text-ink-900">{t("emg.title")}</h3>
