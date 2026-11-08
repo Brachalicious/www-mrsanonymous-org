@@ -247,10 +247,7 @@ function GoPage() {
                       </button>
                     </div>
                   </>
-                );
-              }
-              return null;
-            })() || (
+            ) : (
               <>
             <h1 className="font-serif text-2xl text-ink-900">{host} can&apos;t be shown inside the app</h1>
             <p className="mt-3 text-sm text-ink-600">
