@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Add Board posting dates, newest/oldest sorting and selectable topic-interest filters; seven tests passed, signed-in date ordering and phone controls verified. Existing visible stories have no topic tags; filters match writer-selected tags without inferring sensitive content.
 - [x] Recover unfinished notebook and incident-note text after phone-page recreation; signed-in browser rotation/reload, save/readback, Quick Exit clearing and four tests passed; physical Android rotation needs tester recheck.
 - [ ] Provide Android APK/AAB for the owner's Firebase project — waiting to confirm App Distribution upload screen and access to the existing Android build/signing project; preserve existing Play signing identity.
 - [x] Recheck monitoring safety reports: phone menu already portals to body; reject delayed street-address replies for different current GPS coordinates. Verify simulated SMS drafts without sending to emergency services.

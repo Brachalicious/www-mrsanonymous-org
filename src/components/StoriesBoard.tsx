@@ -6,11 +6,14 @@ import { Eye, EyeOff, AlertTriangle, Flag, Ban } from "lucide-react";
 import { reportStory, blockStoryAuthor, REPORT_REASONS } from "@/lib/moderation.functions";
 import { Button } from "@/components/ui/button";
 import { Pin, ChevronLeft, ChevronRight } from "lucide-react";
+import { boardTopics, browseStories, storyDate, type BoardSort } from "@/lib/board-browse";
 
 export function StoriesBoard() {
   const queryClient = useQueryClient();
   const fetchStories = useServerFn(listSharedStories);
   const react = useServerFn(sendReaction);
+  const [sort, setSort] = useState<BoardSort>("newest");
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
 
   const { data: stories = [], isLoading } = useQuery({
     queryKey: ["shared-stories"],
@@ -23,6 +26,8 @@ export function StoriesBoard() {
       queryClient.invalidateQueries({ queryKey: ["shared-stories"] });
     },
   });
+  const topics = boardTopics(stories);
+  const visibleStories = browseStories(stories, selectedTopics, sort);
 
   if (isLoading) {
     return (
@@ -45,8 +50,29 @@ export function StoriesBoard() {
   }
 
   return (
+    <div>
+      <div className="mb-8 space-y-4 border-b border-border pb-6">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <fieldset className="min-w-0 flex-1">
+            <legend className="mb-2 font-semibold text-foreground">Topics of interest</legend>
+            <div className="flex flex-wrap gap-2">
+              <Button variant={selectedTopics.length ? "outline" : "default"} size="sm" aria-pressed={!selectedTopics.length} onClick={() => setSelectedTopics([])}>All topics</Button>
+              {topics.map((topic) => <Button key={topic} variant={selectedTopics.includes(topic) ? "default" : "outline"} size="sm" className="h-auto min-h-9 max-w-full whitespace-normal break-words" aria-pressed={selectedTopics.includes(topic)} onClick={() => setSelectedTopics((current) => current.includes(topic) ? current.filter((value) => value !== topic) : [...current, topic])}>{topic}</Button>)}
+            </div>
+          </fieldset>
+          <fieldset className="w-full sm:w-auto">
+            <legend className="mb-2 font-semibold text-foreground">Sort by</legend>
+            <div className="inline-flex gap-1 rounded-md border border-border bg-background p-1">
+              <Button variant={sort === "newest" ? "default" : "ghost"} size="sm" aria-pressed={sort === "newest"} onClick={() => setSort("newest")}>Most recent</Button>
+              <Button variant={sort === "oldest" ? "default" : "ghost"} size="sm" aria-pressed={sort === "oldest"} onClick={() => setSort("oldest")}>Oldest first</Button>
+            </div>
+          </fieldset>
+        </div>
+        <p role="status" className="text-sm text-foreground">{visibleStories.length} {visibleStories.length === 1 ? "story" : "stories"}{selectedTopics.length ? ` · ${selectedTopics.join(" or ")}` : " · All topics"}</p>
+      </div>
+      {visibleStories.length === 0 ? <div className="py-8 text-center"><p className="mb-4 text-foreground">No stories match these topics.</p><Button variant="outline" onClick={() => setSelectedTopics([])}>Clear topic filters</Button></div> :
     <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {stories.map((story, i) => (
+      {visibleStories.map((story, i) => (
         <StoryCard
           key={story.id}
           story={story}
@@ -54,6 +80,8 @@ export function StoriesBoard() {
           onReact={(reaction) => mutation.mutate({ data: { notebookId: story.id, reaction } })}
         />
       ))}
+    </div>
+      }
     </div>
   );
 }
@@ -190,6 +218,9 @@ function StoryCard({
             {revealed ? "Blur" : "Reveal"}
           </Button>
         </div>
+        <p className="mt-2 text-xs text-muted-foreground">
+          {story.shared_at ? "Posted" : "Created"} <time dateTime={storyDate(story)}>{new Date(storyDate(story)).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })}</time>
+        </p>
         {revealed ? <div data-revealed="true"><h3 className="mt-3 break-words font-serif text-xl text-ink-900">{story.title}</h3>
           {page?.pinned_at && <span className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground"><Pin className="h-3 w-3" />Pinned page</span>}
           <p className="mt-3 max-h-96 overflow-y-auto whitespace-pre-wrap break-words leading-relaxed text-foreground">{page?.content || "No shared pages yet."}</p>
