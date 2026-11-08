@@ -26,3 +26,4 @@
 - The public installation page bypasses the terms overlay but not the calculator lock; installation never requires an account.
 - Assign immutable sequential account numbers through profile lifecycle triggers in a separate admin-only RLS table; admin-verified account, board, and support fetchers read references with the caller's RLS client, keeping identifiers out of public and owner profile responses. Delete references with profiles without resetting the sequence.
 - Recover unfinished note text from owner/editor-scoped sessionStorage after hydration; write on input, clear on successful save, sign-out and Quick Exit, and never silently autosave private drafts to localStorage or Cloud.
+- Board browsing filters only already-visible stories by existing topic tags and sorts by shared_at (creation fallback for legacy records); keep these browser-safe rules independent of page pinning and moderation.
