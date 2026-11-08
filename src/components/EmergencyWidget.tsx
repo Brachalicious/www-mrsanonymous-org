@@ -440,11 +440,11 @@ export function EmergencyWidget() {
   const msgLangDir = LANGUAGES.find((l) => l.code === msgLang)?.dir ?? "ltr";
 
   return (
-    <div className="fixed bottom-5 right-5 z-[60] flex flex-col items-end gap-3">
+    <div className="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom))] right-3 z-[60] flex flex-col items-end gap-3 sm:bottom-5 sm:right-5">
       {open && (
         <div
           data-testid="emergency-options-panel"
-          className="note-card fixed top-[max(0.75rem,env(safe-area-inset-top))] right-3 bottom-[calc(11rem+env(safe-area-inset-bottom))] w-80 max-w-[calc(100vw-1.5rem)] overflow-y-auto overscroll-contain p-4 sm:right-5"
+          className="note-card fixed top-[max(0.75rem,env(safe-area-inset-top))] right-3 bottom-[calc(6.5rem+env(safe-area-inset-bottom))] w-80 max-w-[calc(100vw-1.5rem)] overflow-y-auto overscroll-contain p-4 sm:right-5 sm:bottom-[calc(9rem+env(safe-area-inset-bottom))]"
         >
           <div className="flex items-center justify-between">
             <h3 className="font-serif text-lg text-ink-900">{t("emg.title")}</h3>
@@ -832,7 +832,7 @@ export function EmergencyWidget() {
         </div>
       )}
       <div className="flex items-center gap-3">
-        <div className="flex flex-col items-center text-center text-rose-600" aria-hidden="true">
+        <div className="hidden flex-col items-center text-center text-rose-600 sm:flex" aria-hidden="true">
           <span className="max-w-[6rem] text-xs font-extrabold uppercase leading-tight">
             Click for emergency options
           </span>
@@ -842,7 +842,7 @@ export function EmergencyWidget() {
           onClick={() => setOpen((v) => !v)}
           data-testid="emergency-widget-toggle"
           aria-label="Open emergency help options"
-          className="group h-36 w-36 overflow-hidden rounded-full transition-transform duration-300 hover:scale-105 focus:outline-none"
+          className="group h-20 w-20 overflow-hidden rounded-full shadow-lg ring-2 ring-rose-600/40 transition-transform duration-300 hover:scale-105 focus:outline-none sm:h-28 sm:w-28"
         >
           <img
             src={helpSignalButton.url}
