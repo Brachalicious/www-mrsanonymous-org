@@ -5,7 +5,8 @@
       "namespace": "android_app",
       "package_name": "www.MrsAnonymous.org",
       "sha256_cert_fingerprints": [
-        "27:D7:FE:5E:F2:C6:0F:77:05:09:CA:4F:0E:FA:F5:66:82:07:FD:42:82:A9:5E:CC:D1:C5:B4:CD:55:40:31:1E"
+        "27:D7:FE:5E:F2:C6:0F:77:05:09:CA:4F:0E:FA:F5:66:82:07:FD:42:82:A9:5E:CC:D1:C5:B4:CD:55:40:31:1E",
+        "0F:D1:39:A4:E3:62:F7:AF:4C:21:6C:B1:B4:24:4D:CB:8E:CC:E2:BC:A5:A2:F3:E7:ED:48:11:D6:B9:54:4B:F6"
       ]
     }
   }
