@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { clearNoteDrafts } from "@/lib/note-drafts";
 
 const QUICK_EXIT_URL = "https://www.google.com";
 const EXIT_FLAG = "mrsanon:exited";
@@ -40,6 +41,7 @@ function setExitFlag() {
 }
 
 export function performQuickExit() {
+  clearNoteDrafts();
   // Mark the exit so any attempt to return (back button, bfcache restore)
   // bounces straight back out — permanently, until the calculator unlock.
   setExitFlag();
@@ -50,6 +52,7 @@ export function performQuickExit() {
 }
 
 export function performQuickExitFallback() {
+  clearNoteDrafts();
   // If Google is blocked by the network, fall back to a blank page so the
   // back button still cannot return to MrsANONymous.
   setExitFlag();
