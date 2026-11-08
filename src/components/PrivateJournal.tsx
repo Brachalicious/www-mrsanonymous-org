@@ -21,6 +21,7 @@ import {
 } from "@/lib/journal.functions";
 import { listMyMessages } from "@/lib/contact.functions";
 import type { ReportConversation } from "@/lib/incident-report";
+import { useNoteDraft } from "@/hooks/use-note-draft";
 
 type Field = {
   key: string;
@@ -88,7 +89,8 @@ export function PrivateJournal() {
   const audience: "women" | "girls" = profile?.audience === "girls" ? "girls" : "women";
   const fields = audience === "girls" ? GIRLS_FIELDS : WOMEN_FIELDS;
 
-  const [form, setForm] = useState<Record<string, string>>(() => emptyFor(fields));
+  const draft = useNoteDraft(user?.id, "incident-journal", { form: emptyFor(fields), selectedChats: [] as string[] });
+  const { form, selectedChats } = draft.value;
   const [pendingFiles, setPendingFiles] = useState<File[]>([]);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
@@ -99,18 +101,12 @@ export function PrivateJournal() {
   const [showEntries, setShowEntries] = useState(false);
   const [openEntryId, setOpenEntryId] = useState<string | null>(null);
   const [chats, setChats] = useState<ReportConversation[]>([]);
-  const [selectedChats, setSelectedChats] = useState<string[]>([]);
   const [showRealName, setShowRealName] = useState(false);
   const [savedSummary, setSavedSummary] = useState<string[] | null>(null);
 
   const recorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  useEffect(() => {
-    setForm(emptyFor(fields));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [audience]);
 
   async function refresh() {
     if (!user) return;
@@ -163,7 +159,7 @@ export function PrivateJournal() {
   }, [user?.id]);
 
   function update(key: string, value: string) {
-    setForm((f) => ({ ...f, [key]: value }));
+    draft.setValue({ ...draft.value, form: { ...form, [key]: value } });
   }
 
   const includedChats = chats.filter((c) => selectedChats.includes(c.title));
@@ -324,9 +320,8 @@ export function PrivateJournal() {
       if (includedChats.length)
         summary.push(`Support conversations included: ${includedChats.map((c) => c.title).join(", ")}`);
 
-      setForm(emptyFor(fields));
+      draft.clear();
       setPendingFiles([]);
-      setSelectedChats([]);
       setAudioBlob(null);
       setAudioUrl(null);
       setSavedSummary(summary);
@@ -346,7 +341,7 @@ export function PrivateJournal() {
     refresh();
   }
 
-  if (authLoading) return null;
+  if (authLoading || (user && !draft.ready)) return null;
 
   if (!user) {
     return (
@@ -392,6 +387,7 @@ export function PrivateJournal() {
                   id={`j-${f.key}`}
                   rows={4}
                   value={form[f.key] ?? ""}
+                  disabled={saving}
                   onChange={(e) => update(f.key, e.target.value)}
                   className="w-full rounded-xl border border-ink-300 bg-white/70 px-3 py-2 text-sm text-ink-900"
                 />
@@ -399,6 +395,7 @@ export function PrivateJournal() {
                 <select
                   id={`j-${f.key}`}
                   value={form[f.key] ?? ""}
+                  disabled={saving}
                   onChange={(e) => update(f.key, e.target.value)}
                   className="w-full rounded-xl border border-ink-300 bg-white/70 px-3 py-2 text-sm text-ink-900"
                 >
@@ -413,6 +410,7 @@ export function PrivateJournal() {
                   type={f.type}
                   placeholder={f.placeholder}
                   value={form[f.key] ?? ""}
+                  disabled={saving}
                   onChange={(e) => update(f.key, e.target.value)}
                   className="w-full rounded-xl border border-ink-300 bg-white/70 px-3 py-2 text-sm text-ink-900"
                 />
@@ -524,10 +522,11 @@ export function PrivateJournal() {
                       type="checkbox"
                       className="mt-0.5"
                       checked={selectedChats.includes(c.title)}
+                      disabled={saving}
                       onChange={(ev) =>
-                        setSelectedChats((s) =>
-                          ev.target.checked ? [...s, c.title] : s.filter((t) => t !== c.title),
-                        )
+                        draft.setValue({ ...draft.value, selectedChats:
+                          ev.target.checked ? [...selectedChats, c.title] : selectedChats.filter((t) => t !== c.title),
+                        })
                       }
                     />
                     <label htmlFor={`chat-${c.title}`} className="cursor-pointer">

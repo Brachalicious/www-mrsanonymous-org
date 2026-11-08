@@ -3,6 +3,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { createEntry } from "@/lib/notebooks.functions";
 import { PenLine } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNoteDraft } from "@/hooks/use-note-draft";
 const MOODS: { emoji: string; label: string }[] = [
   { emoji: "😌", label: "Calm" },
   { emoji: "🙂", label: "Okay" },
@@ -61,16 +63,16 @@ interface EntryEditorProps {
 export function EntryEditor({ notebookId, onAdded }: EntryEditorProps) {
   const queryClient = useQueryClient();
   const create = useServerFn(createEntry);
-  const [content, setContent] = useState("");
-  const [mood, setMood] = useState("");
+  const { user } = useAuth();
+  const draft = useNoteDraft(user?.id, `notebook:${notebookId}`, { content: "", mood: "" });
+  const { content, mood } = draft.value;
   const [savedNote, setSavedNote] = useState("");
 
   const mutation = useMutation({
     mutationFn: create,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["entries", notebookId] });
-      setContent("");
-      setMood("");
+      draft.clear();
       setSavedNote(`Saved to your notebook at ${new Date().toLocaleTimeString()}`);
       onAdded?.();
     },
@@ -91,7 +93,8 @@ export function EntryEditor({ notebookId, onAdded }: EntryEditorProps) {
       </div>
       <textarea
         value={content}
-        onChange={(e) => setContent(e.target.value)}
+        onChange={(e) => draft.setValue({ ...draft.value, content: e.target.value })}
+        disabled={!draft.ready || mutation.isPending}
         className="paper-lines mt-3 min-h-[12rem] w-full resize-y rounded-xl border border-ink-300 bg-white p-4 text-ink-900 focus-ring-warm"
         placeholder="Write what you need to say. No one can see this unless you choose to share it."
         maxLength={20000}
@@ -108,7 +111,8 @@ export function EntryEditor({ notebookId, onAdded }: EntryEditorProps) {
               <button
                 key={m.label}
                 type="button"
-                onClick={() => setMood(active ? "" : `${m.emoji} ${m.label}`)}
+                onClick={() => draft.setValue({ ...draft.value, mood: active ? "" : `${m.emoji} ${m.label}` })}
+                disabled={!draft.ready || mutation.isPending}
                 aria-pressed={active}
                 title={m.label}
                 className={`rounded-full border px-3 py-1.5 text-sm transition focus-ring-warm ${
@@ -127,13 +131,14 @@ export function EntryEditor({ notebookId, onAdded }: EntryEditorProps) {
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <input
           value={mood}
-          onChange={(e) => setMood(e.target.value)}
+          onChange={(e) => draft.setValue({ ...draft.value, mood: e.target.value })}
+          disabled={!draft.ready || mutation.isPending}
           className="input-soft w-56"
           placeholder="Mood (optional)"
           maxLength={32}
         />
 
-        <button type="submit" disabled={mutation.isPending} className="btn-rose">
+        <button type="submit" disabled={!draft.ready || mutation.isPending} className="btn-rose">
           {mutation.isPending ? "Saving…" : "Save to notebook"}
         </button>
       </div>

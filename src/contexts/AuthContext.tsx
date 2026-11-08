@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { supabase } from "@/integrations/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
 import { registerAnonymousUser } from "@/lib/auth.functions";
+import { clearNoteDrafts } from "@/lib/note-drafts";
 
 export interface Profile {
   id: string;
@@ -92,6 +93,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const nextUser = session?.user ?? null;
       setSession(session ?? null);
       setUser(nextUser);
+      if (event === "SIGNED_OUT") clearNoteDrafts();
 
       if (!nextUser) {
         setProfile(null);
@@ -151,6 +153,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function logout() {
+    clearNoteDrafts();
     await supabase.auth.signOut();
   }
 
