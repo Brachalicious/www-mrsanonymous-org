@@ -22,5 +22,7 @@ test("topic filters match any selected interest and clearing restores all storie
   assert.equal(browseStories(stories, ["Healing", "Safety"], "newest").length, 3);
   assert.equal(browseStories(stories, ["Unknown"], "newest").length, 0);
   assert.equal(browseStories(stories, [], "newest").length, 3);
-  assert.deepEqual(boardTopics(stories), ["Healing", "Safety"]);
+  assert.ok(boardTopics(stories).includes("Healing"));
+  assert.ok(boardTopics([]).includes("Financial abuse"));
+  assert.equal(boardTopics(stories).filter((topic) => topic === "Safety").length, 1);
 });
