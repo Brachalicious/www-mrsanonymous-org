@@ -832,7 +832,7 @@ export function EmergencyWidget() {
         </div>
       )}
       <div className="flex items-center gap-3">
-        <div className="flex flex-col items-center text-center text-rose-600" aria-hidden="true">
+        <div className="hidden flex-col items-center text-center text-rose-600 sm:flex" aria-hidden="true">
           <span className="max-w-[6rem] text-xs font-extrabold uppercase leading-tight">
             Click for emergency options
           </span>
@@ -842,7 +842,7 @@ export function EmergencyWidget() {
           onClick={() => setOpen((v) => !v)}
           data-testid="emergency-widget-toggle"
           aria-label="Open emergency help options"
-          className="group h-36 w-36 overflow-hidden rounded-full transition-transform duration-300 hover:scale-105 focus:outline-none"
+          className="group h-20 w-20 overflow-hidden rounded-full shadow-lg ring-2 ring-rose-600/40 transition-transform duration-300 hover:scale-105 focus:outline-none sm:h-28 sm:w-28"
         >
           <img
             src={helpSignalButton.url}
