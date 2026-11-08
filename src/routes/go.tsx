@@ -279,6 +279,8 @@ function GoPage() {
             <p className="mt-3 text-xs text-ink-500">
               You can paste the copied link into a private/incognito window when it&apos;s safe.
             </p>
+              </>
+            )}
           </div>
         </div>
       )}
