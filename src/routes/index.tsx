@@ -10,7 +10,7 @@ import { useRegion } from "@/hooks/use-region";
 import { getEmergency } from "@/lib/emergency-numbers";
 import { PrivateLetter } from "@/components/PrivateLetter";
 import { MascotChat } from "@/components/MascotChat";
-import mascot from "@/assets/app-guidance-mascot.jpeg.asset.json";
+import mascot from "@/assets/app-guidance-mascot-transparent.png";
 import signalForHelp from "@/assets/signal-for-help.png.asset.json";
 import helpSignalButton from "@/assets/help-signal-button.png.asset.json";
 
@@ -88,9 +88,9 @@ function Index() {
               aria-label="Ask the MrsANONymous mascot for help using the app"
             >
               <img
-                src={mascot.url}
+                src={mascot}
                 alt="MrsANONymous mascot"
-                className="h-40 w-auto object-contain transition-transform hover:scale-[1.03] md:h-48"
+                className="h-56 w-auto object-contain transition-transform hover:scale-[1.03] md:h-72"
                 loading="lazy"
               />
               <span className="font-serif text-lg text-ink-900 underline decoration-rose-500/40 decoration-2 underline-offset-4">

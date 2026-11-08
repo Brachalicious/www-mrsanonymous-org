@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Send, X } from "lucide-react";
-import mascot from "@/assets/app-guidance-mascot.jpeg.asset.json";
+import mascot from "@/assets/app-guidance-mascot-transparent.png";
 import { Button } from "@/components/ui/button";
 import { appendGuidanceMessages } from "@/lib/guidance.functions";
 import { answerGuidanceQuestion } from "@/lib/guidance/knowledge";
@@ -76,9 +76,9 @@ export function GuidanceChat({
         {!messages.length ? (
           <div className="py-6 text-center">
             <img
-              src={mascot.url}
+              src={mascot}
               alt="MrsANONymous mascot"
-              className="mx-auto h-44 w-auto object-contain"
+              className="mx-auto h-56 w-auto object-contain"
             />
             <h2 className="mt-3 font-serif text-2xl text-ink-900">Hello, how can I help?</h2>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
