@@ -66,9 +66,9 @@ export function Footer() {
             aria-label="Ask the MrsANONymous mascot for help using the app"
           >
             <img
-              src={mascot.url}
+              src={mascot}
               alt="MrsANONymous mascot"
-              className="h-40 w-auto object-contain transition-transform hover:scale-[1.03] md:h-48"
+              className="h-56 w-auto object-contain transition-transform hover:scale-[1.03] md:h-72"
               loading="lazy"
             />
             <span className="font-serif text-lg text-ink-900 underline decoration-rose-500/40 decoration-2 underline-offset-4">

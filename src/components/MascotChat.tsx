@@ -56,7 +56,7 @@ export function MascotChat({ open, onClose }: { open: boolean; onClose: () => vo
     >
       <div className="flex items-center justify-between border-b border-border px-3 py-2">
         <div className="flex items-center gap-2">
-          <img src={mascot.url} alt="" className="h-10 w-8 object-contain" />
+          <img src={mascot} alt="" className="h-12 w-auto object-contain" />
           <span className="font-serif text-lg">App guidance</span>
         </div>
         <Button

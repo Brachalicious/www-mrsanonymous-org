@@ -76,9 +76,9 @@ export function GuidanceChat({
         {!messages.length ? (
           <div className="py-6 text-center">
             <img
-              src={mascot.url}
+              src={mascot}
               alt="MrsANONymous mascot"
-              className="mx-auto h-44 w-auto object-contain"
+              className="mx-auto h-56 w-auto object-contain"
             />
             <h2 className="mt-3 font-serif text-2xl text-ink-900">Hello, how can I help?</h2>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
