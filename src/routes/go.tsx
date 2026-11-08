@@ -199,54 +199,6 @@ function GoPage() {
             >
               <X className="h-4 w-4" />
             </button>
-            {knownResource ? (
-                  <>
-                    <h1 className="font-serif text-2xl text-ink-900">{knownResource.title}</h1>
-                    <p className="mt-3 text-sm text-ink-600">{knownResource.note}</p>
-                    <div className="mt-6 flex flex-col gap-2">
-                      {knownResource.actions.map((action) =>
-                        action.kind === "chat" ? (
-                          <button
-                            key={action.label}
-                            type="button"
-                            onClick={openSafely}
-                            className="btn-rose inline-flex items-center justify-center gap-2"
-                          >
-                            <ExternalLink className="h-4 w-4" />
-                            {action.label}
-                          </button>
-                        ) : (
-                          <a
-                            key={action.label}
-                            href={action.href}
-                            className="btn-rose inline-flex items-center justify-center gap-2"
-                          >
-                            {action.kind === "call" ? (
-                              <Phone className="h-4 w-4" />
-                            ) : (
-                              <MessageSquareText className="h-4 w-4" />
-                            )}
-                            {action.label}
-                          </a>
-                        ),
-                      )}
-                    </div>
-                    <p className="mt-3 text-xs text-ink-500">
-                      Calls and texts open in your phone app — MrsANONymous never sees them.
-                    </p>
-                    <div className="mt-4 flex flex-wrap justify-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => navigate({ to: "/resources" })}
-                        className="btn-ghost inline-flex items-center gap-2"
-                      >
-                        <ArrowLeft className="h-4 w-4" />
-                        Back to MrsANONymous
-                      </button>
-                    </div>
-                  </>
-            ) : (
-              <>
             <h1 className="font-serif text-2xl text-ink-900">{host} can&apos;t be shown inside the app</h1>
             <p className="mt-3 text-sm text-ink-600">
               This organization blocks being displayed inside other sites. To keep you safe,
