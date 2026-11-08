@@ -1,5 +1,5 @@
 # Roadmap
-- [ ] Prevent unfinished notebook and incident-note text loss during phone rotation/page recreation; verify signed-in recovery and safe draft clearing.
+- [x] Recover unfinished notebook and incident-note text after phone-page recreation; signed-in browser rotation/reload, save/readback, Quick Exit clearing and four tests passed; physical Android rotation needs tester recheck.
 - [ ] Provide Android APK/AAB for the owner's Firebase project — waiting to confirm App Distribution upload screen and access to the existing Android build/signing project; preserve existing Play signing identity.
 - [x] Recheck monitoring safety reports: phone menu already portals to body; reject delayed street-address replies for different current GPS coordinates. Verify simulated SMS drafts without sending to emergency services.
 - [x] Fix 911 text losing its street address when GPS sharpens: keep the address inside the fix's uncertainty radius, re-look-up on a real move or a meaningful accuracy gain. Verified 12 unit tests and browser drafts (same spot keeps address; 1km move swaps address).
