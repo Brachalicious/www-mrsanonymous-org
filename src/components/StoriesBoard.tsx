@@ -6,7 +6,6 @@ import { Eye, EyeOff, AlertTriangle, Flag, Ban } from "lucide-react";
 import { reportStory, blockStoryAuthor, REPORT_REASONS } from "@/lib/moderation.functions";
 import { Button } from "@/components/ui/button";
 import { Pin, ChevronLeft, ChevronRight } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { boardTopics, browseStories, storyDate, type BoardSort } from "@/lib/board-browse";
 
 export function StoriesBoard() {
@@ -61,13 +60,13 @@ export function StoriesBoard() {
               {topics.map((topic) => <Button key={topic} variant={selectedTopics.includes(topic) ? "default" : "outline"} size="sm" className="h-auto min-h-9 max-w-full whitespace-normal break-words" aria-pressed={selectedTopics.includes(topic)} onClick={() => setSelectedTopics((current) => current.includes(topic) ? current.filter((value) => value !== topic) : [...current, topic])}>{topic}</Button>)}
             </div>
           </fieldset>
-          <div className="w-full sm:w-48">
-            <label id="board-sort-label" className="mb-2 block font-semibold text-foreground">Sort by</label>
-            <Select value={sort} onValueChange={(value) => { if (value === "newest" || value === "oldest") setSort(value); }}>
-              <SelectTrigger aria-labelledby="board-sort-label" className="bg-background"><SelectValue /></SelectTrigger>
-              <SelectContent><SelectItem value="newest">Most recent</SelectItem><SelectItem value="oldest">Oldest first</SelectItem></SelectContent>
-            </Select>
-          </div>
+          <fieldset className="w-full sm:w-auto">
+            <legend className="mb-2 font-semibold text-foreground">Sort by</legend>
+            <div className="inline-flex gap-1 rounded-md border border-border bg-background p-1">
+              <Button variant={sort === "newest" ? "default" : "ghost"} size="sm" aria-pressed={sort === "newest"} onClick={() => setSort("newest")}>Most recent</Button>
+              <Button variant={sort === "oldest" ? "default" : "ghost"} size="sm" aria-pressed={sort === "oldest"} onClick={() => setSort("oldest")}>Oldest first</Button>
+            </div>
+          </fieldset>
         </div>
         <p role="status" className="text-sm text-foreground">{visibleStories.length} {visibleStories.length === 1 ? "story" : "stories"}{selectedTopics.length ? ` · ${selectedTopics.join(" or ")}` : " · All topics"}</p>
       </div>
