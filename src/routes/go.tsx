@@ -127,6 +127,7 @@ function GoPage() {
   } catch {
     /* keep raw */
   }
+  const knownResource = blockedResourceFor(url);
 
   async function copyLink() {
     if (!url) return;
@@ -200,15 +201,12 @@ function GoPage() {
             >
               <X className="h-4 w-4" />
             </button>
-            {(() => {
-              const known = url ? blockedResourceFor(url) : null;
-              if (known) {
-                return (
+            {knownResource ? (
                   <>
-                    <h1 className="font-serif text-2xl text-ink-900">{known.title}</h1>
-                    <p className="mt-3 text-sm text-ink-600">{known.note}</p>
+                    <h1 className="font-serif text-2xl text-ink-900">{knownResource.title}</h1>
+                    <p className="mt-3 text-sm text-ink-600">{knownResource.note}</p>
                     <div className="mt-6 flex flex-col gap-2">
-                      {known.actions.map((action) =>
+                      {knownResource.actions.map((action) =>
                         action.kind === "chat" ? (
                           <button
                             key={action.label}
