@@ -1,8 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, Copy, ExternalLink, Maximize2, Minimize2, X } from "lucide-react";
+import { ArrowLeft, Copy, ExternalLink, Maximize2, MessageSquareText, Minimize2, Phone, X } from "lucide-react";
 import { readGoUrl } from "@/lib/go-link";
 import { checkFramable } from "@/lib/frame-check.functions";
+import { blockedResourceFor } from "@/lib/blocked-resources";
 
 type Search = { url?: string; r?: string };
 
