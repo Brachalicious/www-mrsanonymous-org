@@ -627,6 +627,51 @@ const FALLBACK_ANSWER =
 
 const GREETING_IDS = new Set(["greeting", "what_can_you_do"]);
 
+// Emotional distress that is not an immediate physical emergency: answer with
+// warmth first, then guidance. Danger phrases above still win over this.
+const DISTRESS_PHRASES = [
+  "feel alone",
+  "feeling alone",
+  "so alone",
+  "so scared",
+  "im scared",
+  "i am scared",
+  "really scared",
+  "crying",
+  "cant stop crying",
+  "depressed",
+  "anxious",
+  "nobody cares",
+  "no one cares",
+  "cant take it",
+  "cant do this anymore",
+  "worthless",
+  "hopeless",
+  "i hate myself",
+  "im not okay",
+  "i am not okay",
+  "not okay",
+  "overwhelmed",
+  "heartbroken",
+  "ashamed",
+  "embarrassed",
+  "my fault",
+  "feel broken",
+  "feel numb",
+  "stressed out",
+];
+
+const EMPATHY_PREFIX =
+  "Thank you for telling me. What you are feeling is real, and you do not have to go through it alone.\n\n";
+
+const EMPATHY_ANSWER =
+  EMPATHY_PREFIX +
+  "If you want to talk to someone trained to listen, free and confidential, 24/7:\n- 988 Suicide and Crisis Lifeline: call or text 988.\n- Crisis Text Line: text HOME to 741741.\n- National Domestic Violence Hotline: 1-800-799-SAFE (7233).\n\nThe Resources page lists more, including text and chat options for when speaking is not safe. And if you are in danger right now, tap the red button and Text 911.";
+
+function isDistressed(normalized: string): boolean {
+  return DISTRESS_PHRASES.some((phrase) => normalized.includes(phrase));
+}
+
 export function normalizeGuidanceText(text: string): string {
   return text
     .toLowerCase()
