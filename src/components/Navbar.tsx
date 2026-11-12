@@ -126,7 +126,7 @@ export function Navbar() {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2 lg:px-10">
           <div className="flex min-w-0 flex-1 items-center gap-2">
             <span className="inline-block h-2 w-2 shrink-0 animate-soft-pulse rounded-full bg-rose-500" />
-            <span className="shrink-0 text-sm font-bold uppercase tracking-wider text-white sm:text-base">
+            <span className="min-w-0 truncate text-sm font-bold uppercase tracking-wider text-white sm:shrink-0 sm:text-base">
               {t("safety.needLeave")}
             </span>
             <span className="hidden items-center gap-1.5 text-sm text-white/80 sm:flex sm:text-base">
