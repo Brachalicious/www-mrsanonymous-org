@@ -137,9 +137,9 @@ export function Navbar() {
             <button
               data-testid="safety-strip-quick-exit"
               onClick={performQuickExit}
-              className="inline-flex shrink-0 items-center gap-1 rounded-sm border border-rose-400 bg-rose-500 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white hover:bg-rose-600"
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-md border-2 border-rose-300 bg-rose-500 px-4 py-2 text-sm font-extrabold uppercase tracking-wider text-white shadow-lg shadow-rose-950/50 ring-2 ring-rose-300/60 animate-soft-pulse hover:bg-rose-600 sm:px-5 sm:py-2.5 sm:text-base"
             >
-              <X className="h-3 w-3" />
+              <X className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={3} />
               {t("safety.quickExit")}
             </button>
           </div>
