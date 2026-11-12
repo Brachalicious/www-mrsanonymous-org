@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] Fix report #10211: readable legal pages before agreement, help-button clearance and separate sign-up labels/fields; verify on phone and desktop.
 - [x] Add Board posting dates, newest/oldest sorting and selectable topic-interest filters; seven tests passed, signed-in date ordering and phone controls verified. Existing visible stories have no topic tags; filters match writer-selected tags without inferring sensitive content.
 - [x] Recover unfinished notebook and incident-note text after phone-page recreation; signed-in browser rotation/reload, save/readback, Quick Exit clearing and four tests passed; physical Android rotation needs tester recheck.
 - [ ] Provide Android APK/AAB for the owner's Firebase project — waiting to confirm App Distribution upload screen and access to the existing Android build/signing project; preserve existing Play signing identity.

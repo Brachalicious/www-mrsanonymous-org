@@ -12,6 +12,8 @@
 - Render the phone navigation overlay through a portal into document.body, with a viewport-height shell and independently scrolling links; the blurred sticky header otherwise confines fixed descendants to its own height.
 - Keep both install manifests on the same URL-based identity and set calculator installation metadata globally, not through temporary page effects, so navigation cannot revert the launcher appearance.
 - Anchor the emergency options panel independently to viewport top and bottom safe bounds, with internal scrolling, so trigger size and text wrapping cannot push its top off-screen.
+- Reserve a fixed bottom emergency dock outside the independently scrolling app content, using one shared safe-area height token, so safety controls never cover reading text or links.
+- Allow Terms and Privacy reading before acceptance, with a return-to-agreement action; all other content retains the agreement and calculator gates.
 - Keep an emergency street address while the reader stays inside the uncertainty radius of the GPS fix that produced it, and re-look-up on a real move or a meaningful accuracy gain; requiring exact coordinate equality wipes a good address on ordinary GPS jitter.
 - Guidance uses route-addressed threads, owner-scoped Cloud storage and recovery-lock checks; a browser-safe knowledge base under `src/lib/guidance/` ranks specific phrases above generic keywords so common site questions stay local. Any external AI fallback must fail closed until provider access, cost restrictions, and sensitive-data safeguards are verified.
 - The AI guidance path stays switched off while the app is public: the guidance API route must answer without ever reaching the AI gateway so no credits can be spent.

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { isDisguiseLocked } from "./CalcGate";
+import { Button } from "@/components/ui/button";
 
 const LS_TERMS = "terms_accepted_v1";
 
@@ -47,7 +48,9 @@ export function TermsGate() {
   }, [refresh]);
 
   // Lock background scroll while the gate is up.
-  const visible = pathname !== "/download" && hydrated && !accepted && !calcLocked;
+  const readingLegal = pathname === "/terms" || pathname === "/privacy";
+  const needsAgreement = hydrated && !accepted && !calcLocked;
+  const visible = pathname !== "/download" && !readingLegal && needsAgreement;
   useEffect(() => {
     if (!visible) return;
     const prev = document.body.style.overflow;
@@ -57,6 +60,13 @@ export function TermsGate() {
     };
   }, [visible]);
 
+  if (readingLegal && needsAgreement) {
+    return (
+      <div className="fixed inset-x-0 bottom-[var(--emergency-dock-height)] z-[70] flex justify-center border-t border-ink-300 bg-paper p-3">
+        <Button asChild><Link to="/">Return to agreement</Link></Button>
+      </div>
+    );
+  }
   if (!visible) return null;
 
   function agree() {
@@ -138,7 +148,7 @@ export function TermsGate() {
           </label>
         </div>
 
-        <button
+        <Button
           type="button"
           onClick={agree}
           disabled={!canAgree}
@@ -146,7 +156,7 @@ export function TermsGate() {
           className="btn-rose mt-5 w-full disabled:cursor-not-allowed disabled:opacity-40"
         >
           Agree &amp; enter
-        </button>
+        </Button>
 
         <p className="mt-3 text-center text-xs text-ink-500">
           Press <kbd className="rounded border border-ink-300 px-1">ESC</kbd> at any

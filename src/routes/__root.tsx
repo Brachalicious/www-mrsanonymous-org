@@ -4,11 +4,12 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useLocation,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { initTest911 } from "@/lib/test-911";
 
 import appCss from "../styles.css?url";
@@ -145,6 +146,12 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
+  const { pathname } = useLocation();
+  const contentShell = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    contentShell.current?.scrollTo({ top: 0 });
+  }, [pathname]);
 
   useEffect(() => {
     initTest911();
@@ -165,7 +172,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <LanguageProvider>
-          <div className="flex min-h-screen flex-col">
+          <div ref={contentShell} className="app-content-shell flex flex-col">
             <PrivacyBanner />
             <Navbar />
             <main className="flex-1">
