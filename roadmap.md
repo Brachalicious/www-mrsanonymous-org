@@ -1,5 +1,5 @@
 # Roadmap
-- [ ] Fix report #10211: readable legal pages before agreement, help-button clearance and separate sign-up labels/fields; verify on phone and desktop.
+- [x] Fix report #10211: Terms and Privacy readable before agreement without accepting; help dock stays outside scrolling text/footer; sign-up labels and bordered fields separated. Verified 360×640, 390×844 and 1280×1800, no runtime errors, 14 calculator/location tests passed; awaiting publishing and physical Android tester recheck.
 - [x] Add Board posting dates, newest/oldest sorting and selectable topic-interest filters; seven tests passed, signed-in date ordering and phone controls verified. Existing visible stories have no topic tags; filters match writer-selected tags without inferring sensitive content.
 - [x] Recover unfinished notebook and incident-note text after phone-page recreation; signed-in browser rotation/reload, save/readback, Quick Exit clearing and four tests passed; physical Android rotation needs tester recheck.
 - [ ] Provide Android APK/AAB for the owner's Firebase project — waiting to confirm App Distribution upload screen and access to the existing Android build/signing project; preserve existing Play signing identity.
