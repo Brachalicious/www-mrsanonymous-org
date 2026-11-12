@@ -62,7 +62,7 @@ export function TermsGate() {
 
   if (readingLegal && needsAgreement) {
     return (
-      <div className="fixed inset-x-0 bottom-[var(--emergency-dock-height)] z-[70] flex justify-center border-t border-ink-300 bg-paper p-3">
+      <div data-testid="legal-agreement-return" className="fixed inset-x-0 bottom-[var(--emergency-dock-height)] z-[70] flex h-16 items-center justify-center border-t border-ink-300 bg-paper p-3">
         <Button asChild><Link to="/">Return to agreement</Link></Button>
       </div>
     );

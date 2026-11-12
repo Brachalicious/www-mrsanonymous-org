@@ -153,6 +153,10 @@
   scroll-padding-bottom: 4rem;
 }
 
+body:has([data-testid="legal-agreement-return"]) .app-content-shell {
+  height: calc(100dvh - var(--emergency-dock-height) - 4rem);
+}
+
 @utility input-soft {
   display: block;
   width: 100%;
