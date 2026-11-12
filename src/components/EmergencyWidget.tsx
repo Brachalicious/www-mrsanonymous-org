@@ -542,6 +542,19 @@ export function EmergencyWidget() {
               </a>
             )}
 
+            {emergency.smsSupported ? (
+              <p className="text-[10px] leading-snug text-ink-500">
+                Text {emergency.sms ?? emergency.police} opens your phone's Messages app with the
+                message already written for you — and, if selected, your written street address,
+                which stays hidden from this app and is only visible to {emergency.sms ?? emergency.police} and you.
+              </p>
+            ) : (
+              <p className="text-[10px] leading-snug text-ink-500">
+                Texting {emergency.police} is not supported where you are — please call{" "}
+                {emergency.policeLabel} instead.
+              </p>
+            )}
+
             <div className="rounded-lg border border-ink-300/60 bg-cream-100 p-2">
               <p className="text-[10px] font-bold uppercase tracking-widest text-ink-700">
                 Share my story by text
