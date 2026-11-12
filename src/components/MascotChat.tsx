@@ -70,13 +70,16 @@ export function MascotChat({ open, onClose }: { open: boolean; onClose: () => vo
       </div>
       <div className="min-h-0 flex-1">
         {!user ? (
-          <div className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center">
-            <p>Sign in to chat with the mascot and keep your conversations in your account.</p>
-            <Button asChild>
-              <Link to="/login" onClick={onClose}>
-                Sign in
+          <div className="flex h-full flex-col">
+            <p className="border-b border-border px-3 py-2 text-xs">
+              Want to keep this conversation?{" "}
+              <Link to="/login" onClick={onClose} className="font-semibold underline">
+                Sign in to save it
               </Link>
-            </Button>
+            </p>
+            <div className="min-h-0 flex-1">
+              <GuidanceChat initialMessages={[]} />
+            </div>
           </div>
         ) : threads.error ? (
           <p role="alert" className="p-6 text-destructive">
