@@ -124,4 +124,56 @@ describe("built-in guidance answers", () => {
     assert.match(answer, /Love is Respect/);
     assert.match(answer, /22522/);
   });
+
+  test("a general resource question lists the full crisis line directory", () => {
+    const answer = answerGuidanceQuestion("where can i find hotlines and crisis resources");
+    assert.match(answer, /866-488-7386/);
+    assert.match(answer, /741741/);
+    assert.match(answer, /1-800-656-HOPE/);
+    assert.match(answer, /StrongHearts/);
+  });
+
+  test("distress with no app question gets a warm answer with listening lines", () => {
+    const answer = answerGuidanceQuestion("i feel so alone and nobody cares about me");
+    assert.match(answer, /do not have to go through it alone/);
+    assert.match(answer, /988/);
+    assert.match(answer, /741741/);
+  });
+
+  test("distress plus an app question gets empathy first, then the practical answer", () => {
+    const answer = answerGuidanceQuestion("im so scared, how do i use quick exit");
+    assert.match(answer, /Thank you for telling me/);
+    assert.match(answer, /ESC/);
+  });
+
+  test("suicidal feelings get an empathetic answer with 988, not the fallback", () => {
+    const answer = answerGuidanceQuestion("i want to die");
+    assert.match(answer, /988/);
+    assert.match(answer, /You matter/);
+    assert.doesNotMatch(answer, /I can only answer questions about using/);
+  });
+
+  test("sexual assault disclosure gets empathy and the RAINN line", () => {
+    const answer = answerGuidanceQuestion("i was raped and i dont know what to do");
+    assert.match(answer, /not your fault/);
+    assert.match(answer, /1-800-656-HOPE/);
+  });
+
+  test("shelter questions point at the safe housing section and the hotline", () => {
+    const answer = answerGuidanceQuestion("where can i go somewhere safe tonight");
+    assert.match(answer, /Shelters & safe housing/);
+    assert.match(answer, /1-800-799-SAFE/);
+  });
+
+  test("teen dating questions point at Love is Respect", () => {
+    const answer = answerGuidanceQuestion("my boyfriend controls my phone, is that dating abuse");
+    assert.match(answer, /Love is Respect/);
+    assert.match(answer, /22522/);
+  });
+
+  test("lgbtq questions point at the Trevor Project", () => {
+    const answer = answerGuidanceQuestion("i am trans and my family is hurting me");
+    assert.match(answer, /866-488-7386/);
+    assert.match(answer, /678678/);
+  });
 });
