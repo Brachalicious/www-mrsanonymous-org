@@ -103,4 +103,25 @@ describe("built-in guidance answers", () => {
   test("a body cam app question is not swallowed by generic install terms", () => {
     assert.equal(matchGuidanceTopic("where is the body cam in this app")?.id, "body_cam");
   });
+
+  test("asking about signs of abuse selects the recognize step of the 3 R's", () => {
+    const answer = answerGuidanceQuestion("what are the signs of abuse, is this abuse");
+    assert.match(answer, /Recognize/);
+    assert.match(answer, /power and control/);
+  });
+
+  test("helping a friend selects the respond step of the 3 R's", () => {
+    const answer = answerGuidanceQuestion("my friend is being abused, how do i help");
+    assert.match(answer, /Respond/);
+    assert.match(answer, /not their fault/);
+    assert.match(answer, /call 911/);
+  });
+
+  test("asking for the hotline numbers selects the refer step of the 3 R's", () => {
+    const answer = answerGuidanceQuestion("what is the national domestic violence hotline number");
+    assert.match(answer, /1-800-799-SAFE/);
+    assert.match(answer, /88788/);
+    assert.match(answer, /Love is Respect/);
+    assert.match(answer, /22522/);
+  });
 });
