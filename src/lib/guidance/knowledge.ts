@@ -120,7 +120,7 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
       "emergency options",
     ],
     answer:
-      "Tap the Help Hand Signal button at the bottom of the page. There you can call 911, or Text 911.\n\nText 911 opens your phone's Messages app with the message already written for you, starting with your written street address. You choose whether to send it.\n\nWhere texting 911 is not supported, the app says so and shows you the number to call instead.",
+      "Tap the Help Hand Signal button at the bottom of the page. There you can call 911, or Text 911.\n\nText 911 opens your phone's Messages app with the message already written for you and, if selected, your written street address — which remains hidden from the app and is only visible to 911 and you. You choose whether to send it.\n\nWhere texting 911 is not supported, the app says so and shows you the number to call instead.",
   },
   {
     id: "location",
