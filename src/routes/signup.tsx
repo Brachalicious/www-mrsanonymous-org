@@ -74,7 +74,7 @@ function SignupPage() {
 
         <form onSubmit={submit} data-testid="signup-form" className="note-card mt-8 space-y-4 p-7">
           <label className="block">
-            <span className="text-xs font-semibold uppercase tracking-widest text-ink-500">
+            <span className="block text-xs font-semibold uppercase tracking-widest text-ink-500">
               Nickname (do NOT use your real name)
             </span>
             <input
@@ -156,7 +156,7 @@ function SignupPage() {
           </div>
 
           <label className="block">
-            <span className="text-xs font-semibold uppercase tracking-widest text-ink-500">
+            <span className="block text-xs font-semibold uppercase tracking-widest text-ink-500">
               Where are you? (for local emergency numbers &amp; help)
             </span>
             <select
@@ -179,7 +179,7 @@ function SignupPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <label className="block">
-              <span className="text-xs font-semibold uppercase tracking-widest text-ink-500">
+              <span className="block text-xs font-semibold uppercase tracking-widest text-ink-500">
                 State / Region <span className="normal-case tracking-normal">(optional)</span>
               </span>
               <input
@@ -192,7 +192,7 @@ function SignupPage() {
               />
             </label>
             <label className="block">
-              <span className="text-xs font-semibold uppercase tracking-widest text-ink-500">
+              <span className="block text-xs font-semibold uppercase tracking-widest text-ink-500">
                 City <span className="normal-case tracking-normal">(optional)</span>
               </span>
               <input

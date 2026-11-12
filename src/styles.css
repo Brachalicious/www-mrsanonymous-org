@@ -67,6 +67,7 @@
 }
 
 :root {
+  --emergency-dock-height: calc(6.5rem + env(safe-area-inset-bottom, 0px));
   --radius: 0.625rem;
 
   /* Warm paper base */
@@ -139,6 +140,41 @@
 }
 
 /* Custom utilities */
+@media (min-width: 640px) {
+  :root {
+    --emergency-dock-height: calc(9rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+.app-content-shell {
+  height: calc(100dvh - var(--emergency-dock-height));
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scroll-padding-bottom: 4rem;
+}
+
+body:has([data-testid="legal-agreement-return"]) .app-content-shell {
+  height: calc(100dvh - var(--emergency-dock-height) - 4rem);
+}
+
+@utility input-soft {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--color-ink-300);
+  border-radius: var(--radius-md);
+  background-color: var(--color-card);
+  color: var(--color-ink-900);
+  padding: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-rose-500);
+    outline-offset: 2px;
+  }
+}
+
 @utility paper-bg {
   background-color: var(--color-paper);
 }

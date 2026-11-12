@@ -440,7 +440,7 @@ export function EmergencyWidget() {
   const msgLangDir = LANGUAGES.find((l) => l.code === msgLang)?.dir ?? "ltr";
 
   return (
-    <div className="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom))] right-3 z-[60] flex flex-col items-end gap-3 sm:bottom-5 sm:right-5">
+    <div className="fixed inset-x-0 bottom-0 z-[60] flex h-[var(--emergency-dock-height)] items-start justify-end border-t border-ink-300 bg-paper px-3 pt-3 sm:px-5 sm:pt-4">
       {open && (
         <div
           data-testid="emergency-options-panel"
