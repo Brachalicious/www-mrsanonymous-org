@@ -40,6 +40,21 @@ function setExitFlag() {
   }
 }
 
+// Navigate the WHOLE browser tab away. When the app runs inside a frame
+// (e.g. a preview embed), navigating only the frame makes Google refuse to
+// load and shows an error page instead of a safe exit.
+function navigateAway(url: string) {
+  try {
+    if (window.top && window.top !== window.self) {
+      window.top.location.replace(url);
+      return;
+    }
+  } catch {
+    // Cross-origin access blocked — fall through to same-frame navigation.
+  }
+  window.location.replace(url);
+}
+
 export function performQuickExit() {
   clearNoteDrafts();
   // Mark the exit so any attempt to return (back button, bfcache restore)
@@ -48,7 +63,7 @@ export function performQuickExit() {
   // Replace the current history entry with the safe URL so this app
   // does NOT remain in the browser's back/forward history. The exit must
   // always stay in the current tab and never create a new tab or entry.
-  window.location.replace(QUICK_EXIT_URL);
+  navigateAway(QUICK_EXIT_URL);
 }
 
 export function performQuickExitFallback() {
@@ -56,7 +71,7 @@ export function performQuickExitFallback() {
   // If Google is blocked by the network, fall back to a blank page so the
   // back button still cannot return to MrsANONymous.
   setExitFlag();
-  window.location.replace("about:blank");
+  navigateAway("about:blank");
 }
 
 function exitLockActive(): boolean {
