@@ -21,9 +21,9 @@ export function GuidanceChat({
   initialMessages,
   onSaved,
 }: {
-  threadId: string;
+  threadId?: string;
   initialMessages: GuidanceMessage[];
-  onSaved: () => void;
+  onSaved?: () => void;
 }) {
   const [messages, setMessages] = useState<GuidanceMessage[]>(initialMessages);
   const [draft, setDraft] = useState("");
@@ -54,10 +54,11 @@ export function GuidanceChat({
     };
     setMessages((current) => [...current, userMessage, answer]);
     setDraft("");
+    if (!threadId) return;
     setSaving(true);
     try {
       await append({ data: { threadId, messages: [userMessage, answer] } });
-      onSaved();
+      onSaved?.();
     } catch (cause) {
       setError(
         cause instanceof Error
@@ -145,7 +146,8 @@ export function GuidanceChat({
           </Button>
         </form>
         <p className="mt-2 text-xs text-ink-700">
-          Built-in guide · no AI, no cost · Not emergency support · Saved in your account.{" "}
+          Built-in guide · no AI, no cost · Not emergency support ·{" "}
+          {threadId ? "Saved in your account." : "Not saved — disappears when you close it."}{" "}
           <Link to="/privacy" className="underline">
             Privacy
           </Link>
