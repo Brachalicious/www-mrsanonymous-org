@@ -717,9 +717,17 @@ export function answerGuidanceQuestion(text: string): string {
   const normalized = normalizeGuidanceText(text);
   if (!normalized) return FALLBACK_ANSWER;
   if (isImmediateDanger(normalized)) return DANGER_ANSWER;
+  const distressed = isDistressed(normalized);
   const topic = matchGuidanceTopic(text);
-  if (!topic) return FALLBACK_ANSWER;
+  if (!topic) return distressed ? EMPATHY_ANSWER : FALLBACK_ANSWER;
   // A bare greeting or "help" with no real question still gets the overview.
-  if (GREETING_IDS.has(topic.id) && normalized.split(" ").length > 6) return FALLBACK_ANSWER;
+  if (GREETING_IDS.has(topic.id) && normalized.split(" ").length > 6) {
+    return distressed ? EMPATHY_ANSWER : FALLBACK_ANSWER;
+  }
+  // Distressed askers get a warm opening before the practical answer,
+  // except topics whose answer already leads with empathy.
+  if (distressed && topic.id !== "suicidal" && topic.id !== "sexual_assault") {
+    return EMPATHY_PREFIX + topic.answer;
+  }
   return topic.answer;
 }
