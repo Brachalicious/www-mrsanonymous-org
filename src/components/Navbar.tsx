@@ -126,13 +126,13 @@ export function Navbar() {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2 lg:px-10">
           <div className="flex min-w-0 flex-1 items-center gap-2">
             <span className="inline-block h-2 w-2 shrink-0 animate-soft-pulse rounded-full bg-rose-500" />
-            <span className="shrink-0 text-[11px] font-semibold uppercase tracking-wider text-white/90">
+            <span className="shrink-0 text-sm font-bold uppercase tracking-wider text-white sm:text-base">
               {t("safety.needLeave")}
             </span>
-            <span className="hidden items-center gap-1 text-[11px] text-white/60 sm:flex">
+            <span className="hidden items-center gap-1.5 text-sm text-white/80 sm:flex sm:text-base">
               {t("safety.pressEsc")}
-              <kbd className="rounded border border-white/30 bg-white/10 px-1.5 py-0.5 text-[10px] font-bold text-white">ESC</kbd>
-              <span className="text-white/40">{t("safety.or")}</span>
+              <kbd className="rounded border border-white/40 bg-white/10 px-2 py-0.5 text-sm font-bold text-white">ESC</kbd>
+              <span className="text-white/50">{t("safety.or")}</span>
             </span>
             <button
               data-testid="safety-strip-quick-exit"
