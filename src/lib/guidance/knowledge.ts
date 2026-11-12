@@ -114,10 +114,13 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
       "safety button",
       "red button",
       "floating button",
+      "hand signal",
+      "help hand",
+      "hand signal button",
       "emergency options",
     ],
     answer:
-      "Tap the floating red button at the bottom of any page. There you can call 911, or Text 911.\n\nText 911 opens your phone's Messages app with the message already written for you, starting with your written street address. You choose whether to send it.\n\nWhere texting 911 is not supported, the app says so and shows you the number to call instead.",
+      "Tap the Help Hand Signal button at the bottom of the page. There you can call 911, or Text 911.\n\nText 911 opens your phone's Messages app with the message already written for you, starting with your written street address. You choose whether to send it.\n\nWhere texting 911 is not supported, the app says so and shows you the number to call instead.",
   },
   {
     id: "location",
@@ -358,7 +361,7 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
       "said no",
     ],
     answer:
-      "I am so sorry. What happened to you was not your fault, and you did not deserve it.\n\nYou can talk to someone free and confidential, 24/7:\n- National Sexual Assault Hotline (RAINN): 1-800-656-HOPE (4673), or chat at rainn.org.\n- If you are hurt or in danger now, call 911 or tap the red button below.\n\nIf you are considering a medical exam, try not to shower or change clothes first, and know that an exam is your choice, not a requirement. When you are ready, the incident report in your Private Journal can help you keep a private record of what happened.",
+      "I am so sorry. What happened to you was not your fault, and you did not deserve it.\n\nYou can talk to someone free and confidential, 24/7:\n- National Sexual Assault Hotline (RAINN): 1-800-656-HOPE (4673), or chat at rainn.org.\n- If you are hurt or in danger now, call 911 or tap the Help Hand Signal button at the bottom of the page.\n\nIf you are considering a medical exam, try not to shower or change clothes first, and know that an exam is your choice, not a requirement. When you are ready, the incident report in your Private Journal can help you keep a private record of what happened.",
   },
   {
     id: "suicidal",
@@ -620,10 +623,10 @@ const IMMEDIATE_DANGER_PHRASES = [
 ];
 
 const DANGER_ANSWER =
-  "If you are in danger right now, put this chat down and get help:\n\n- Tap the red button at the bottom of the screen, then Text 911. Your written address goes at the top of that message.\n- Call 911.\n- The Trevor Project: call 866-488-7386, text 678678, or chat at chat.trvr.org\n- 988 Suicide and Crisis Lifeline: call or text 988.\n\nIf you need this screen gone fast, press ESC or tap ✕ Quick Exit.";
+  "If you are in danger right now, put this chat down and get help:\n\n- Tap the Help Hand Signal button at the bottom of the page, then Text 911. Your written address goes at the top of that message.\n- Call 911.\n- The Trevor Project: call 866-488-7386, text 678678, or chat at chat.trvr.org\n- 988 Suicide and Crisis Lifeline: call or text 988.\n\nIf you need this screen gone fast, press ESC or tap ✕ Quick Exit.";
 
 const FALLBACK_ANSWER =
-  "I can only answer questions about using MrsANONymous, and I did not find one for that.\n\nTry asking about: my saved notes, my safety plan, texting 911, THE BOARD, quick exit, the calculator disguise, or deleting my account.\n\nIf you need a person, use the Contact page for app support. If you are in danger, tap the red button and Text 911.";
+  "I can only answer questions about using MrsANONymous, and I did not find one for that.\n\nTry asking about: my saved notes, my safety plan, texting 911, THE BOARD, quick exit, the calculator disguise, or deleting my account.\n\nIf you need a person, use the Contact page for app support. If you are in danger, tap the Help Hand Signal button at the bottom of the page and Text 911.";
 
 const GREETING_IDS = new Set(["greeting", "what_can_you_do"]);
 
@@ -666,7 +669,7 @@ const EMPATHY_PREFIX =
 
 const EMPATHY_ANSWER =
   EMPATHY_PREFIX +
-  "If you want to talk to someone trained to listen, free and confidential, 24/7:\n- 988 Suicide and Crisis Lifeline: call or text 988.\n- Crisis Text Line: text HOME to 741741.\n- National Domestic Violence Hotline: 1-800-799-SAFE (7233).\n\nThe Resources page lists more, including text and chat options for when speaking is not safe. And if you are in danger right now, tap the red button and Text 911.";
+  "If you want to talk to someone trained to listen, free and confidential, 24/7:\n- 988 Suicide and Crisis Lifeline: call or text 988.\n- Crisis Text Line: text HOME to 741741.\n- National Domestic Violence Hotline: 1-800-799-SAFE (7233).\n\nThe Resources page lists more, including text and chat options for when speaking is not safe. And if you are in danger right now, tap the Help Hand Signal button at the bottom of the page and Text 911.";
 
 function isDistressed(normalized: string): boolean {
   return DISTRESS_PHRASES.some((phrase) => normalized.includes(phrase));
