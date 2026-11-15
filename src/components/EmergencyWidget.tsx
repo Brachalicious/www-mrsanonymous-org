@@ -50,6 +50,37 @@ const MSG_LANG_KEY = "mrsanon:panic-msg-lang";
 const DEFAULT_MSG =
   "Emergency. I need help. Please send police to my location.";
 
+// Text-to-emergency lines that are NOT a general public service: the wording
+// people see must say who they are for and what to do instead.
+const SMS_NOTES: Record<string, { en: string; he?: string }> = {
+  "israel-accessibility": {
+    en: "The 052-2020100 text line is Israel Police's emergency desk for people who are deaf, hard of hearing, or cannot speak on the phone. If you can call, call 100 — it is faster.",
+    he: "קו הסלולרי 052-2020100 של משטרת ישראל הוא מוקד חירום לאנשים עם מוגבלות בשמיעה או בדיבור. אם אפשר להתקשר — עדיף להתקשר 100.",
+  },
+  "uk-registration": {
+    en: "Texting 999 only works if your phone was registered in advance: text REGISTER to 999, then reply YES. It is for people who are deaf, hard of hearing or cannot speak. Do the registering now, not during an emergency — if you can call, call 999.",
+  },
+  "ca-registration": {
+    en: "Texting 911 in Canada (Text with 9-1-1) is for people who are deaf, hard of hearing or cannot speak, your phone must be registered with your carrier first, and it is not offered everywhere. If you can call, call 911.",
+  },
+  "au-tty": {
+    en: "Australia has no text-message emergency number. 106 only works on a TTY/textphone for people who are deaf or have a hearing or speech impairment. A normal text message will not reach 000 — call 000, or 112 from a mobile.",
+  },
+  "nz-registration": {
+    en: "Texting 111 in New Zealand only works if you are deaf, hard of hearing or cannot speak and you registered your phone with NZ Police in advance. Texts from phones that are not registered do not go through. If you can call, call 111.",
+  },
+  "fr-accessibility": {
+    en: "The 114 text line is France's emergency service for people who are deaf, hard of hearing, or cannot speak — including when someone is in the room and you cannot talk. It is not for people who can call: if you can, call 17 or 112.",
+  },
+};
+
+function smsNote(key: string | undefined, lang: LangCode): string | null {
+  if (!key) return null;
+  const note = SMS_NOTES[key];
+  if (!note) return null;
+  return lang === "he" && note.he ? note.he : note.en;
+}
+
 type Loc = {
   lat: number;
   lon: number;
