@@ -65,6 +65,12 @@ function GoPage() {
     loaded.current = false;
     setBlocked(false);
     setDismissed(false);
+    if (isKnownUnframable(url)) {
+      setFrameBlocked(true);
+      frameBlockedRef.current = true;
+      setBlocked(true);
+      return;
+    }
     setFrameBlocked(null);
     frameBlockedRef.current = null;
     if (timer.current) window.clearTimeout(timer.current);
