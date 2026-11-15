@@ -207,7 +207,7 @@ describe("built-in guidance answers", () => {
   test("questions about Israel name the Weinberg Foundation survivor support page", () => {
     for (const q of [
       "is there help in israel",
-      "israeli domestic violence support",
+      "domestic violence help in israel",
     ]) {
       const answer = answerGuidanceQuestion(q);
       assert.match(answer, /hjweinbergfoundation\.org\/enews\/supporting-survivors/);
