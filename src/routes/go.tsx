@@ -6,6 +6,20 @@ import { checkFramable } from "@/lib/frame-check.functions";
 
 type Search = { url?: string; r?: string };
 
+// Sites verified to refuse framed loads in real browsers even though their
+// headers claim framing is allowed (bot protection varies by visitor). Skip
+// the iframe entirely and show the "open in new tab" fallback right away.
+const KNOWN_UNFRAMABLE_HOSTS = ["psychologytoday.com"];
+
+function isKnownUnframable(url: string): boolean {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    return KNOWN_UNFRAMABLE_HOSTS.some((h) => host === h || host.endsWith(`.${h}`));
+  } catch {
+    return false;
+  }
+}
+
 export const Route = createFileRoute("/go")({
   validateSearch: (search: Record<string, unknown>): Search => ({
     url: typeof search.url === "string" ? search.url : undefined,
@@ -51,6 +65,12 @@ function GoPage() {
     loaded.current = false;
     setBlocked(false);
     setDismissed(false);
+    if (isKnownUnframable(url)) {
+      setFrameBlocked(true);
+      frameBlockedRef.current = true;
+      setBlocked(true);
+      return;
+    }
     setFrameBlocked(null);
     frameBlockedRef.current = null;
     if (timer.current) window.clearTimeout(timer.current);
