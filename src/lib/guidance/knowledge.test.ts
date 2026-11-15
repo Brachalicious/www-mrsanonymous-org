@@ -186,6 +186,7 @@ describe("built-in guidance answers", () => {
       const answer = answerGuidanceQuestion(q);
       assert.match(answer, /opdv\.ny\.gov/);
       assert.match(answer, /justice\.gov\/ovw/);
+      assert.match(answer, /domesticshelters\.org\/articles\/financial/);
       assert.match(answer, /financial abuse/i);
       assert.doesNotMatch(answer, /I can only answer questions about using/);
     }
