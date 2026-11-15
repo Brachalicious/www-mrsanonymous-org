@@ -470,6 +470,8 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
       "cultural",
       "culturally",
       "my community",
+      "my own community",
+      "own community",
       "community support",
       "community resources",
       "uja federation",
