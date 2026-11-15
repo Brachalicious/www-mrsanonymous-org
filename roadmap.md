@@ -1,8 +1,8 @@
 # Roadmap — pre-production full test
 
-- [ ] Run all automated tests (guidance knowledge, board browse, note drafts, calculator/location)
-- [ ] Confirm build is clean
-- [ ] Verify signed-out flows: terms gate, calculator gate off, mascot guide (unsaved), Quick Exit (Escape/X/button), emergency panel, resources, board browsing
-- [ ] Verify signed-in flows: calculator unlock, journal save, notebook save, safety plan save, board share/report, support inbox, admin tools
-- [ ] Check publish state / unpublished changes
-- [ ] Report pass/fail per feature
+- [x] Run all automated tests (65 pass, 0 fail)
+- [x] Confirm build is clean
+- [x] Verify signed-out flows: terms gate, legal pages readable, mascot guide (unsaved), Quick Exit, emergency panel, resources, board, download page, footer warning
+- [x] Verify signed-in flows: dashboard, journal save/persist, safety plan autosave/persist, notebook create/open, guidance workspace, board, tell-your-story, inbox, settings, delete-account, admin denial for non-admin
+- [x] Check publish state / unpublished changes
+- [x] Report pass/fail per feature
