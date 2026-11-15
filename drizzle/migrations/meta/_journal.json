@@ -43,6 +43,13 @@
       "when": 1792911469707,
       "tag": "0005_admin_only_account_numbers",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794779514526,
+      "tag": "0006_create_phonebooks",
+      "breakpoints": true
     }
   ]
 }

@@ -387,6 +387,30 @@ export type Database = {
         }
         Relationships: []
       }
+      phonebooks: {
+        Row: {
+          contacts: Json
+          created_at: string
+          money: Json
+          owner_id: string
+          updated_at: string
+        }
+        Insert: {
+          contacts?: Json
+          created_at?: string
+          money?: Json
+          owner_id: string
+          updated_at?: string
+        }
+        Update: {
+          contacts?: Json
+          created_at?: string
+          money?: Json
+          owner_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           audience: string

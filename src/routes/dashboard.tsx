@@ -92,6 +92,14 @@ function DashboardPage() {
       testid: "dash-safety-plan",
     },
     {
+      to: "/phonebook",
+      title: "My Phonebook & money plan",
+      desc: "Save helpful numbers and sites, plan rent and bills, and track grants and savings.",
+      icon: <BookOpen className="h-6 w-6 text-rose-600" />,
+      tone: "bg-rose-100",
+      testid: "dash-phonebook",
+    },
+    {
       to: "/tools",
       title: "Safety tools",
       desc: "Quick exit, silent panic, SOFY mode, and private browsing help.",

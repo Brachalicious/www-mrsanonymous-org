@@ -47,6 +47,7 @@ export async function deleteAccountData(userId: string) {
   await clearStorage("evidence", userId);
   await clearStorage("notebook-covers", userId);
   checked(await supabaseAdmin.from("journal_entries").delete().eq("owner_id", userId));
+  checked(await supabaseAdmin.from("phonebooks").delete().eq("owner_id", userId));
   checked(await supabaseAdmin.from("security_questions").delete().eq("user_id", userId));
   checked(await supabaseAdmin.from("inbox_recovery_locks").delete().eq("user_id", userId));
   checked(await supabaseAdmin.from("story_blocks").delete().eq("owner_id", userId));

@@ -23,6 +23,7 @@ import { Route as GuidanceRouteImport } from './routes/guidance'
 import { Route as InboxRouteImport } from './routes/inbox'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as PhonebookRouteImport } from './routes/phonebook'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SafetyPlanRouteImport } from './routes/safety-plan'
@@ -109,6 +110,11 @@ const JournalRoute = JournalRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PhonebookRoute = PhonebookRouteImport.update({
+  id: '/phonebook',
+  path: '/phonebook',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -213,6 +219,7 @@ export interface FileRoutesByFullPath {
   '/inbox': typeof InboxRoute
   '/journal': typeof JournalRoute
   '/login': typeof LoginRoute
+  '/phonebook': typeof PhonebookRoute
   '/privacy': typeof PrivacyRoute
   '/resources': typeof ResourcesRoute
   '/safety-plan': typeof SafetyPlanRoute
@@ -245,6 +252,7 @@ export interface FileRoutesByTo {
   '/inbox': typeof InboxRoute
   '/journal': typeof JournalRoute
   '/login': typeof LoginRoute
+  '/phonebook': typeof PhonebookRoute
   '/privacy': typeof PrivacyRoute
   '/resources': typeof ResourcesRoute
   '/safety-plan': typeof SafetyPlanRoute
@@ -279,6 +287,7 @@ export interface FileRoutesById {
   '/inbox': typeof InboxRoute
   '/journal': typeof JournalRoute
   '/login': typeof LoginRoute
+  '/phonebook': typeof PhonebookRoute
   '/privacy': typeof PrivacyRoute
   '/resources': typeof ResourcesRoute
   '/safety-plan': typeof SafetyPlanRoute
@@ -314,6 +323,7 @@ export interface FileRouteTypes {
     | '/inbox'
     | '/journal'
     | '/login'
+    | '/phonebook'
     | '/privacy'
     | '/resources'
     | '/safety-plan'
@@ -346,6 +356,7 @@ export interface FileRouteTypes {
     | '/inbox'
     | '/journal'
     | '/login'
+    | '/phonebook'
     | '/privacy'
     | '/resources'
     | '/safety-plan'
@@ -379,6 +390,7 @@ export interface FileRouteTypes {
     | '/inbox'
     | '/journal'
     | '/login'
+    | '/phonebook'
     | '/privacy'
     | '/resources'
     | '/safety-plan'
@@ -413,6 +425,7 @@ export interface RootRouteChildren {
   InboxRoute: typeof InboxRoute
   JournalRoute: typeof JournalRoute
   LoginRoute: typeof LoginRoute
+  PhonebookRoute: typeof PhonebookRoute
   PrivacyRoute: typeof PrivacyRoute
   ResourcesRoute: typeof ResourcesRoute
   SafetyPlanRoute: typeof SafetyPlanRoute
@@ -528,6 +541,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/phonebook': {
+      id: '/phonebook'
+      path: '/phonebook'
+      fullPath: '/phonebook'
+      preLoaderRoute: typeof PhonebookRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -681,6 +701,7 @@ const rootRouteChildren: RootRouteChildren = {
   InboxRoute: InboxRoute,
   JournalRoute: JournalRoute,
   LoginRoute: LoginRoute,
+  PhonebookRoute: PhonebookRoute,
   PrivacyRoute: PrivacyRoute,
   ResourcesRoute: ResourcesRoute,
   SafetyPlanRoute: SafetyPlanRoute,
