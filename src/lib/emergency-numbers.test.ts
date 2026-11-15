@@ -21,5 +21,8 @@ test("an English speaker living in Israel gets the same Israel numbers", () => {
 
 test("countries with no public text-to-police service hide the text button", () => {
   assert.equal(getEmergency("es", "ES").smsSupported, false);
-  assert.equal(getEmergency("fr", "FR").smsSupported, false);
+  assert.equal(getEmergency("de", "DE").smsSupported, false);
+  // France does have a public text line: 114.
+  assert.equal(getEmergency("fr", "FR").sms, "114");
+  assert.equal(getEmergency("fr", "FR").smsSupported, true);
 });
