@@ -203,4 +203,16 @@ describe("built-in guidance answers", () => {
       assert.doesNotMatch(answer, /I can only answer questions about using/);
     }
   });
+
+  test("mental health and counseling questions name the UJA-Federation New York programs", () => {
+    for (const q of [
+      "is there help in the jewish community",
+      "i need a therapist",
+      "i need a counselor",
+    ]) {
+      const answer = answerGuidanceQuestion(q);
+      assert.match(answer, /ujafedny\.org\/what-we-do\/mental-health-well-being/);
+      assert.doesNotMatch(answer, /I can only answer questions about using/);
+    }
+  });
 });
