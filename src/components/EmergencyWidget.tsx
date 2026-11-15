@@ -585,6 +585,17 @@ export function EmergencyWidget() {
               </p>
             )}
 
+            {emergency.smsNoteKey === "israel-accessibility" && (
+              <p
+                data-testid="emergency-sms-note"
+                className="mt-1 rounded bg-amber-100 px-2 py-1 text-[10px] font-semibold leading-snug text-amber-900"
+              >
+                {uiLang === "he"
+                  ? "קו הסלולרי 052-2020100 של משטרת ישראל הוא מוקד חירום לאנשים עם מוגבלות בשמיעה או בדיבור. אם אפשר להתקשר — עדיף להתקשר 100."
+                  : "The 052-2020100 text line is Israel Police's emergency desk for people who are deaf, hard of hearing, or cannot speak on the phone. If you can call, call 100 — it is faster."}
+              </p>
+            )}
+
             <div className="rounded-lg border border-ink-300/60 bg-cream-100 p-2">
               <p className="text-[10px] font-bold uppercase tracking-widest text-ink-700">
                 Share my story by text
