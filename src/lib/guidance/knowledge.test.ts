@@ -227,4 +227,30 @@ describe("built-in guidance answers", () => {
       assert.doesNotMatch(answer, /I can only answer questions about using/);
     }
   });
+  test("country names select their local support topic rather than a generic resource answer", () => {
+    for (const [country, id] of [
+      ["Canada", "ca"], ["Mexico", "mx"], ["United Kingdom", "gb"],
+      ["Ireland", "ie"], ["Germany", "de"], ["France", "fr"], ["Spain", "es"],
+      ["Italy", "it"], ["Netherlands", "nl"], ["Sweden", "se"], ["Norway", "no"],
+      ["Denmark", "dk"], ["Finland", "fi"],
+    ]) {
+      assert.equal(matchGuidanceTopic(`domestic violence help in ${country}`)?.id, `country_support_${id}`);
+    }
+  });
+
+  test("UK-specific financial questions do not select US financial programs", () => {
+    assert.equal(matchGuidanceTopic("financial help in United Kingdom")?.id, "country_support_gb");
+  });
+
+  test("economic abuse organization names select financial guidance", () => {
+    for (const name of ["FreeFrom", "NNEDV", "Surviving Economic Abuse", "Against Economic Abuse"]) {
+      assert.equal(matchGuidanceTopic(name)?.id, "financial_help");
+    }
+  });
+
+  test("international directories have a local guide answer", () => {
+    assert.equal(matchGuidanceTopic("NO MORE directory")?.id, "international_directories");
+    assert.equal(matchGuidanceTopic("WAVE network")?.id, "international_directories");
+  });
+
 });
