@@ -10,7 +10,7 @@ import {
 } from "@/lib/saved-addresses";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LANGUAGES, translateToEnglish, type LangCode } from "@/lib/translations";
-import { getEmergency } from "@/lib/emergency-numbers";
+import { getEmergency, COUNTRY_OPTIONS, countryName } from "@/lib/emergency-numbers";
 import { getTest911Number, resolveSmsNumber } from "@/lib/test-911";
 import { useRegion } from "@/hooks/use-region";
 import helpSignalButton from "@/assets/help-signal-button.png.asset.json";
@@ -69,7 +69,7 @@ const GOOD_ACCURACY_M = 25;
 
 export function EmergencyWidget() {
   const { t, lang: uiLang } = useLanguage();
-  const { country: region } = useRegion();
+  const { country: region, setCountry, isChosen } = useRegion();
   const emergency = getEmergency(uiLang, region);
   const [open, setOpen] = useState(false);
   const [loc, setLoc] = useState<Loc | null>(null);
@@ -459,6 +459,34 @@ export function EmergencyWidget() {
           <p className="mt-2 text-xs text-ink-500">
             {t("emg.disclaimer")}
           </p>
+
+          <div className="mt-2 rounded-lg border border-ink-300/60 bg-cream-100 p-2">
+            <label
+              htmlFor="emergency-country-select"
+              className="text-[10px] font-bold uppercase tracking-widest text-ink-700"
+            >
+              My country
+            </label>
+            <select
+              id="emergency-country-select"
+              data-testid="emergency-country-select"
+              value={region ?? ""}
+              onChange={(e) => setCountry(e.target.value)}
+              className="mt-1 w-full rounded-md border border-ink-300 bg-white p-1 text-[11px] text-ink-900 focus:border-rose-500 focus:outline-none"
+            >
+              {COUNTRY_OPTIONS.map((c) => (
+                <option key={c.code} value={c.code}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+            <p className="mt-1 text-[10px] leading-snug text-ink-500">
+              {isChosen
+                ? "The numbers below are for this country."
+                : `We guessed ${countryName(region)} from your device. Change it if you are somewhere else.`}
+            </p>
+          </div>
+
           <a
             href={`tel:${emergency.police}`}
             className="btn-rose mt-2 w-full py-1.5 text-xs"

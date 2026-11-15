@@ -6,8 +6,8 @@ const KEY = "mrsanon:country";
 
 /**
  * The visitor's country, used to route emergency numbers and local resources.
- * Prefers the country saved on the signed-in profile, then a locally stored
- * choice, then a best-effort guess from the browser locale.
+ * Prefers the country explicitly chosen on this device, then the country saved
+ * on the signed-in profile, then a best-effort guess from the browser locale.
  */
 export function useRegion() {
   const { profile } = useAuth();
@@ -23,16 +23,6 @@ export function useRegion() {
 
   const profileCountry = (profile as { country?: string | null } | null)?.country ?? null;
 
-  useEffect(() => {
-    if (profileCountry) {
-      try {
-        localStorage.setItem(KEY, profileCountry);
-      } catch {
-        /* ignore */
-      }
-    }
-  }, [profileCountry]);
-
   const setCountry = useCallback((code: string) => {
     setStored(code);
     try {
@@ -42,7 +32,11 @@ export function useRegion() {
     }
   }, []);
 
-  const country = profileCountry ?? stored ?? (typeof window === "undefined" ? null : detectCountry());
+  const country = stored ?? profileCountry ?? (typeof window === "undefined" ? null : detectCountry());
 
-  return { country, setCountry };
+  // True when the number came from a real choice (this device or the profile)
+  // rather than from the browser-locale guess.
+  const isChosen = Boolean(stored ?? profileCountry);
+
+  return { country, setCountry, isChosen };
 }

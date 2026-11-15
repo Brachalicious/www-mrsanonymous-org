@@ -26,3 +26,17 @@ test("countries with no public text-to-police service hide the text button", () 
   assert.equal(getEmergency("fr", "FR").sms, "114");
   assert.equal(getEmergency("fr", "FR").smsSupported, true);
 });
+
+test("a Spanish speaker living in the United States gets 911, not 112", () => {
+  const us = getEmergency("es", "US");
+  assert.equal(us.country, "US");
+  assert.equal(us.police, "911");
+  assert.equal(us.sms, "911");
+  assert.equal(us.smsSupported, true);
+});
+
+test("an unlisted country falls back to the language default", () => {
+  const unknown = getEmergency("es", "ZZ");
+  assert.equal(unknown.country, "ES");
+  assert.equal(unknown.police, "112");
+});
