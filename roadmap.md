@@ -1,37 +1,8 @@
-# Roadmap
-- [x] Fix report #10211: Terms and Privacy readable before agreement without accepting; help dock stays outside scrolling text/footer; sign-up labels and bordered fields separated. Verified 360×640, 390×844 and 1280×1800, no runtime errors, 14 calculator/location tests passed; awaiting publishing and physical Android tester recheck.
-- [x] Add Board posting dates, newest/oldest sorting and selectable topic-interest filters; seven tests passed, signed-in date ordering and phone controls verified. Existing visible stories have no topic tags; filters match writer-selected tags without inferring sensitive content.
-- [x] Recover unfinished notebook and incident-note text after phone-page recreation; signed-in browser rotation/reload, save/readback, Quick Exit clearing and four tests passed; physical Android rotation needs tester recheck.
-- [ ] Provide Android APK/AAB for the owner's Firebase project — waiting to confirm App Distribution upload screen and access to the existing Android build/signing project; preserve existing Play signing identity.
-- [x] Recheck monitoring safety reports: phone menu already portals to body; reject delayed street-address replies for different current GPS coordinates. Verify simulated SMS drafts without sending to emergency services.
-- [x] Fix 911 text losing its street address when GPS sharpens: keep the address inside the fix's uncertainty radius, re-look-up on a real move or a meaningful accuracy gain. Verified 12 unit tests and browser drafts (same spot keeps address; 1km move swaps address).
-- [x] Expand built-in guidance for navigation, incident reports, recordings, saved confirmations, addresses, location problems, SOFY, conversations, and technical questions; improve specific-phrase matching. Verified 19 tests and signed-in answer persistence after reload.
-- [ ] Enable free-tier-only AI fallback — blocked on a suitable provider connection and privacy/cost verification; free Gemini may use disclosures for product improvement, so automatic forwarding remains off.
-- [x] Assign permanent admin-only account numbers to existing and new accounts; show searchable numbers in account administration, board moderation, and support inbox. Verified all existing accounts numbered, new signup assignment, stable refresh, exact lookup, admin-only RLS and temporary-account deletion; UI awaits publishing.
-- [x] Add individual admin account blocking and bounded re-registration prevention; preserve protected admins. Verified admin UI block, non-admin denial, blocked-browser registration denial, blocked posting, and deletion with ban retained.
-- [x] Screen shared board text for high-risk solicitation and queue flags for human review without AI spending. Verified hidden flagged posts, exact-text human approval, and re-screening changed content.
-- [x] Add automatic non-emergency acknowledgments to app support submissions and replies. Verified signed-in inbox acknowledgment, verified bearer ownership despite spoofed owner input, and guest acknowledgment with null ownership.
-- [x] Verify no-account Calculator installation and shorten access to home-screen instructions. Verified public download without terms delay; platform-native installation requires device-specific taps.
-- [x] Remove first-aid and CPR guidance and its Tools link following the owner's Google Play policy notice; verified Tools and the former page, build OK. Awaiting publishing.
-- [x] Restore persistent Calculator install name/icon without replacing the enlarged red artwork; tests and browser checks verified install metadata, passcode setup, and covered relaunch.
-- [x] Add selectable trigger warnings before board reveals, individual admin account deletion, and owner-only pinned page stacks; verified warning selection, reveal, persistent pin order, page/post removal, and temporary account deletion through signed-in UI.
-- [x] Clarify contact is app support, not therapy; add Psychology Today resource, enlarge admin reply box, and show role beside account name.
-- [x] Add admin board removal and private policy notices; signed-in admin UI verified removal, preserved private notebook, and read back the notice in the support inbox.
-- [ ] Activate admin for rki — blocked because no app account with this nickname exists; owner must create it and confirm before granting access.
-- [x] Inspect account separation: sign-in nicknames are unique, authentication identifies each account independently, and ownership is user-ID scoped; identical passwords do not merge accounts.
+# Roadmap — pre-production full test
 
-- [x] Make the footer guidance mascot open its page directly; verified image tap at 695×906 and guidance replies in preview and on the live site.
-- [x] Add clickable footer mascot and private account-saved guidance conversations.
-- [x] Verify mascot phone layout, guidance sign-in screen, message validation, and live AI replies.
-- [x] Switch the AI guidance assistant off for the public app: mascot removed from the footer, guidance pages show a closed notice, and the guidance API returns 410 without reaching the AI gateway (verified no credits spent).
-- [x] Restored the footer mascot and chat popup as the free built-in guide; the AI path stays switched off and the guidance API still refuses without reaching the AI gateway.
-- [ ] Publish the pending frontend batch (guidance off, footer branding, safety-plan export, board and phone fixes) once the owner says publish.
-
-- [x] Clickable label box at bottom of notebook cover to rename (NotebookCover)
-- [x] Wire rename in NotebookList via updateNotebook
-- [x] Make NotebookCover match the CoverDesigner preview (label box, marble, spine)
-- [x] Clean marble styling (natural wavy veins + soft clouds, colors stay true — verified pink/red/mixed)
-- [x] Typecheck passed; verified via browser screenshots
-- [x] Footer branding: black/white/red MysticMinded33 credit, large and bold, clickable to mysticminded33.com (verified phone + desktop clearance).
-- [x] Enlarged footer logo circle (viewport-scaled) and verified clearance on 7 screen sizes.
-- [x] Built the free built-in guide: the mascot opens a chat answered from written answers inside the app — no AI, no cost, no key. Answers still save to the account; verified hello state, answers, save on reload, and zero AI-gateway calls.
+- [ ] Run all automated tests (guidance knowledge, board browse, note drafts, calculator/location)
+- [ ] Confirm build is clean
+- [ ] Verify signed-out flows: terms gate, calculator gate off, mascot guide (unsaved), Quick Exit (Escape/X/button), emergency panel, resources, board browsing
+- [ ] Verify signed-in flows: calculator unlock, journal save, notebook save, safety plan save, board share/report, support inbox, admin tools
+- [ ] Check publish state / unpublished changes
+- [ ] Report pass/fail per feature
