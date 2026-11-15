@@ -941,6 +941,7 @@ const SECTIONS: { id: string; title: string; items: ResourceItem[] }[] = [
       { name: "Amanah House (MAS-SSF)", states: ["CA"], href: "https://mas-ssf.org/amanah-house/", note: "Faith-sensitive transitional home and support for women in crisis." },
       { name: "Jewish Board of Family & Children's Services", states: ["NY"], href: "https://www.findhelp.org/provider/jewish-board-of-family-and-childrens-services-(jbfcs)--new-york-ny/6321792781910016", note: "Counseling, mental health, and family support services in New York." },
       { name: "UJA-Federation of New York — domestic violence resources", states: ["NY"], href: "https://www.ujafedny.org/domestic-violence-resources", note: "Directory of New York agencies serving domestic violence survivors, including culturally and language-specific programs." },
+      { name: "UJA-Federation of New York — mental health & well-being", states: ["NY"], href: "https://www.ujafedny.org/what-we-do/mental-health-well-being", note: "New York mental health and counseling programs, including support for domestic violence survivors." },
     ],
   },
   {
