@@ -135,7 +135,8 @@ const COUNTRIES: Country[] = [
 
     items: [
       { name: "National Domestic Abuse Helpline (Refuge)", phone: "0808 2000 247", tel: "08082000247", note: "Free, confidential, 24/7. Run by Refuge." },
-      { name: "Women's Aid", href: "https://www.womensaid.org.uk/", note: "Live chat, email support & local services directory." },
+      { name: "Women's Aid", href: "https://womensaid.org.uk/", note: "Live chat, email support & local services directory." },
+      { name: "Surviving Economic Abuse — I need help", href: "https://survivingeconomicabuse.org/i-need-help/", note: "UK information and support options for economic abuse, including money, debt, housing and banking." },
       { name: "Rape Crisis England & Wales", phone: "0808 500 2222", tel: "08085002222", note: "24/7 support line for anyone affected by sexual violence." },
       { name: "The Survivors Trust", phone: "08088 010 818", tel: "08088010818", note: "National helpline for survivors of rape & sexual abuse." },
       { name: "NSPCC (child abuse)", phone: "0808 800 5000", tel: "08088005000", note: "Report concerns about a child. 24/7." },
@@ -155,7 +156,7 @@ const COUNTRIES: Country[] = [
     items: [
       { name: "Women's Aid Ireland", phone: "1800 341 900", tel: "1800341900", note: "Free, confidential, 24/7 national freephone helpline." },
       { name: "Dublin Rape Crisis Centre", phone: "1800 77 8888", tel: "1800778888", note: "24/7 national helpline for sexual violence." },
-      { name: "Safe Ireland", href: "https://www.safeireland.ie/get-help/", note: "Directory of DV services & refuges nationwide." },
+      { name: "Safe Ireland", href: "https://www.safeireland.ie/", note: "Domestic violence information and a directory of services & refuges nationwide." },
       { name: "Male Advice Line (Men's Aid)", phone: "01 554 3811", tel: "015543811", note: "Confidential support for male victims." },
       { name: "ISPCC Childline", phone: "1800 66 66 66", tel: "1800666666", note: "24/7 support for children & young people." },
       { name: "Samaritans Ireland", phone: "116 123", tel: "116123", note: "24/7 emotional support." },
@@ -240,7 +241,7 @@ const COUNTRIES: Country[] = [
     code: "DE",
     name: "Germany",
     items: [
-      { name: "Hilfetelefon Gewalt gegen Frauen", phone: "116 016", tel: "116016", note: "Free, 24/7, support in 18 languages." },
+      { name: "Hilfetelefon Gewalt gegen Frauen", phone: "116 016", tel: "116016", href: "https://www.hilfetelefon.de/", note: "Free, 24/7, support in 18 languages." },
       { name: "Frauenhauskoordinierung (shelter finder)", href: "https://www.frauenhauskoordinierung.de/frauenhaussuche", note: "Find a women's shelter near you." },
       { name: "Hilfetelefon Sexueller Missbrauch", phone: "0800 22 55 530", tel: "0800225530", note: "Support for survivors of sexual abuse." },
       { name: "Nummer gegen Kummer (children)", phone: "116 111", tel: "116111", note: "Free helpline for children & teens." },
@@ -254,6 +255,7 @@ const COUNTRIES: Country[] = [
     name: "France",
     items: [
       { name: "Violences Femmes Info", phone: "3919", tel: "3919", note: "Free & anonymous national helpline for women." },
+      { name: "Arrêtons les violences — French government", href: "https://arretonslesviolences.gouv.fr/", note: "Official information on gender-based and sexual violence, rights and finding support in France." },
       { name: "Viols Femmes Informations", phone: "0800 05 95 95", tel: "0800059595", note: "Free anonymous line for rape survivors." },
       { name: "Solidarité Femmes shelters", href: "https://www.solidaritefemmes.org/", note: "Federation of women's shelters across France." },
       { name: "Allô Enfance en Danger", phone: "119", tel: "119", note: "24/7 child protection line." },
@@ -268,6 +270,7 @@ const COUNTRIES: Country[] = [
     name: "Spain",
     items: [
       { name: "Línea 016", phone: "016", tel: "016", note: "Free, 24/7, leaves no trace on your phone bill." },
+      { name: "Government Delegation against Gender Violence — Spain", href: "https://violenciagenero.igualdad.gob.es/", note: "Official information on support services, rights and gender-based violence in Spain." },
       { name: "ANAR (children & teens)", phone: "900 20 20 10", tel: "900202010", note: "24/7 free child helpline." },
       { name: "Teléfono de la Esperanza", phone: "717 003 717", tel: "717003717", note: "24/7 emotional & suicide crisis support." },
       { name: "Fundación Ana Bella (survivors network)", href: "https://www.fundacionanabella.org/", note: "Peer support for women survivors of abuse." },
@@ -279,7 +282,7 @@ const COUNTRIES: Country[] = [
     code: "IT",
     name: "Italy",
     items: [
-      { name: "Numero Anti Violenza e Stalking", phone: "1522", tel: "1522", note: "Free, 24/7, multilingual support for women." },
+      { name: "Numero Anti Violenza e Stalking", phone: "1522", tel: "1522", href: "https://www.1522.eu/", note: "Free, 24/7, multilingual support for women." },
       { name: "D.i.Re (shelter network)", href: "https://www.direcontrolaviolenza.it/", note: "Directory of anti-violence centres & shelters." },
       { name: "Telefono Azzurro (children)", phone: "19696", tel: "19696", note: "24/7 free child helpline." },
       { name: "Telefono Amico (crisis)", phone: "02 2327 2327", tel: "0223272327", note: "Emotional support line, 10am–midnight." },
@@ -291,7 +294,7 @@ const COUNTRIES: Country[] = [
     code: "NL",
     name: "Netherlands",
     items: [
-      { name: "Veilig Thuis", phone: "0800-2000", tel: "08002000", note: "Free advice & reporting centre for domestic violence. 24/7." },
+      { name: "Veilig Thuis", phone: "0800-2000", tel: "08002000", href: "https://www.veiligthuis.nl/en", note: "Free advice & reporting centre for domestic violence. 24/7." },
       { name: "Centrum Seksueel Geweld", phone: "0800-0188", tel: "08000188", note: "24/7 support after sexual violence." },
       { name: "Blijf Groep (shelters)", href: "https://www.blijfgroep.nl/", note: "Women's shelters & safe housing." },
       { name: "De Kindertelefoon", phone: "0800-0432", tel: "08000432", note: "Free helpline for children 8–18." },
@@ -310,7 +313,7 @@ const COUNTRIES: Country[] = [
       { name: "Home Front Command (פיקוד העורף)", phone: "104", tel: "104", note: "Civil defense — rocket alerts, shelter guidance, wartime emergencies.", sms: "052-9415520", smsTel: "0529415520", fax: "08-9783603" },
       { name: "Israel Electric Corporation (חברת חשמל)", phone: "103", tel: "103", note: "Power outages, downed lines, electrical emergencies.", sms: "050-5960735", smsTel: "0505960735", fax: "1-800-200-103" },
       { name: "Israel Police Information Center", phone: "110", tel: "110", note: "Non-emergency police information & complaints center.", fax: "02-5898823", email: "tlunot@police.gov.il" },
-      { name: "Ministry of Welfare Hotline", phone: "118", tel: "118", note: "National social services hotline — domestic violence support, 24/7." },
+      { name: "Ministry of Welfare Hotline", phone: "118", tel: "118", href: "https://www.gov.il/en/departments/molsa", note: "National social services hotline — domestic violence support, 24/7. Website: Ministry of Welfare and Social Affairs." },
       { name: "L.A. Women — 1202 (Hebrew) / 1203 (Arabic)", phone: "1202", tel: "1202", note: "24/7 rape crisis hotline. Arabic: 1203." },
       { name: "WIZO Domestic Violence Hotline", phone: "1-800-220-000", tel: "1800220000", note: "Free, confidential 24/7." },
       { name: "No2Violence (Bat Melech, religious women)", phone: "1-800-292-333", tel: "1800292333", note: "Shelter & support for religious women." },
@@ -323,7 +326,7 @@ const COUNTRIES: Country[] = [
     code: "MX",
     name: "Mexico",
     items: [
-      { name: "Red Nacional de Refugios", phone: "800 822 4460", tel: "8008224460", note: "Safe shelters for women & children. Free & confidential." },
+      { name: "Red Nacional de Refugios", phone: "800 822 4460", tel: "8008224460", href: "https://rednacionalderefugios.org.mx/", note: "Safe shelters for women & children. Free & confidential." },
       { name: "Línea Mujeres (CDMX Locatel)", phone: "800 108 4053", tel: "8001084053", note: "24/7 legal, psychological & medical support." },
       { name: "SAPTEL (crisis/suicide)", phone: "55 5259-8121", tel: "5552598121", note: "24/7 free psychological crisis line." },
       { name: "Fundación en Pantalla contra la Violencia", href: "https://www.gob.mx/conavim", note: "CONAVIM directory of women's justice centres." },
@@ -416,7 +419,7 @@ const COUNTRIES: Country[] = [
     code: "SE",
     name: "Sweden",
     items: [
-      { name: "Kvinnofridslinjen", phone: "020-50 50 50", tel: "020505050", note: "24/7 free national women's helpline." },
+      { name: "Kvinnofridslinjen", phone: "116 016", tel: "116016", href: "https://kvinnofridslinjen.se/", note: "Free, anonymous support for physical, psychological or sexual violence. Phone support 24/7; chat available on the website." },
       { name: "Roks (shelter network)", href: "https://www.roks.se/", note: "Directory of women's & girls' shelters." },
       { name: "BRIS (children)", phone: "116 111", tel: "116111", note: "Free helpline for children under 18." },
       { name: "Mind Självmordslinjen", phone: "90101", tel: "90101", note: "24/7 suicide crisis chat & phone." },
@@ -430,6 +433,7 @@ const COUNTRIES: Country[] = [
     items: [
       { name: "VO-linjen (24/7)", phone: "116 006", tel: "116006", note: "Free national helpline for victims of violence." },
       { name: "Krisesentersekretariatet", href: "https://www.krisesenter.com/", note: "Directory of crisis shelters." },
+      { name: "Dinutvei", href: "https://dinutvei.no/", note: "Norway's guide to domestic violence and sexual assault, with local services and information in multiple languages." },
       { name: "Alarmtelefonen for barn og unge", phone: "116 111", tel: "116111", note: "24/7 for children & youth." },
       { name: "Mental Helse Hjelpetelefonen", phone: "116 123", tel: "116123", note: "24/7 crisis/suicide line." },
       { name: "Emergency", phone: "112", tel: "112", note: "Immediate danger." },
@@ -439,7 +443,7 @@ const COUNTRIES: Country[] = [
     code: "DK",
     name: "Denmark",
     items: [
-      { name: "Lev Uden Vold", phone: "1888", tel: "1888", note: "24/7 national line for violence in close relationships." },
+      { name: "Lev Uden Vold", phone: "1888", tel: "1888", href: "https://levudenvold.dk/", note: "Free, anonymous, 24/7 national line for violence in close relationships." },
       { name: "LOKK (shelter network)", href: "https://lokk.dk/", note: "Women's crisis centre directory." },
       { name: "BørneTelefonen", phone: "116 111", tel: "116111", note: "Helpline for children & youth." },
       { name: "Livslinien (suicide)", phone: "70 201 201", tel: "70201201", note: "Daily crisis line." },
@@ -450,7 +454,7 @@ const COUNTRIES: Country[] = [
     code: "FI",
     name: "Finland",
     items: [
-      { name: "Nollalinja", phone: "080 005 005", tel: "080005005", note: "24/7 free helpline for DV survivors." },
+      { name: "Nollalinja", phone: "116 016", tel: "116016", href: "https://nollalinja.fi/en/", note: "Free, 24/7 support for domestic violence and violence against women. English information available online." },
       { name: "Naisten Linja", phone: "0800 02400", tel: "080002400", note: "Free women's helpline." },
       { name: "Rikosuhripäivystys (victim support)", phone: "116 006", tel: "116006", note: "Support for victims of crime." },
       { name: "MIELI Crisis Helpline", phone: "09 2525 0111", tel: "0925250111", note: "24/7 crisis & suicide support." },
@@ -952,6 +956,9 @@ const SECTIONS: { id: string; title: string; items: ResourceItem[] }[] = [
       { name: "NY Office of Victim Services — financial compensation", states: ["NY"], href: "https://opdv.ny.gov/financial-compensation", note: "Compensation for crime victims: medical bills, counseling, lost wages, moving costs, and more." },
       { name: "Office on Violence Against Women — grant programs", href: "https://www.justice.gov/ovw/grants", note: "Federal grants funding services, legal help, and housing for survivors." },
       { name: "DomesticShelters.org — financial articles", href: "https://www.domesticshelters.org/articles/financial", note: "Guides on rebuilding financial independence, escaping financial abuse, and money steps after leaving." },
+      { name: "FreeFrom (United States)", href: "https://www.freefrom.org/", note: "Survivor-led organization supporting financial security and economic justice after gender-based violence. Check current programs and eligibility; funding is not guaranteed." },
+      { name: "Surviving Economic Abuse (United Kingdom)", href: "https://survivingeconomicabuse.org/i-need-help/", note: "Information and support options for money control, debt, banking and housing affected by economic abuse." },
+      { name: "Against Economic Abuse — global services directory", href: "https://www.againsteconomicabuse.org/global-directory-of-services/", note: "Regional directory of organizations and resources specializing in economic abuse." },
     ],
   },
   {
@@ -960,6 +967,9 @@ const SECTIONS: { id: string; title: string; items: ResourceItem[] }[] = [
     items: [
       { name: "NYSCADV Program Directory", states: ["NY"], href: "https://www.nyscadv.org/find-help/program-directory.html", note: "Find a domestic violence program near you." },
       { name: "NYSCADV Digital Safety", href: "https://www.nyscadv.org/find-help/digital-safety.html", note: "Keep your phone, computer, and accounts safe from monitoring." },
+      { name: "National Network to End Domestic Violence (NNEDV, United States)", href: "https://nnedv.org/", note: "Domestic violence advocacy, economic justice and technology safety resources; not an emergency hotline." },
+      { name: "NO MORE Global Directory", href: "https://nomoredirectory.org/", note: "Find domestic and sexual violence helplines and services by country or region." },
+      { name: "Women Against Violence Europe (WAVE)", href: "https://wave-network.org/", note: "European network of women's organizations, with information on specialist support services and advocacy." },
     ],
   },
 ];
@@ -995,8 +1005,8 @@ function ResourcesPage() {
         <span className="hand-note text-2xl">help is real</span>
         <h1 className="mt-2 font-serif text-5xl text-ink-900">Resources</h1>
         <p className="mt-4 max-w-2xl text-ink-500">
-          These are the same hotlines and organizations professionals refer to. They are free, confidential, and
-          available right now.
+          Find hotlines, shelters, support organizations and information. Availability, eligibility, costs and
+          confidentiality vary by service; check with the organization. Directories and grant programs are not emergency services.
         </p>
 
         <LocationFinder />
@@ -1134,7 +1144,9 @@ function LocationFinder() {
                 <div>
                   <div className="font-semibold text-ink-900">{it.name}</div>
                   <div className="text-sm text-ink-500">{it.note}</div>
-                  <div className="mt-2"><ShareButton resource={it} /></div>
+                  <div className="mt-2"><ShareButton resource={it} />{it.tel && it.href && (
+                    <a href={it.href} className="ml-3 text-sm font-semibold text-ink-900 underline" aria-label={`Visit ${it.name} website`}>Visit website</a>
+                  )}</div>
                   {(it.sms || it.fax || it.email) && (
                     <div className="mt-2 flex flex-wrap gap-2 text-xs">
                       {it.sms && (
