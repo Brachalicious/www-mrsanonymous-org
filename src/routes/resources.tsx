@@ -951,6 +951,7 @@ const SECTIONS: { id: string; title: string; items: ResourceItem[] }[] = [
     items: [
       { name: "NY Office of Victim Services — financial compensation", states: ["NY"], href: "https://opdv.ny.gov/financial-compensation", note: "Compensation for crime victims: medical bills, counseling, lost wages, moving costs, and more." },
       { name: "Office on Violence Against Women — grant programs", href: "https://www.justice.gov/ovw/grants", note: "Federal grants funding services, legal help, and housing for survivors." },
+      { name: "DomesticShelters.org — financial articles", href: "https://www.domesticshelters.org/articles/financial", note: "Guides on rebuilding financial independence, escaping financial abuse, and money steps after leaving." },
     ],
   },
   {
