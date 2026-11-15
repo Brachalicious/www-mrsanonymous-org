@@ -968,6 +968,17 @@ export function matchGuidanceTopic(text: string): GuidanceTopic | null {
   let best: GuidanceTopic | null = null;
   let bestScore = 0;
   for (const topic of GUIDANCE_TOPICS) {
+    // Country mentions alone must not turn unrelated geography questions into support advice.
+    if (topic.id.startsWith("country_support_") &&
+      !keywordMatches(normalized, "help") &&
+      !keywordMatches(normalized, "support") &&
+      !keywordMatches(normalized, "abuse") &&
+      !keywordMatches(normalized, "violence") &&
+      !keywordMatches(normalized, "shelter") &&
+      !keywordMatches(normalized, "shelters") &&
+      !topic.keywords.some((keyword) => normalizeGuidanceText(keyword) === normalized)) {
+      continue;
+    }
     const score = topic.keywords.reduce(
       (total, keyword) => {
         const phrase = normalizeGuidanceText(keyword);
