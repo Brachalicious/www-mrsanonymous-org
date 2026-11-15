@@ -14,7 +14,13 @@ export type EmergencyProfile = {
   smsSupported: boolean; // hide text button if false
   // Extra warning shown under the text button when the text line is not a
   // general public service (e.g. Israel's line is the deaf/hard-of-hearing desk).
-  smsNoteKey?: "israel-accessibility";
+  smsNoteKey?:
+    | "israel-accessibility"
+    | "uk-registration"
+    | "ca-registration"
+    | "au-tty"
+    | "nz-registration"
+    | "fr-accessibility";
 };
 
 // Language-to-default-country emergency mapping. Meant as a sensible default
@@ -60,11 +66,20 @@ const PROFILES: Record<string, EmergencyProfile> = {
 // over the language-based default above.
 const COUNTRY_PROFILES: Record<string, EmergencyProfile> = {
   US: { country: "US", police: "911", policeLabel: "911", medical: "911", medicalLabel: "911", fire: "911", fireLabel: "911", crisis: "988", crisisLabel: "988", sms: "911", smsSupported: true },
-  CA: { country: "CA", police: "911", policeLabel: "911", medical: "911", medicalLabel: "911", crisis: "988", crisisLabel: "988", sms: "911", smsSupported: true },
-  GB: { country: "GB", police: "999", policeLabel: "999 / 112", medical: "999", medicalLabel: "999", crisis: "116123", crisisLabel: "116 123 (Samaritans)", sms: "999", smsSupported: true },
+  // Canada's Text with 9-1-1 is a registered service for people who are deaf,
+  // hard of hearing or speech-impaired, and is not offered in every area, so
+  // it is not presented as a general text-to-police button.
+  CA: { country: "CA", police: "911", policeLabel: "911", medical: "911", medicalLabel: "911", crisis: "988", crisisLabel: "988", smsSupported: false, smsNoteKey: "ca-registration" },
+  // Texting 999 in the UK only works for phone numbers registered in advance
+  // with EmergencySMS (deaf, hard of hearing or speech-impaired users).
+  GB: { country: "GB", police: "999", policeLabel: "999 / 112", medical: "999", medicalLabel: "999", crisis: "116123", crisisLabel: "116 123 (Samaritans)", smsSupported: false, smsNoteKey: "uk-registration" },
   IE: { country: "IE", police: "112", policeLabel: "112 / 999", crisis: "116123", crisisLabel: "116 123", smsSupported: false },
-  AU: { country: "AU", police: "000", policeLabel: "000", crisis: "131114", crisisLabel: "13 11 14 (Lifeline)", sms: "106", smsSupported: true },
-  NZ: { country: "NZ", police: "111", policeLabel: "111", crisis: "1737", crisisLabel: "1737", sms: "111", smsSupported: true },
+  // 106 is a TTY/textphone relay line, not an SMS line: SMS to 000 does not
+  // reach Australian emergency services.
+  AU: { country: "AU", police: "000", policeLabel: "000", crisis: "131114", crisisLabel: "13 11 14 (Lifeline)", smsSupported: false, smsNoteKey: "au-tty" },
+  // 111 TXT needs prior registration with NZ Police and is for people who are
+  // deaf, hard of hearing or speech-impaired.
+  NZ: { country: "NZ", police: "111", policeLabel: "111", crisis: "1737", crisisLabel: "1737", smsSupported: false, smsNoteKey: "nz-registration" },
   IL: PROFILES.he,
   IN: { country: "IN", police: "112", policeLabel: "112", crisis: "9152987821", crisisLabel: "iCall 9152987821", smsSupported: false },
   PK: { country: "PK", police: "15", policeLabel: "15", smsSupported: false },
@@ -87,7 +102,7 @@ const COUNTRY_PROFILES: Record<string, EmergencyProfile> = {
   BR: { country: "BR", police: "190", policeLabel: "190", medical: "192", medicalLabel: "192", crisis: "188", crisisLabel: "188 (CVV)", smsSupported: false },
   AR: { country: "AR", police: "911", policeLabel: "911", smsSupported: false },
   ES: { country: "ES", police: "112", policeLabel: "112", crisis: "024", crisisLabel: "024", smsSupported: false },
-  FR: { country: "FR", police: "112", policeLabel: "112 / 17", crisis: "3114", crisisLabel: "3114", sms: "114", smsSupported: true },
+  FR: { country: "FR", police: "112", policeLabel: "112 / 17", crisis: "3114", crisisLabel: "3114", sms: "114", smsSupported: true, smsNoteKey: "fr-accessibility" },
   DE: { country: "DE", police: "110", policeLabel: "110 / 112", crisis: "0800 111 0 111", crisisLabel: "0800 111 0 111", smsSupported: false },
   IT: { country: "IT", police: "112", policeLabel: "112", smsSupported: false },
   PT: { country: "PT", police: "112", policeLabel: "112", smsSupported: false },

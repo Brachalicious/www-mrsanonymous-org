@@ -10,7 +10,7 @@ import {
 } from "@/lib/saved-addresses";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LANGUAGES, translateToEnglish, type LangCode } from "@/lib/translations";
-import { getEmergency } from "@/lib/emergency-numbers";
+import { getEmergency, COUNTRY_OPTIONS, countryName } from "@/lib/emergency-numbers";
 import { getTest911Number, resolveSmsNumber } from "@/lib/test-911";
 import { useRegion } from "@/hooks/use-region";
 import helpSignalButton from "@/assets/help-signal-button.png.asset.json";
@@ -50,6 +50,37 @@ const MSG_LANG_KEY = "mrsanon:panic-msg-lang";
 const DEFAULT_MSG =
   "Emergency. I need help. Please send police to my location.";
 
+// Text-to-emergency lines that are NOT a general public service: the wording
+// people see must say who they are for and what to do instead.
+const SMS_NOTES: Record<string, { en: string; he?: string }> = {
+  "israel-accessibility": {
+    en: "The 052-2020100 text line is Israel Police's emergency desk for people who are deaf, hard of hearing, or cannot speak on the phone. If you can call, call 100 — it is faster.",
+    he: "קו הסלולרי 052-2020100 של משטרת ישראל הוא מוקד חירום לאנשים עם מוגבלות בשמיעה או בדיבור. אם אפשר להתקשר — עדיף להתקשר 100.",
+  },
+  "uk-registration": {
+    en: "Texting 999 only works if your phone was registered in advance: text REGISTER to 999, then reply YES. It is for people who are deaf, hard of hearing or cannot speak. Do the registering now, not during an emergency — if you can call, call 999.",
+  },
+  "ca-registration": {
+    en: "Texting 911 in Canada (Text with 9-1-1) is for people who are deaf, hard of hearing or cannot speak, your phone must be registered with your carrier first, and it is not offered everywhere. If you can call, call 911.",
+  },
+  "au-tty": {
+    en: "Australia has no text-message emergency number. 106 only works on a TTY/textphone for people who are deaf or have a hearing or speech impairment. A normal text message will not reach 000 — call 000, or 112 from a mobile.",
+  },
+  "nz-registration": {
+    en: "Texting 111 in New Zealand only works if you are deaf, hard of hearing or cannot speak and you registered your phone with NZ Police in advance. Texts from phones that are not registered do not go through. If you can call, call 111.",
+  },
+  "fr-accessibility": {
+    en: "The 114 text line is France's emergency service for people who are deaf, hard of hearing, or cannot speak — including when someone is in the room and you cannot talk. It is not for people who can call: if you can, call 17 or 112.",
+  },
+};
+
+function smsNote(key: string | undefined, lang: LangCode): string | null {
+  if (!key) return null;
+  const note = SMS_NOTES[key];
+  if (!note) return null;
+  return lang === "he" && note.he ? note.he : note.en;
+}
+
 type Loc = {
   lat: number;
   lon: number;
@@ -69,7 +100,7 @@ const GOOD_ACCURACY_M = 25;
 
 export function EmergencyWidget() {
   const { t, lang: uiLang } = useLanguage();
-  const { country: region } = useRegion();
+  const { country: region, setCountry, isChosen } = useRegion();
   const emergency = getEmergency(uiLang, region);
   const [open, setOpen] = useState(false);
   const [loc, setLoc] = useState<Loc | null>(null);
@@ -91,6 +122,9 @@ export function EmergencyWidget() {
   const [attachReport, setAttachReport] = useState(false);
   const [storyStatus, setStoryStatus] = useState("");
   const is988 = emergency.crisis === "988";
+  // 988 works in the US and Canada, but the National Domestic Violence
+  // Hotline (1-800-799-7233, text START to 88788) is a US-only service.
+  const isUS = emergency.country === "US";
 
   useEffect(() => {
     try {
@@ -459,6 +493,34 @@ export function EmergencyWidget() {
           <p className="mt-2 text-xs text-ink-500">
             {t("emg.disclaimer")}
           </p>
+
+          <div className="mt-2 rounded-lg border border-ink-300/60 bg-cream-100 p-2">
+            <label
+              htmlFor="emergency-country-select"
+              className="text-[10px] font-bold uppercase tracking-widest text-ink-700"
+            >
+              My country
+            </label>
+            <select
+              id="emergency-country-select"
+              data-testid="emergency-country-select"
+              value={region ?? ""}
+              onChange={(e) => setCountry(e.target.value)}
+              className="mt-1 w-full rounded-md border border-ink-300 bg-white p-1 text-[11px] text-ink-900 focus:border-rose-500 focus:outline-none"
+            >
+              {COUNTRY_OPTIONS.map((c) => (
+                <option key={c.code} value={c.code}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+            <p className="mt-1 text-[10px] leading-snug text-ink-500">
+              {isChosen
+                ? "The numbers below are for this country."
+                : `We guessed ${countryName(region)} from your device. Change it if you are somewhere else.`}
+            </p>
+          </div>
+
           <a
             href={`tel:${emergency.police}`}
             className="btn-rose mt-2 w-full py-1.5 text-xs"
@@ -493,6 +555,7 @@ export function EmergencyWidget() {
                   </SafeExternalButton>
                 </div>
               </div>
+              {isUS && (
               <div
                 className="rounded-lg border border-rose-300 bg-rose-50 p-2"
                 data-testid="emergency-ndvh-box"
@@ -521,6 +584,7 @@ export function EmergencyWidget() {
                   </SafeExternalButton>
                 </div>
               </div>
+              )}
               </>
             ) : (
               emergency.crisis && (
@@ -572,28 +636,32 @@ export function EmergencyWidget() {
               </a>
             )}
 
-            {emergency.smsSupported ? (
+            {emergency.smsSupported && !emergency.smsNoteKey ? (
               <p className="text-[10px] leading-snug text-ink-500">
                 <span className="font-bold text-ink-700">No speaking needed.</span> Text{" "}
                 {emergency.sms ?? emergency.police} opens your phone's Messages app with the
                 message already written for you — and, if selected, your written street address,
                 which stays hidden from this app and is only visible to {emergency.sms ?? emergency.police} and you.
               </p>
+            ) : emergency.smsSupported ? (
+              <p className="text-[10px] leading-snug text-ink-500">
+                <span className="font-bold text-ink-700">Read the note below first.</span> Text{" "}
+                {emergency.sms ?? emergency.police} is not a general text-to-police line — it is
+                only for some people.
+              </p>
             ) : (
               <p className="text-[10px] leading-snug text-ink-500">
-                Texting {emergency.police} is not supported where you are — please call{" "}
-                {emergency.policeLabel} instead.
+                Texting emergency services is not available for everyone where you are — please
+                call {emergency.policeLabel} instead.
               </p>
             )}
 
-            {emergency.smsNoteKey === "israel-accessibility" && (
+            {smsNote(emergency.smsNoteKey, uiLang) && (
               <p
                 data-testid="emergency-sms-note"
                 className="mt-1 rounded bg-amber-100 px-2 py-1 text-[10px] font-semibold leading-snug text-amber-900"
               >
-                {uiLang === "he"
-                  ? "קו הסלולרי 052-2020100 של משטרת ישראל הוא מוקד חירום לאנשים עם מוגבלות בשמיעה או בדיבור. אם אפשר להתקשר — עדיף להתקשר 100."
-                  : "The 052-2020100 text line is Israel Police's emergency desk for people who are deaf, hard of hearing, or cannot speak on the phone. If you can call, call 100 — it is faster."}
+                {smsNote(emergency.smsNoteKey, uiLang)}
               </p>
             )}
 
