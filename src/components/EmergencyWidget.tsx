@@ -574,7 +574,8 @@ export function EmergencyWidget() {
 
             {emergency.smsSupported ? (
               <p className="text-[10px] leading-snug text-ink-500">
-                Text {emergency.sms ?? emergency.police} opens your phone's Messages app with the
+                <span className="font-bold text-ink-700">No speaking needed.</span> Text{" "}
+                {emergency.sms ?? emergency.police} opens your phone's Messages app with the
                 message already written for you — and, if selected, your written street address,
                 which stays hidden from this app and is only visible to {emergency.sms ?? emergency.police} and you.
               </p>
