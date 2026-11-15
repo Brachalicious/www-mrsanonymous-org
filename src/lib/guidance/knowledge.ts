@@ -466,6 +466,47 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
       "Womenslaw.org, linked on the Resources page, explains restraining orders, custody, and your legal options in plain language, state by state.\n\nYour Private Journal incident reports, photos, and recordings can become useful evidence later — keep them saved and dated. A local domestic violence hotline (1-800-799-SAFE) can also connect you with free legal advocates.",
   },
   {
+    id: "financial_help",
+    keywords: [
+      "financial help",
+      "money help",
+      "compensation",
+      "victim compensation",
+      "cant afford",
+      "no money",
+      "financial abuse",
+      "grants",
+      "pay for",
+      "moving costs",
+      "lost wages",
+    ],
+    answer:
+      "The Resources page has a Financial help & compensation section:\n\n- NY Office of Victim Services (opdv.ny.gov/financial-compensation): compensation for crime victims — medical bills, counseling, lost wages, moving costs, and more.\n- Office on Violence Against Women (justice.gov/ovw/grants): federal grants that fund services, legal help, and housing for survivors.\n\nA local domestic violence hotline (1-800-799-SAFE, 24/7) can also connect you with advocates who help with applications.",
+  },
+  {
+    id: "empowerment",
+    keywords: [
+      "empowerment",
+      "empowered",
+      "healing",
+      "recover",
+      "recovery",
+      "rebuild my life",
+      "move on",
+      "start over",
+      "strength",
+      "independence",
+      "self worth",
+      "confidence",
+      "coping",
+      "cope",
+      "breaking the cycle",
+      "cycle of violence",
+    ],
+    answer:
+      "Healing is possible, and what you are feeling right now is not the end of your story.\n\nRecovery from abuse is about regaining control over your life at your own pace: safety first, then emotional healing, then rebuilding. Counseling and support groups can help you process what happened and develop healthy ways to cope. Legal protections, safe housing, and learning or work opportunities all help rebuild independence.\n\nYou do not have to do any of this alone. The Resources page lists confidential hotlines, shelters, legal help, and financial compensation programs — and My Safety Plan can help you plan each step. You deserve a future free from violence.",
+  },
+  {
     id: "recognize_abuse",
     keywords: [
       "signs of abuse",
