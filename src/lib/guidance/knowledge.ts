@@ -7,7 +7,175 @@ export interface GuidanceTopic {
   answer: string;
 }
 
+const COUNTRY_SUPPORT_TOPICS: GuidanceTopic[] = [
+  {
+    "id": "country_support_ca",
+    "keywords": [
+      "canada",
+      "canadian",
+      "sheltersafe",
+      "help in canada",
+      "domestic violence in canada",
+      "financial help in canada"
+    ],
+    "answer": "You deserve support wherever you are. In Canada, ShelterSafe (https://sheltersafe.ca/) can help you find the next step.\n\nFind shelters and support across Canada.\n\nOpen Resources and choose Canada under Find services in your area for more local options and emergency numbers. These services are separate from the app; availability and eligibility vary. If your country is not listed, use https://nomoredirectory.org/."
+  },
+  {
+    "id": "country_support_mx",
+    "keywords": [
+      "mexico",
+      "mexican",
+      "red nacional de refugios",
+      "help in mexico",
+      "domestic violence in mexico",
+      "financial help in mexico"
+    ],
+    "answer": "You deserve support wherever you are. In Mexico, Red Nacional de Refugios (https://rednacionalderefugios.org.mx/) can help you find the next step.\n\nFind information on shelters and support for women and children in Mexico.\n\nOpen Resources and choose Mexico under Find services in your area for more local options and emergency numbers. These services are separate from the app; availability and eligibility vary. If your country is not listed, use https://nomoredirectory.org/."
+  },
+  {
+    "id": "country_support_gb",
+    "keywords": [
+      "united kingdom",
+      "uk",
+      "britain",
+      "england",
+      "womens aid",
+      "women s aid",
+      "help in united kingdom",
+      "domestic violence in united kingdom",
+      "financial help in united kingdom"
+    ],
+    "answer": "You deserve support wherever you are. In United Kingdom, Women’s Aid (https://womensaid.org.uk/) can help you find the next step.\n\nDomestic abuse information, live chat and local services. For economic abuse, debt or banking concerns, see Surviving Economic Abuse: https://survivingeconomicabuse.org/i-need-help/.\n\nOpen Resources and choose United Kingdom under Find services in your area for more local options and emergency numbers. These services are separate from the app; availability and eligibility vary. If your country is not listed, use https://nomoredirectory.org/."
+  },
+  {
+    "id": "country_support_ie",
+    "keywords": [
+      "ireland",
+      "irish",
+      "safe ireland",
+      "help in ireland",
+      "domestic violence in ireland",
+      "financial help in ireland"
+    ],
+    "answer": "You deserve support wherever you are. In Ireland, Safe Ireland (https://www.safeireland.ie/) can help you find the next step.\n\nFind domestic violence services and refuges in Ireland.\n\nOpen Resources and choose Ireland under Find services in your area for more local options and emergency numbers. These services are separate from the app; availability and eligibility vary. If your country is not listed, use https://nomoredirectory.org/."
+  },
+  {
+    "id": "country_support_de",
+    "keywords": [
+      "germany",
+      "german",
+      "hilfetelefon",
+      "help in germany",
+      "domestic violence in germany",
+      "financial help in germany"
+    ],
+    "answer": "You deserve support wherever you are. In Germany, Hilfetelefon (https://www.hilfetelefon.de/) can help you find the next step.\n\nSupport for violence against women: call 116 016 in Germany, free and 24/7.\n\nOpen Resources and choose Germany under Find services in your area for more local options and emergency numbers. These services are separate from the app; availability and eligibility vary. If your country is not listed, use https://nomoredirectory.org/."
+  },
+  {
+    "id": "country_support_fr",
+    "keywords": [
+      "france",
+      "french domestic violence",
+      "arretons les violences",
+      "help in france",
+      "domestic violence in france",
+      "financial help in france"
+    ],
+    "answer": "You deserve support wherever you are. In France, Arrêtons les violences (https://arretonslesviolences.gouv.fr/) can help you find the next step.\n\nOfficial French information on gender-based and sexual violence, rights and support.\n\nOpen Resources and choose France under Find services in your area for more local options and emergency numbers. These services are separate from the app; availability and eligibility vary. If your country is not listed, use https://nomoredirectory.org/."
+  },
+  {
+    "id": "country_support_es",
+    "keywords": [
+      "spain",
+      "spanish domestic violence",
+      "violenciagenero",
+      "help in spain",
+      "domestic violence in spain",
+      "financial help in spain"
+    ],
+    "answer": "You deserve support wherever you are. In Spain, Government Delegation against Gender Violence (https://violenciagenero.igualdad.gob.es/) can help you find the next step.\n\nOfficial support information in Spain; the Resources country list also includes 016.\n\nOpen Resources and choose Spain under Find services in your area for more local options and emergency numbers. These services are separate from the app; availability and eligibility vary. If your country is not listed, use https://nomoredirectory.org/."
+  },
+  {
+    "id": "country_support_it",
+    "keywords": [
+      "italy",
+      "italian",
+      "1522",
+      "help in italy",
+      "domestic violence in italy",
+      "financial help in italy"
+    ],
+    "answer": "You deserve support wherever you are. In Italy, 1522 (https://www.1522.eu/) can help you find the next step.\n\nDomestic violence and stalking support in Italy: call 1522, free and 24/7; website chat is available.\n\nOpen Resources and choose Italy under Find services in your area for more local options and emergency numbers. These services are separate from the app; availability and eligibility vary. If your country is not listed, use https://nomoredirectory.org/."
+  },
+  {
+    "id": "country_support_nl",
+    "keywords": [
+      "netherlands",
+      "dutch",
+      "veilig thuis",
+      "help in netherlands",
+      "domestic violence in netherlands",
+      "financial help in netherlands"
+    ],
+    "answer": "You deserve support wherever you are. In Netherlands, Veilig Thuis (https://www.veiligthuis.nl/en) can help you find the next step.\n\nDomestic violence and child abuse advice and reporting: call 0800-2000 in the Netherlands, 24/7.\n\nOpen Resources and choose Netherlands under Find services in your area for more local options and emergency numbers. These services are separate from the app; availability and eligibility vary. If your country is not listed, use https://nomoredirectory.org/."
+  },
+  {
+    "id": "country_support_se",
+    "keywords": [
+      "sweden",
+      "swedish",
+      "kvinnofridslinjen",
+      "help in sweden",
+      "domestic violence in sweden",
+      "financial help in sweden"
+    ],
+    "answer": "You deserve support wherever you are. In Sweden, Kvinnofridslinjen (https://kvinnofridslinjen.se/) can help you find the next step.\n\nFree, anonymous support: call 116 016 in Sweden, 24/7. Website chat is also available.\n\nOpen Resources and choose Sweden under Find services in your area for more local options and emergency numbers. These services are separate from the app; availability and eligibility vary. If your country is not listed, use https://nomoredirectory.org/."
+  },
+  {
+    "id": "country_support_no",
+    "keywords": [
+      "norway",
+      "norwegian",
+      "dinutvei",
+      "help in norway",
+      "domestic violence in norway",
+      "financial help in norway"
+    ],
+    "answer": "You deserve support wherever you are. In Norway, Dinutvei (https://dinutvei.no/) can help you find the next step.\n\nFind local services and multilingual information about domestic violence and sexual assault in Norway.\n\nOpen Resources and choose Norway under Find services in your area for more local options and emergency numbers. These services are separate from the app; availability and eligibility vary. If your country is not listed, use https://nomoredirectory.org/."
+  },
+  {
+    "id": "country_support_dk",
+    "keywords": [
+      "denmark",
+      "danish",
+      "lev uden vold",
+      "help in denmark",
+      "domestic violence in denmark",
+      "financial help in denmark"
+    ],
+    "answer": "You deserve support wherever you are. In Denmark, Lev Uden Vold (https://levudenvold.dk/) can help you find the next step.\n\nCall 1888 in Denmark for free, anonymous domestic violence support, 24/7.\n\nOpen Resources and choose Denmark under Find services in your area for more local options and emergency numbers. These services are separate from the app; availability and eligibility vary. If your country is not listed, use https://nomoredirectory.org/."
+  },
+  {
+    "id": "country_support_fi",
+    "keywords": [
+      "finland",
+      "finnish",
+      "nollalinja",
+      "help in finland",
+      "domestic violence in finland",
+      "financial help in finland"
+    ],
+    "answer": "You deserve support wherever you are. In Finland, Nollalinja (https://nollalinja.fi/en/) can help you find the next step.\n\nCall 116 016 in Finland for free domestic violence support, 24/7. English information is available online.\n\nOpen Resources and choose Finland under Find services in your area for more local options and emergency numbers. These services are separate from the app; availability and eligibility vary. If your country is not listed, use https://nomoredirectory.org/."
+  }
+];
+
 export const GUIDANCE_TOPICS: GuidanceTopic[] = [
+  ...COUNTRY_SUPPORT_TOPICS,
+  {
+    id: "international_directories",
+    keywords: ["international help", "global directory", "no more directory", "nomoredirectory", "wave network", "european support", "another country", "which countries", "what countries"],
+    answer: "Support is available in many countries. Open Resources and choose your country for local services.\n\n- NO MORE Global Directory (https://nomoredirectory.org/): domestic and sexual violence helplines and services by country or region.\n- Women Against Violence Europe (https://wave-network.org/): a European network of specialist women’s organizations and support information.\n- Against Economic Abuse (https://www.againsteconomicabuse.org/global-directory-of-services/): a global directory of services specializing in economic abuse.\n\nDirectories are not emergency services. If you are in immediate danger, use your local emergency number; 911 is not the emergency number everywhere.",
+  },
   {
     id: "navigation",
     keywords: ["navigate", "navigation", "find my way", "dashboard", "menu", "where do i start", "getting started", "site guide"],
@@ -480,7 +648,7 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
       "israeli",
     ],
     answer:
-      "Help that understands your community and language does exist, and it is listed in the Community & faith-based support section of the Resources page.\n\n- UJA-Federation of New York (ujafedny.org/domestic-violence-resources): a New York directory of agencies serving domestic violence survivors, including culturally and language-specific programs such as Amudim for the Bukharian community and the Marks JCH program for Russian-speaking survivors.\n- UJA-Federation of New York — mental health & well-being (ujafedny.org/what-we-do/mental-health-well-being): New York mental health and counseling programs, including support for domestic violence survivors.\n- OHEL Family Services (NY and NJ) and Shalva (IL): domestic violence support within the Jewish community.\n- Weinberg Foundation — supporting survivors in Israel (hjweinbergfoundation.org/enews/supporting-survivors-of-domestic-violence-and-sexual-assault-in-israel): an overview of help across Israel, including shelters, 24/7 hotlines, and crisis centers.\n- Sanctuary for Families (NY), Asiyah Women's Center (NY, for Muslim women and children), and Amanah House (CA): culturally sensitive support and safe housing.\n\nIf you do not see your own community listed, the National Domestic Violence Hotline (1-800-799-SAFE, 24/7) can look for a program near you that speaks your language or serves your community.",
+      "Help that understands your community and language does exist, and it is listed in the Community & faith-based support section of the Resources page.\n\n- UJA-Federation of New York (ujafedny.org/domestic-violence-resources): a New York directory of agencies serving domestic violence survivors, including culturally and language-specific programs such as Amudim for the Bukharian community and the Marks JCH program for Russian-speaking survivors.\n- UJA-Federation of New York — mental health & well-being (ujafedny.org/what-we-do/mental-health-well-being): New York mental health and counseling programs, including support for domestic violence survivors.\n- OHEL Family Services (NY and NJ) and Shalva (IL): domestic violence support within the Jewish community.\n- Israel Ministry of Welfare and Social Affairs (https://www.gov.il/en/departments/molsa): official information on social services in Israel; the Resources country list includes the 118 welfare hotline.\n- Weinberg Foundation — supporting survivors in Israel (hjweinbergfoundation.org/enews/supporting-survivors-of-domestic-violence-and-sexual-assault-in-israel): an overview of help across Israel, including shelters, 24/7 hotlines, and crisis centers.\n- Sanctuary for Families (NY), Asiyah Women's Center (NY, for Muslim women and children), and Amanah House (CA): culturally sensitive support and safe housing.\n\nIf you do not see your own community listed, the National Domestic Violence Hotline (1-800-799-SAFE, 24/7) can look for a program near you that speaks your language or serves your community.",
   },
   {
     id: "legal_help",
@@ -502,6 +670,12 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
     id: "financial_help",
     keywords: [
       "financial help",
+      "freefrom",
+      "free from",
+      "nnedv",
+      "surviving economic abuse",
+      "economic abuse",
+      "against economic abuse",
       "money help",
       "money",
       "compensation",
@@ -525,7 +699,7 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
       "bills",
     ],
     answer:
-      "There is real financial help for survivors, and you may qualify even if you have no money of your own right now.\n\n- NY Office of Victim Services (opdv.ny.gov/financial-compensation): if you were hurt by a crime in New York, this program can repay you for medical bills, counseling, lost wages, moving costs, and other expenses from the abuse. You apply as a victim — you do not need money up front, and a victim advocate can help you fill out the application for free.\n- Office on Violence Against Women (justice.gov/ovw/grants): these are federal grants that fund local organizations — shelters, legal aid, and housing programs — so their help is free to you. You do not apply yourself; you use the services they pay for.\n- DomesticShelters.org financial articles (domesticshelters.org/articles/financial): plain-language guides on rebuilding financial independence, escaping financial abuse, and money steps after leaving.\n\nAll of these links are in the Financial help & compensation section of the Resources page. If a partner controls all the money, that is financial abuse — the National Domestic Violence Hotline (1-800-799-SAFE, 24/7) can help you plan around it safely.",
+      "There is real financial help for survivors, and you may qualify even if you have no money of your own right now.\n\n- NY Office of Victim Services (opdv.ny.gov/financial-compensation): if you were hurt by a crime in New York, this program can repay you for medical bills, counseling, lost wages, moving costs, and other expenses from the abuse. You apply as a victim — you do not need money up front, and a victim advocate can help you fill out the application for free.\n- Office on Violence Against Women (justice.gov/ovw/grants): these are federal grants that fund local organizations — shelters, legal aid, and housing programs — so their help is free to you. You do not apply yourself; you use the services they pay for.\n- DomesticShelters.org financial articles (domesticshelters.org/articles/financial): plain-language guides on rebuilding financial independence, escaping financial abuse, and money steps after leaving.\n- FreeFrom (https://www.freefrom.org/): a US survivor-led organization working on financial security and economic justice. Check current programs and eligibility; cash assistance is not guaranteed.\n- Surviving Economic Abuse (https://survivingeconomicabuse.org/i-need-help/): UK information and support options for money control, debt, banking and housing.\n- Against Economic Abuse (https://www.againsteconomicabuse.org/global-directory-of-services/): find specialist economic abuse services by region.\n- NNEDV (https://nnedv.org/): US economic justice and technology safety resources, not an emergency hotline.\n\nFinancial links are in the Financial help & compensation section; NNEDV is in Directories & digital safety. Other programs of the Resources page. Availability, eligibility and costs vary by organization; financial help is not guaranteed. If a partner controls all the money, that is financial abuse — the National Domestic Violence Hotline (1-800-799-SAFE, 24/7) can help you plan around it safely.",
   },
   {
     id: "empowerment",
