@@ -12,6 +12,9 @@ export type EmergencyProfile = {
   crisisLabel?: string;
   sms?: string;          // number for text-to-emergency, if supported
   smsSupported: boolean; // hide text button if false
+  // Extra warning shown under the text button when the text line is not a
+  // general public service (e.g. Israel's line is the deaf/hard-of-hearing desk).
+  smsNoteKey?: "israel-accessibility";
 };
 
 // Language-to-default-country emergency mapping. Meant as a sensible default
@@ -37,6 +40,7 @@ const PROFILES: Record<string, EmergencyProfile> = {
     crisis: "1201", crisisLabel: "1201 (ער\"ן)",
     sms: "0522020100", // Israel Police SMS line 052-2020100
     smsSupported: true,
+    smsNoteKey: "israel-accessibility",
   },
   ar: { country: "INT",   police: "112",  policeLabel: "112",                                                                     smsSupported: false },
   fa: { country: "IR",    police: "110",  policeLabel: "110",                                                                     smsSupported: false },
