@@ -204,6 +204,17 @@ describe("built-in guidance answers", () => {
     }
   });
 
+  test("questions about Israel name the Weinberg Foundation survivor support page", () => {
+    for (const q of [
+      "is there help in israel",
+      "domestic violence help in israel",
+    ]) {
+      const answer = answerGuidanceQuestion(q);
+      assert.match(answer, /hjweinbergfoundation\.org\/enews\/supporting-survivors/);
+      assert.doesNotMatch(answer, /I can only answer questions about using/);
+    }
+  });
+
   test("mental health and counseling questions name the UJA-Federation New York programs", () => {
     for (const q of [
       "is there help in the jewish community",
