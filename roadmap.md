@@ -8,5 +8,5 @@
 - [x] Report pass/fail per feature
 
 ## Additional international and financial resources
-- [ ] Add supplied links to the relevant country lists and resource sections without duplicates.
-- [ ] Extend built-in guide answers and verify resource navigation and country matching.
+- [x] Add supplied links to the relevant country lists and resource sections without duplicate entries in the same section.
+- [x] Extend built-in guide answers and verify resource navigation and country matching (38 tests; all 20 links and signed-out UK guidance checked).
