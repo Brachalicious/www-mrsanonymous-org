@@ -467,6 +467,7 @@ export function EmergencyWidget() {
           </a>
           <div className="mt-3 flex flex-col gap-2">
             {is988 ? (
+              <>
               <div className="rounded-lg border border-rose-300 bg-rose-50 p-2">
                 <a
                   href="tel:988"
@@ -492,6 +493,35 @@ export function EmergencyWidget() {
                   </SafeExternalButton>
                 </div>
               </div>
+              <div
+                className="rounded-lg border border-rose-300 bg-rose-50 p-2"
+                data-testid="emergency-ndvh-box"
+              >
+                <a
+                  href="tel:18007997233"
+                  data-testid="emergency-call-ndvh"
+                  className="btn-rose w-full py-2 text-[11px] leading-tight"
+                >
+                  <Phone className="h-3.5 w-3.5" /> National Domestic Violence Hotline — Call 24/7
+                </a>
+                <a
+                  href={`sms:88788?&body=${encodeURIComponent("START")}`}
+                  data-testid="emergency-text-ndvh"
+                  className="btn-ghost mt-1.5 w-full py-2 text-[11px]"
+                >
+                  <MessageSquare className="h-3.5 w-3.5" /> Text START to 88788 — free, 24/7
+                </a>
+                <div className="mt-1.5">
+                  <SafeExternalButton
+                    url="https://www.thehotline.org/"
+                    label="The Hotline chat"
+                    className="btn-ghost w-full py-2 text-[11px]"
+                  >
+                    Chat with an advocate online
+                  </SafeExternalButton>
+                </div>
+              </div>
+              </>
             ) : (
               emergency.crisis && (
                 <a
