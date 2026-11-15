@@ -122,6 +122,9 @@ export function EmergencyWidget() {
   const [attachReport, setAttachReport] = useState(false);
   const [storyStatus, setStoryStatus] = useState("");
   const is988 = emergency.crisis === "988";
+  // 988 works in the US and Canada, but the National Domestic Violence
+  // Hotline (1-800-799-7233, text START to 88788) is a US-only service.
+  const isUS = emergency.country === "US";
 
   useEffect(() => {
     try {
@@ -552,6 +555,7 @@ export function EmergencyWidget() {
                   </SafeExternalButton>
                 </div>
               </div>
+              {isUS && (
               <div
                 className="rounded-lg border border-rose-300 bg-rose-50 p-2"
                 data-testid="emergency-ndvh-box"
@@ -580,6 +584,7 @@ export function EmergencyWidget() {
                   </SafeExternalButton>
                 </div>
               </div>
+              )}
               </>
             ) : (
               emergency.crisis && (
