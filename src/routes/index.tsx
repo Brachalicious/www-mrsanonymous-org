@@ -379,11 +379,15 @@ function ContactSection() {
         <p className="mt-3 text-sm text-primary-foreground">We can help with technical issues, site guidance, account support, and feedback.</p>
 
         <a href="https://www.psychologytoday.com/us/therapists" target="_blank" rel="noopener noreferrer" className="mt-3 inline-block font-semibold text-rose-400 underline underline-offset-4">Find a therapist on Psychology Today ↗</a>
+        <p className="mt-2 text-sm text-primary-foreground">
+          Psychology Today is a separate website. Messages sent there go through Psychology Today, not MrsANONymous.
+          If your therapist did not receive a message, contact them using the phone number or contact details on their profile.
+        </p>
 
         <p className="mt-3 text-[13px] leading-relaxed text-rose-400">
-          You can send a message without an account. Create a completely anonymous account
-          only if you would like to receive a reply to messages sent or to save/edit your
-          input data and uploaded content.
+          You can send the app-support message below without a MrsANONymous account, but we cannot reply unless
+          you sign in before sending. A nickname-only account also lets you save and edit your writing and uploaded content.
+          These account options do not apply to Psychology Today.
         </p>
 
         <p className="mt-3 text-xs leading-relaxed text-ink-300">
