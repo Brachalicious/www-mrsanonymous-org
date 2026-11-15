@@ -1,3 +1,4 @@
+import { SaveToPhonebook } from "@/components/SaveToPhonebook";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type MouseEvent } from "react";
 import { isHideHistoryEnabled } from "@/components/PrivacyBanner";
@@ -10,7 +11,7 @@ function shareText(r: { name: string; phone?: string; href?: string; note: strin
   return parts.join("\n");
 }
 
-function ShareButton({ resource }: { resource: { name: string; phone?: string; href?: string; note: string } }) {
+function ShareButton({ resource }: { resource: { name: string; phone?: string; tel?: string; href?: string; note: string } }) {
   const [shared, setShared] = useState<"copied" | null>(null);
 
   async function share() {
@@ -34,6 +35,7 @@ function ShareButton({ resource }: { resource: { name: string; phone?: string; h
   }
 
   return (
+    <>
     <button
       type="button"
       data-testid={`share-${resource.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`}
@@ -43,6 +45,8 @@ function ShareButton({ resource }: { resource: { name: string; phone?: string; h
     >
       {shared === "copied" ? "✓ Copied" : "↗ Share"}
     </button>
+    <SaveToPhonebook resource={resource} />
+    </>
   );
 }
 
