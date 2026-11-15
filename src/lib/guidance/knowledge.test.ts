@@ -176,4 +176,18 @@ describe("built-in guidance answers", () => {
     assert.match(answer, /866-488-7386/);
     assert.match(answer, /678678/);
   });
+
+  test("money questions explain the financial resources, not just link them", () => {
+    for (const q of [
+      "how do i get money to leave",
+      "he controls all the money",
+      "is there victim compensation",
+    ]) {
+      const answer = answerGuidanceQuestion(q);
+      assert.match(answer, /opdv\.ny\.gov/);
+      assert.match(answer, /justice\.gov\/ovw/);
+      assert.match(answer, /financial abuse/i);
+      assert.doesNotMatch(answer, /I can only answer questions about using/);
+    }
+  });
 });
