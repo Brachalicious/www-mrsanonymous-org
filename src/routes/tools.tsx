@@ -168,6 +168,9 @@ function ToolsPage() {
             >
               Open My Safety Plan
             </Link>
+            <Link to="/phonebook" data-testid="tools-phonebook" className="btn-dark w-full">
+              Open My Phonebook & money plan
+            </Link>
             <p className="text-xs text-ink-500">
               Saved only on your own device. Print it or erase it at any time.
             </p>
