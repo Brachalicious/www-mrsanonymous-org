@@ -6,3 +6,7 @@
 - [x] Verify signed-in flows: dashboard, journal save/persist, safety plan autosave/persist, notebook create/open, guidance workspace, board, tell-your-story, inbox, settings, delete-account, admin denial for non-admin
 - [x] Check publish state / unpublished changes
 - [x] Report pass/fail per feature
+
+## Additional international and financial resources
+- [ ] Add supplied links to the relevant country lists and resource sections without duplicates.
+- [ ] Extend built-in guide answers and verify resource navigation and country matching.
