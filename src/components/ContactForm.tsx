@@ -64,7 +64,12 @@ export function ContactForm({ audience = "women" }: ContactFormProps) {
         Find a therapist on Psychology Today ↗
       </a>
       <p className="mt-2 text-ink-700">
-        You do not need to share your real name or email. Messages are saved so we can handle app support.
+        Psychology Today is a separate website. Messages sent there go through Psychology Today, not MrsANONymous.
+        If your therapist did not receive a message, contact them using the phone number or contact details on their profile.
+      </p>
+      <p className="mt-2 text-ink-700">
+        For the app-support message below, you do not need to share your real name or email.
+        Messages are saved so we can handle app support. MrsANONymous account options do not apply to Psychology Today.
         {user && (
           <>
             {" "}You are signed in — replies from support will appear in your Inbox.
