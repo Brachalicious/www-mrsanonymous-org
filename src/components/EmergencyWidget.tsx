@@ -631,28 +631,32 @@ export function EmergencyWidget() {
               </a>
             )}
 
-            {emergency.smsSupported ? (
+            {emergency.smsSupported && !emergency.smsNoteKey ? (
               <p className="text-[10px] leading-snug text-ink-500">
                 <span className="font-bold text-ink-700">No speaking needed.</span> Text{" "}
                 {emergency.sms ?? emergency.police} opens your phone's Messages app with the
                 message already written for you — and, if selected, your written street address,
                 which stays hidden from this app and is only visible to {emergency.sms ?? emergency.police} and you.
               </p>
+            ) : emergency.smsSupported ? (
+              <p className="text-[10px] leading-snug text-ink-500">
+                <span className="font-bold text-ink-700">Read the note below first.</span> Text{" "}
+                {emergency.sms ?? emergency.police} is not a general text-to-police line — it is
+                only for some people.
+              </p>
             ) : (
               <p className="text-[10px] leading-snug text-ink-500">
-                Texting {emergency.police} is not supported where you are — please call{" "}
-                {emergency.policeLabel} instead.
+                Texting emergency services is not available for everyone where you are — please
+                call {emergency.policeLabel} instead.
               </p>
             )}
 
-            {emergency.smsNoteKey === "israel-accessibility" && (
+            {smsNote(emergency.smsNoteKey, uiLang) && (
               <p
                 data-testid="emergency-sms-note"
                 className="mt-1 rounded bg-amber-100 px-2 py-1 text-[10px] font-semibold leading-snug text-amber-900"
               >
-                {uiLang === "he"
-                  ? "קו הסלולרי 052-2020100 של משטרת ישראל הוא מוקד חירום לאנשים עם מוגבלות בשמיעה או בדיבור. אם אפשר להתקשר — עדיף להתקשר 100."
-                  : "The 052-2020100 text line is Israel Police's emergency desk for people who are deaf, hard of hearing, or cannot speak on the phone. If you can call, call 100 — it is faster."}
+                {smsNote(emergency.smsNoteKey, uiLang)}
               </p>
             )}
 
