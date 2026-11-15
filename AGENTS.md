@@ -30,3 +30,4 @@
 - Recover unfinished note text from owner/editor-scoped sessionStorage after hydration; write on input, clear on successful save, sign-out and Quick Exit, and never silently autosave private drafts to localStorage or Cloud.
 - Board browsing filters only already-visible stories by existing topic tags and sorts by shared_at (creation fallback for legacy records); keep these browser-safe rules independent of page pinning and moderation.
 - Country-specific guidance requires support intent or an exact country/organization query and ranks above generic resources, so unrelated geography questions do not receive survivor advice.
+- Text-to-police buttons are offered only where texting emergency services is a general public service; registration-only, TTY-only or accessibility-desk lines must be hidden and explained in a note with the number to call instead.
