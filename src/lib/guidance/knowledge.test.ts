@@ -190,4 +190,17 @@ describe("built-in guidance answers", () => {
       assert.doesNotMatch(answer, /I can only answer questions about using/);
     }
   });
+
+  test("community and faith questions name the UJA-Federation New York directory", () => {
+    for (const q of [
+      "is there help in the jewish community",
+      "russian speaking domestic violence help",
+      "i need help from my own community",
+    ]) {
+      const answer = answerGuidanceQuestion(q);
+      assert.match(answer, /ujafedny\.org\/domestic-violence-resources/);
+      assert.match(answer, /Community & faith-based support/);
+      assert.doesNotMatch(answer, /I can only answer questions about using/);
+    }
+  });
 });
