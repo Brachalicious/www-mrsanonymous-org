@@ -3,7 +3,7 @@
 // Original English text is preserved per text-node so switching back to
 // English (or to another language) always translates from the source.
 
-import { translateText } from "@/lib/translations";
+import { localTranslation, translateText } from "@/lib/translations";
 import type { LangCode } from "@/lib/translations";
 
 const originals = new WeakMap<Text, string>();
@@ -188,7 +188,7 @@ async function translateNow(lang: LangCode) {
   const need: { slot: Slot; text: string }[] = [];
   for (const s of slots) {
     const orig = s.original;
-    const cached = cache.get(`${lang}\u0001${orig}`);
+    const cached = localTranslation(orig, lang) ?? cache.get(`${lang}\u0001${orig}`);
     if (cached !== undefined) {
       if (s.current !== cached) {
         s.write(cached);

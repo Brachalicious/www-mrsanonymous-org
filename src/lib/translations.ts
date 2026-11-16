@@ -238,6 +238,10 @@ const hi: Dict = {
 };
 
 export const dictionaries: Record<string, Dict> = {
+  he: {
+    "nav.board": "לוח",
+    "nav.goToBoard": "לכו ללוח!",
+  },
   en,
   es,
   fr,
@@ -245,6 +249,20 @@ export const dictionaries: Record<string, Dict> = {
   zh,
   hi,
 };
+
+export function localTranslation(text: string, lang: LangCode): string | undefined {
+  if (lang !== "he") return undefined;
+  const labels: Record<string, string> = {
+    "The Board": "לוח",
+    "THE BOARD": "לוח",
+    "Go to THE BOARD!": "לכו ללוח!",
+    "Go to THE BOARD": "לכו ללוח",
+    "לוח": "לוח",
+    "לכו ללוח!": "לכו ללוח!",
+    "לכו ללוח": "לכו ללוח",
+  };
+  return labels[text.trim()];
+}
 
 export function translate(lang: LangCode, key: string): string {
   return dictionaries[lang]?.[key] ?? en[key] ?? key;
