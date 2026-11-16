@@ -103,6 +103,10 @@ export function EmergencyWidget() {
   const { t, lang: uiLang, hebrewAllowed, setDetectedCountry } = useLanguage();
   const { country: region, setCountry, isChosen } = useRegion();
   const emergency = getEmergency(uiLang, region);
+  // Legacy translation keys mention 911; substitute the actual destination
+  // everywhere, including custom-message controls and their placeholders.
+  const emergencyText = (key: string) =>
+    t(key).replaceAll("911", emergency.sms ?? emergency.police);
   const [open, setOpen] = useState(false);
   const [loc, setLoc] = useState<Loc | null>(null);
   const [locError, setLocError] = useState<string | null>(null);
@@ -647,7 +651,7 @@ export function EmergencyWidget() {
                 className="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-red-600 py-2 text-xs font-extrabold uppercase tracking-widest text-white hover:bg-red-700"
               >
                 <MessageSquare className="h-3.5 w-3.5" />{" "}
-                {preparing ? t("emg.translating") : `${t("emg.text911").replace("911", emergency.sms ?? emergency.police)}`}
+                {preparing ? t("emg.translating") : emergencyText("emg.text911")}
               </a>
             )}
 
@@ -738,7 +742,7 @@ export function EmergencyWidget() {
               {storyStatus && <p className="mt-1 text-[10px] text-ink-600">{storyStatus}</p>}
               {testMode && (
                 <p className="mt-1 rounded bg-amber-100 px-2 py-1 text-[10px] font-bold text-amber-800">
-                  TEST MODE — texts go to {getTest911Number()}, not 911. Open the app with ?test911=off to clear.
+                  TEST MODE — texts go to {getTest911Number()}, not {emergency.sms ?? emergency.police}. Open the app with ?test911=off to clear.
                 </p>
               )}
             </div>
@@ -924,7 +928,7 @@ export function EmergencyWidget() {
               className="inline-flex items-center gap-1 text-[11px] font-semibold text-ink-700 hover:text-rose-600"
             >
               <Settings className="h-3 w-3" />
-              {editMsg ? t("emg.hideMsg") : t("emg.editMsg")}
+              {editMsg ? t("emg.hideMsg") : emergencyText("emg.editMsg")}
             </button>
             {editMsg && (
               <div className="mt-2 space-y-2">
@@ -955,18 +959,20 @@ export function EmergencyWidget() {
                   dir={msgLangDir}
                   inputMode="text"
                   className="w-full rounded-md border border-ink-300 bg-white p-2 text-xs text-ink-900 focus:border-rose-500 focus:outline-none"
-                  placeholder={t("emg.msgPlaceholder")}
+                  placeholder={emergencyText("emg.msgPlaceholder")}
                 />
                 {msgLang !== "en" && (
-                  <p className="text-[10px] text-ink-500">{t("emg.translateNote")}</p>
+                  <p className="text-[10px] text-ink-500">{emergencyText("emg.translateNote")}</p>
                 )}
               </div>
             )}
           </div>
 
-          <p className="mt-3 text-[10px] text-ink-400">
-            {t("emg.textFooter")}
-          </p>
+          {isUS && (
+            <p className="mt-3 text-[10px] text-ink-400">
+              {t("emg.textFooter")}
+            </p>
+          )}
         </div>
       )}
       <div className="flex items-center gap-3">
