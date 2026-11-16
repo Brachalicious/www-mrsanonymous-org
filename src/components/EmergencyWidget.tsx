@@ -91,6 +91,7 @@ type Loc = {
   addressLat?: number;
   addressLon?: number;
   addressAccuracy?: number;
+  country?: string;
   at: number;
 };
 
@@ -99,7 +100,7 @@ const ADDRESS_ACCURACY_LIMIT_M = 75;
 const GOOD_ACCURACY_M = 25;
 
 export function EmergencyWidget() {
-  const { t, lang: uiLang } = useLanguage();
+  const { t, lang: uiLang, hebrewAllowed, setDetectedCountry } = useLanguage();
   const { country: region, setCountry, isChosen } = useRegion();
   const emergency = getEmergency(uiLang, region);
   const [open, setOpen] = useState(false);
@@ -216,11 +217,24 @@ export function EmergencyWidget() {
   const geoSeq = useRef(0);
   // The GPS reading the address currently on screen was looked up for.
   const addressFixRef = useRef<Fix | null>(null);
+  const addressLanguage = hebrewAllowed ? "he" : "en";
+
+  useEffect(() => {
+    setDetectedCountry(loc?.country ?? null);
+  }, [loc?.country, setDetectedCountry]);
+
+  useEffect(() => {
+    if (!loc) return;
+    const seq = ++geoSeq.current;
+    void reverseGeocode(loc.lat, loc.lon, loc.accuracy, seq);
+    // Re-look-up the same fix only when the permitted address language changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addressLanguage]);
 
   async function reverseGeocode(lat: number, lon: number, accuracy: number, seq: number): Promise<boolean> {
     try {
       const res = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`,
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1&accept-language=${addressLanguage}`,
         { headers: { Accept: "application/json" } },
       );
       if (!res.ok) return false;
@@ -237,7 +251,7 @@ export function EmergencyWidget() {
         if (!prev || !canApplyEmergencyAddress(prev, fix, seq, geoSeq.current)) return prev;
         applied = true;
         addressFixRef.current = fix;
-        return { ...prev, address: text, addressLat: lat, addressLon: lon, addressAccuracy: accuracy };
+        return { ...prev, country: typeof a.country_code === "string" ? a.country_code.toUpperCase() : undefined, address: text, addressLat: lat, addressLon: lon, addressAccuracy: accuracy };
       });
       return applied;
     } catch {
@@ -315,6 +329,7 @@ export function EmergencyWidget() {
           });
           if (!keep) addressFixRef.current = null;
           return {
+            country: keep ? prev?.country : undefined,
             address: keep ? prev?.address : undefined,
             addressLat: keep ? prev?.addressLat : undefined,
             addressLon: keep ? prev?.addressLon : undefined,
@@ -927,7 +942,7 @@ export function EmergencyWidget() {
                   >
                     {LANGUAGES.map((l) => (
                       <option key={l.code} value={l.code}>
-                        {l.native} ({l.label})
+                        {l.code === "he" && !hebrewAllowed ? l.label : `${l.native} (${l.label})`}
                       </option>
                     ))}
                   </select>

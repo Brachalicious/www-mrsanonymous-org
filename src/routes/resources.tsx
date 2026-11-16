@@ -1,5 +1,6 @@
 import { SaveToPhonebook } from "@/components/SaveToPhonebook";
 import { SafeExternalButton } from "@/components/SafeExternalButton";
+import { useRegion } from "@/hooks/use-region";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type MouseEvent } from "react";
 import { isHideHistoryEnabled } from "@/components/PrivacyBanner";
@@ -1069,6 +1070,7 @@ function slug(s: string) {
 }
 
 function LocationFinder() {
+  const { setCountry: saveCountry } = useRegion();
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
   const stateName = state ? STATES.find(([c]) => c === state)?.[1] : "";
@@ -1088,6 +1090,7 @@ function LocationFinder() {
           value={country}
           onChange={(e) => {
             setCountry(e.target.value);
+            if (e.target.value) saveCountry(e.target.value === "OTHER" ? "INT" : e.target.value);
             setState("");
           }}
           className="w-full max-w-sm rounded-xl border border-ink-300/60 bg-white px-4 py-3 text-sm text-ink-900 outline-none focus:border-rose-500"

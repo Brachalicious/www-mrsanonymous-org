@@ -32,3 +32,4 @@
 - Country-specific guidance requires support intent or an exact country/organization query and ranks above generic resources, so unrelated geography questions do not receive survivor advice.
 - Text-to-police buttons are offered only where texting emergency services is a general public service; registration-only, TTY-only or accessibility-desk lines must be hidden and explained in a note with the number to call instead.
 - Resource video and article collections use the existing safe external-opening confirmation rather than embedded players, preventing unwanted playback and blocked third-party frames.
+- Keep requested language separate from effective display language; use explicit country choice or a fix-paired, ephemeral reverse-geocoded country to gate Hebrew, never browser locale alone.
