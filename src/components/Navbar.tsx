@@ -66,7 +66,7 @@ export function Navbar() {
   const [hideHistory, setHideHistory] = useState(false);
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
-  const { lang, requestedLang, hebrewAllowed, setLang, t } = useLanguage();
+  const { lang, requestedLang, setLang, t } = useLanguage();
   const { country: region } = useRegion();
   const emergency = getEmergency(lang, region);
   const fetchUnread = useServerFn(getUnreadMessageCount);
@@ -159,7 +159,7 @@ export function Navbar() {
               >
                 {LANGUAGES.map((l) => (
                   <option key={l.code} value={l.code}>
-                    {l.code === "he" && !hebrewAllowed ? "Hebrew" : l.native}
+                    {l.native}
                   </option>
                 ))}
               </select>
