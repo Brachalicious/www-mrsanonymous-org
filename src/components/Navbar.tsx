@@ -175,6 +175,7 @@ export function Navbar() {
               <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-black">
                 <Shield className="h-3 w-3 fill-black" />
               </span>
+              <span className="sm:hidden">{emergency.police}</span>
               <span className="hidden sm:inline">{emergency.policeLabel || "Police"}</span>
             </a>
           </div>
