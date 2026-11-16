@@ -66,7 +66,7 @@ export function Navbar() {
   const [hideHistory, setHideHistory] = useState(false);
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
-  const { lang, setLang, t } = useLanguage();
+  const { lang, requestedLang, hebrewAllowed, setLang, t } = useLanguage();
   const { country: region } = useRegion();
   const emergency = getEmergency(lang, region);
   const fetchUnread = useServerFn(getUnreadMessageCount);
@@ -152,14 +152,14 @@ export function Navbar() {
                 translate="no"
                 data-no-translate=""
                 data-testid="safety-strip-language"
-                value={lang}
+                value={requestedLang}
                 onChange={(e) => setLang(e.target.value as LangCode)}
                 className="bg-transparent text-white outline-none [&>option]:bg-ink-900 [&>option]:text-white"
                 aria-label={t("safety.language")}
               >
                 {LANGUAGES.map((l) => (
                   <option key={l.code} value={l.code}>
-                    {l.native}
+                    {l.code === "he" && !hebrewAllowed ? "Hebrew" : l.native}
                   </option>
                 ))}
               </select>

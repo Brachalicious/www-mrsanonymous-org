@@ -4,6 +4,9 @@
 - [x] Add trusted video and reading links under Resources with existing sharing, phonebook saving and safe external opening.
 - [x] Verify the section and external-opening confirmation on desktop and phone sizes.
 
+## Hebrew display
+- [ ] Gate app-generated Hebrew on selected Israel, or selected Hebrew plus a location lookup confirming Israel; verify language switching and location behavior.
+
 - [x] Run all automated tests (65 pass, 0 fail)
 - [x] Confirm build is clean
 - [x] Verify signed-out flows: terms gate, legal pages readable, mascot guide (unsaved), Quick Exit, emergency panel, resources, board, download page, footer warning

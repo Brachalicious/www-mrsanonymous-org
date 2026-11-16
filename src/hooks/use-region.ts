@@ -14,11 +14,16 @@ export function useRegion() {
   const [stored, setStored] = useState<string | null>(null);
 
   useEffect(() => {
-    try {
-      setStored(localStorage.getItem(KEY));
-    } catch {
-      /* ignore */
-    }
+    const refresh = () => {
+      try { setStored(localStorage.getItem(KEY)); } catch { /* ignore */ }
+    };
+    refresh();
+    window.addEventListener("mrsanon:country-changed", refresh);
+    window.addEventListener("storage", refresh);
+    return () => {
+      window.removeEventListener("mrsanon:country-changed", refresh);
+      window.removeEventListener("storage", refresh);
+    };
   }, []);
 
   const profileCountry = (profile as { country?: string | null } | null)?.country ?? null;
@@ -27,6 +32,7 @@ export function useRegion() {
     setStored(code);
     try {
       localStorage.setItem(KEY, code);
+      window.dispatchEvent(new Event("mrsanon:country-changed"));
     } catch {
       /* ignore */
     }
