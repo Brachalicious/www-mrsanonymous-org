@@ -1070,8 +1070,8 @@ function slug(s: string) {
 }
 
 function LocationFinder() {
-  const { setCountry: saveCountry } = useRegion();
-  const [country, setCountry] = useState("");
+  const { country: selectedCountry, setCountry: saveCountry } = useRegion();
+  const country = selectedCountry === "INT" ? "OTHER" : selectedCountry ?? "";
   const [state, setState] = useState("");
   const stateName = state ? STATES.find(([c]) => c === state)?.[1] : "";
   const local = state ? SECTIONS.flatMap((s) => s.items).filter((it) => it.states?.includes(state)) : [];
@@ -1089,7 +1089,6 @@ function LocationFinder() {
           data-testid="country-select"
           value={country}
           onChange={(e) => {
-            setCountry(e.target.value);
             if (e.target.value) saveCountry(e.target.value === "OTHER" ? "INT" : e.target.value);
             setState("");
           }}

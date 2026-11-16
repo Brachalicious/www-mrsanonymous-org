@@ -71,7 +71,7 @@ const SECTIONS: Section[] = [
       { id: "protection_other", label: "Protection order details (case number, who has a copy)", type: "textarea" },
       { id: "who_know_going", label: "Who will you let know where you are going?" },
       { id: "emergency_pickup", label: "Who is your emergency pickup person?" },
-      { id: "kids_911", label: "Do your children know how to call 911?", type: "yesno" },
+      { id: "kids_911", label: "Do your children know how to call the emergency number for the country they are in?", type: "yesno" },
       { id: "kids_code_word", label: "Children's code word (means: get out / get help)" },
       { id: "kids_safe_place", label: "Children's safe place in the home and outside the home", type: "textarea" },
       { id: "childcare", label: "Childcare backup plan", type: "textarea" },

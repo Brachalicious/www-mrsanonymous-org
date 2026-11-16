@@ -5,12 +5,13 @@ import { Send, X } from "lucide-react";
 import mascot from "@/assets/app-guidance-mascot-transparent.png";
 import { Button } from "@/components/ui/button";
 import { appendGuidanceMessages } from "@/lib/guidance.functions";
-import { answerGuidanceQuestion } from "@/lib/guidance/knowledge";
+import { answerGuidanceForCountry } from "@/lib/guidance/knowledge";
+import { useRegion } from "@/hooks/use-region";
 import { newGuidanceMessageId, type GuidanceMessage } from "@/lib/guidance/messages";
 
 const SUGGESTIONS = [
   "Where are my saved notes?",
-  "How do I text 911?",
+  "How do I contact emergency services?",
   "Where is My Safety Plan?",
   "How do I share on THE BOARD?",
   "How do I leave this site fast?",
@@ -26,6 +27,7 @@ export function GuidanceChat({
   onSaved?: () => void;
 }) {
   const [messages, setMessages] = useState<GuidanceMessage[]>(initialMessages);
+  const { country } = useRegion();
   const [draft, setDraft] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -50,7 +52,7 @@ export function GuidanceChat({
     const answer: GuidanceMessage = {
       id: newGuidanceMessageId(),
       role: "assistant",
-      text: answerGuidanceQuestion(question),
+      text: answerGuidanceForCountry(question, country),
     };
     setMessages((current) => [...current, userMessage, answer]);
     setDraft("");
