@@ -942,7 +942,7 @@ export function EmergencyWidget() {
                   >
                     {LANGUAGES.map((l) => (
                       <option key={l.code} value={l.code}>
-                        {l.code === "he" && !hebrewAllowed ? l.label : `${l.native} (${l.label})`}
+                        {l.native} ({l.label})
                       </option>
                     ))}
                   </select>
