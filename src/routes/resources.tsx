@@ -1,4 +1,5 @@
 import { SaveToPhonebook } from "@/components/SaveToPhonebook";
+import { SafeExternalButton } from "@/components/SafeExternalButton";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type MouseEvent } from "react";
 import { isHideHistoryEnabled } from "@/components/PrivacyBanner";
@@ -57,6 +58,7 @@ type ResourceItem = {
   tel?: string;
   note: string;
   states?: string[];
+  format?: "Video collection" | "Article" | "Toolkit";
 };
 
 type CountryItem = {
@@ -892,6 +894,17 @@ const COUNTRIES: Country[] = [
 
 const SECTIONS: { id: string; title: string; items: ResourceItem[] }[] = [
   {
+    id: "videos-articles",
+    title: "Videos & Articles",
+    items: [
+      { name: "DomesticShelters.org — abuse & safety videos", format: "Video collection", href: "https://www.domesticshelters.org/videos/category/most-read-articles", note: "Short videos about recognizing abuse, gaslighting, power and control, and safety planning with children." },
+      { name: "NNEDV — If you are being abused", format: "Article", href: "https://nnedv.org/content/if-you-are-being-abused/", note: "Understanding abuse, finding an advocate, and considering support and safety options at your own pace." },
+      { name: "NNEDV — Financial safety planning", format: "Article", href: "https://nnedv.org/content/financial-safety-planning/", note: "Recognizing financial abuse and considering safer steps with money, banking, work and housing." },
+      { name: "NNEDV — Financial abuse toolkit", format: "Toolkit", href: "https://nnedv.org/resources-library/financial-abuse-toolkit/", note: "Financial literacy, survivor money tips, and a curriculum for rebuilding financial independence over time." },
+      { name: "DomesticShelters.org — financial recovery articles", format: "Article", href: "https://www.domesticshelters.org/articles/financial", note: "Reading about financial abuse, money after leaving, and rebuilding financial independence." },
+    ],
+  },
+  {
     id: "crisis",
     title: "Crisis hotlines",
     items: [
@@ -982,9 +995,9 @@ export const Route = createFileRoute("/resources")({
   head: () => ({
     meta: [
       { title: "Resources — MrsAnonymous" },
-      { name: "description", content: "Crisis hotlines, shelters, text support, and safety resources for women and girls." },
+      { name: "description", content: "Videos, articles, crisis hotlines, shelters, text support, and financial safety resources for women and girls." },
       { property: "og:title", content: "Resources — MrsAnonymous" },
-      { property: "og:description", content: "Crisis hotlines, shelters, text support, and safety resources." },
+      { property: "og:description", content: "Videos, articles, crisis hotlines, shelters, text support, and financial safety resources." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -1018,21 +1031,29 @@ function ResourcesPage() {
         {SECTIONS.map((s) => (
           <section key={s.id} data-testid={`resource-${s.id}`} className="mt-10">
             <h2 className="font-serif text-2xl text-ink-900">{s.title}</h2>
+            {s.id === "videos-articles" && (
+              <p className="mt-2 text-sm text-ink-500">Content note: these resources discuss domestic violence and abuse. Choose what feels safe for you. Videos may play sound; outside websites may keep browsing history.</p>
+            )}
             <ul className="mt-4 space-y-4">
               {s.items.map((it) => (
                 <li key={it.name} className="note-card flex flex-col gap-1 p-5 sm:flex-row sm:items-center sm:justify-between">
                   <div>
+                    {it.format && <div className="mb-1 text-xs font-semibold text-rose-600">{it.format}</div>}
                     <div className="font-semibold text-ink-900">{it.name}</div>
                     <div className="text-sm text-ink-500">{it.note}</div>
                     <div className="mt-2"><ShareButton resource={it} /></div>
                   </div>
-                  <a
+                  {it.format && it.href ? (
+                    <SafeExternalButton url={it.href} label={it.name} className="btn-rose shrink-0 !px-4 !py-2 !text-xs">
+                      {it.format === "Video collection" ? "Watch videos" : it.format === "Toolkit" ? "Open toolkit" : "Read article"}
+                    </SafeExternalButton>
+                  ) : <a
                     data-testid={`resource-link-${slug(it.name)}`}
                     href={it.href}
                     className="btn-rose !px-4 !py-2 !text-xs"
                   >
                     {it.phone || "Visit"}
-                  </a>
+                  </a>}
                 </li>
               ))}
             </ul>
