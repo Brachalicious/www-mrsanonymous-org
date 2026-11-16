@@ -5,7 +5,7 @@
 - [x] Verify the section and external-opening confirmation on desktop and phone sizes.
 
 ## Hebrew display
-- [ ] Gate app-generated Hebrew on selected Israel, or selected Hebrew plus a location lookup confirming Israel; verify language switching and location behavior.
+- [x] Gate app-generated Hebrew on selected Israel, or selected Hebrew plus a location lookup confirming Israel; verified both with simulated US/Israel fixes and 23 passing regression tests.
 
 - [x] Run all automated tests (65 pass, 0 fail)
 - [x] Confirm build is clean
