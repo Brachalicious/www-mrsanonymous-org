@@ -12,12 +12,14 @@ const KEY = "mrsanon:country";
 export function useRegion() {
   const { profile } = useAuth();
   const [stored, setStored] = useState<string | null>(null);
+  const [suggested, setSuggested] = useState<string | null>(null);
 
   useEffect(() => {
     const refresh = () => {
       try { setStored(localStorage.getItem(KEY)); } catch { /* ignore */ }
     };
     refresh();
+    setSuggested(detectCountry());
     window.addEventListener("mrsanon:country-changed", refresh);
     window.addEventListener("storage", refresh);
     return () => {
@@ -38,7 +40,7 @@ export function useRegion() {
     }
   }, []);
 
-  const country = stored ?? profileCountry ?? (typeof window === "undefined" ? null : detectCountry());
+  const country = stored ?? profileCountry ?? suggested;
 
   // True when the number came from a real choice (this device or the profile)
   // rather than from the browser-locale guess.
