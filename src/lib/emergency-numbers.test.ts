@@ -1,6 +1,25 @@
 import { test } from "node:test";
 import { strict as assert } from "node:assert";
-import { getEmergency } from "./emergency-numbers";
+import { COUNTRY_OPTIONS, getEmergency } from "./emergency-numbers";
+
+test("every selectable emergency country keeps its numbers when the language changes", () => {
+  for (const { code } of COUNTRY_OPTIONS) {
+    const english = getEmergency("en", code);
+    const hebrew = getEmergency("he", code);
+    assert.equal(english.country, code);
+    assert.equal(hebrew.police, english.police);
+    assert.equal(hebrew.sms, english.sms);
+  }
+});
+
+test("selected country determines the emergency destination, not the display language", () => {
+  assert.equal(getEmergency("en", "IL").police, "100");
+  assert.equal(getEmergency("he", "US").police, "911");
+  assert.equal(getEmergency("he", "GB").police, "999");
+  assert.equal(getEmergency("he", "AU").police, "000");
+  assert.equal(getEmergency("he", "NZ").police, "111");
+  assert.equal(getEmergency("he", "DE").police, "110");
+});
 
 test("Israel offers a police text line and marks it as the accessibility desk", () => {
   const il = getEmergency("he", "IL");
