@@ -1,5 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { ContactForm } from "./ContactForm";
+import { useRegion } from "@/hooks/use-region";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { getEmergency } from "@/lib/emergency-numbers";
 
 interface AudiencePageProps {
   audience: "women" | "girls";
@@ -7,6 +10,9 @@ interface AudiencePageProps {
 
 export function AudiencePage({ audience }: AudiencePageProps) {
   const isGirls = audience === "girls";
+  const { country } = useRegion();
+  const { lang } = useLanguage();
+  const emergency = getEmergency(lang, country);
 
   const config = isGirls
     ? {
@@ -21,7 +27,7 @@ export function AudiencePage({ audience }: AudiencePageProps) {
           "If you ever feel unsafe right now, the help below is one tap away.",
         ],
         hotlines: [
-          { name: "Emergency", phone: "911", href: "tel:911" },
+          { name: "Emergency", phone: emergency.policeLabel, href: `tel:${emergency.police}` },
           { name: "Childhelp National Child Abuse Hotline", phone: "1-800-422-4453", href: "tel:18004224453" },
           { name: "Loveisrespect (dating abuse, teens)", phone: "Text LOVEIS to 22522", href: "sms:22522?body=LOVEIS" },
           { name: "Crisis Text Line", phone: "Text HOME to 741741", href: "sms:741741?body=HOME" },
@@ -40,7 +46,7 @@ export function AudiencePage({ audience }: AudiencePageProps) {
           "You can leave this site in one click — press ESC or tap ✕ Quick Exit.",
         ],
         hotlines: [
-          { name: "Emergency", phone: "911", href: "tel:911" },
+          { name: "Emergency", phone: emergency.policeLabel, href: `tel:${emergency.police}` },
           { name: "National Domestic Violence Hotline", phone: "1-800-799-SAFE (7233)", href: "tel:18007997233" },
           { name: "RAINN (Sexual Assault Hotline)", phone: "1-800-656-HOPE (4673)", href: "tel:18006564673" },
           { name: "Crisis Text Line", phone: "Text HOME to 741741", href: "sms:741741?body=HOME" },

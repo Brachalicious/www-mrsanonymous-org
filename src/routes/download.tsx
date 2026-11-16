@@ -219,8 +219,8 @@ function DownloadPage() {
         <div className="mt-10 rounded-xl border border-ink-300 bg-white p-6">
           <h2 className="font-serif text-2xl font-semibold text-ink-900">Why install?</h2>
           <ul className="mt-3 space-y-2 text-sm text-ink-700">
-            <li>🚨 One-tap emergency access to 911, hotlines, and the Signal for Help.</li>
-            <li>🌐 Works in 17+ languages with auto-translation for 911 texts.</li>
+            <li>🚨 One-tap emergency access for your selected country, hotlines, and the Signal for Help.</li>
+            <li>🌐 Multiple languages with translation for supported emergency texts.</li>
             <li>🔒 Quick Exit and history-clearing safety features built in.</li>
             <li>📓 Your private notebooks — always with you, always anonymous.</li>
             <li>Opens from your home screen; loading depends on your device and connection. Offline access is not included.</li>

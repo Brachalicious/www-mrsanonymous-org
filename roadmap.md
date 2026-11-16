@@ -19,6 +19,8 @@
 - [x] Extend built-in guide answers and verify resource navigation and country matching (38 tests; all 20 links and signed-out UK guidance checked).
 
 ## Emergency panel country support
+- [x] Sweep emergency surfaces: corrected Women/Girls emergency links, installation wording, safety-plan/export prompt and new guide responses; synchronized all Resources country choices with emergency profiles and fixed country-loading mismatch. Nine public pages checked in browser; journal, export and support handling read in source; 129 tests passed. Not an official-service verification or live call/text test.
+- [x] Make the current country visible beside the safety controls; 58 tests passed, all 43 named countries checked in Hebrew and English through both call controls, Israel and Hebrew persist after reload, phone layout fits, and no page errors.
 - [x] Remove leftover US-only 911 wording outside the US; 13 tests passed, seven country call destinations checked, Israel persists after reload, phone panel fits, and no page errors.
 - [x] Country picker in the emergency panel (explicit device choice > profile country > locale guess), with persistence across reload.
 - [x] Verify per country in the preview: US, GB, CA, AU, NZ, FR, IL, ES, DE — correct call numbers, text button only where genuinely available, accurate note otherwise, no page errors, panel fits at 390x844.

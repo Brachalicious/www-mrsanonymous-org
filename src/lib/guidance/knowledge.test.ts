@@ -1,8 +1,18 @@
 import { describe, test } from "node:test";
 import { strict as assert } from "node:assert";
-import { answerGuidanceQuestion, GUIDANCE_TOPICS, matchGuidanceTopic } from "./knowledge";
+import { answerGuidanceQuestion, answerGuidanceForCountry, GUIDANCE_TOPICS, matchGuidanceTopic } from "./knowledge";
 
 describe("built-in guidance answers", () => {
+  test("new guidance never directs an Israel user to call or text 911", () => {
+    for (const question of ["how do i text 911", "hes coming and im trapped", "my friend is being abused", "i want to die", "i was raped"]) {
+      const answer = answerGuidanceForCountry(question, "IL");
+      assert.doesNotMatch(answer, /call 911|text 911/i);
+      assert.match(answer, /selected country|country selector/);
+    }
+  });
+  test("US guidance keeps 911 as its emergency destination", () => {
+    assert.match(answerGuidanceForCountry("hes coming and im trapped", "US"), /Call 911/);
+  });
   test("safety plan question names the safety plan page and its export options", () => {
     const answer = answerGuidanceQuestion("where is my safety plan and can I download it");
     assert.match(answer, /My Safety Plan/);

@@ -33,3 +33,5 @@
 - Text-to-police buttons are offered only where texting emergency services is a general public service; registration-only, TTY-only or accessibility-desk lines must be hidden and explained in a note with the number to call instead.
 - Resource video and article collections use the existing safe external-opening confirmation rather than embedded players, preventing unwanted playback and blocked third-party frames.
 - Honor explicit language selection independently of country; country selection controls emergency numbers, not whether the selected language can display.
+- Keep the emergency country picker visible in the shared navigation and protect changing emergency-number labels from DOM translation; all safety surfaces must use the same country selection rather than infer destinations from language.
+- Resources and emergency selectors share the stored country; new guide answers apply that country without rewriting previously saved conversations, and safety-plan export labels must not assume a US destination.

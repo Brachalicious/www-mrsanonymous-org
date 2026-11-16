@@ -996,6 +996,19 @@ export function matchGuidanceTopic(text: string): GuidanceTopic | null {
   return bestScore > 0 ? best : null;
 }
 
+export function answerGuidanceForCountry(text: string, country?: string | null): string {
+  const answer = answerGuidanceQuestion(text);
+  if (country === "US") return answer;
+  return answer
+    .replace(/There you can call 911, or Text 911\./g, "Choose the country you are in; the panel shows its emergency call number and only offers texting where supported.")
+    .replace(/Text 911/g, "use the emergency panel's supported text option")
+    .replace(/texting 911|text 911/g, "contacting emergency services")
+    .replace(/call 911/gi, "call the emergency number shown for your selected country")
+    .replace(/911 text/g, "supported emergency text")
+    .replace(/visible to 911/g, "visible to emergency services")
+    .concat("\n\nConfirm the country you are in using the country selector at the top of the page. Resource numbers mentioned for the United States are US services; choose your country on Resources for local help.");
+}
+
 export function answerGuidanceQuestion(text: string): string {
   const normalized = normalizeGuidanceText(text);
   if (!normalized) return FALLBACK_ANSWER;
