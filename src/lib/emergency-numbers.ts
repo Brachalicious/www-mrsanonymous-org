@@ -185,6 +185,9 @@ export function detectCountry(): string {
 }
 
 export function getEmergency(lang: LangCode, country?: string | null): EmergencyProfile {
-  if (country && COUNTRY_PROFILES[country]) return COUNTRY_PROFILES[country];
-  return PROFILES[lang] ?? PROFILES.en;
+  const profile = country && COUNTRY_PROFILES[country] ? COUNTRY_PROFILES[country] : PROFILES[lang] ?? PROFILES.en;
+  if (profile.country === "IL" && lang !== "he") {
+    return { ...profile, policeLabel: "100 (Police)", medicalLabel: "101 (Ambulance)", fireLabel: "102 (Fire)", crisisLabel: "1201 (ERAN)" };
+  }
+  return profile;
 }
