@@ -5,7 +5,7 @@
 - [x] Verify the section and external-opening confirmation on desktop and phone sizes.
 
 ## Hebrew display
-- [ ] Honor selected Hebrew regardless of country or location; verify the language choice and unchanged country-specific emergency numbers.
+- [x] Honor selected Hebrew regardless of country or location; verified selection, reload persistence, switching back to English, and unchanged US 911 numbers; 11 regression tests passed.
 
 - [x] Run all automated tests (65 pass, 0 fail)
 - [x] Confirm build is clean
