@@ -6,10 +6,11 @@ test("selecting Israel permits Hebrew without a location lookup", () => {
   assert.equal(allowsHebrew("IL", "en", null), true);
   assert.equal(displayLanguage("he", "IL", null), "he");
 });
-test("Hebrew selection requires a detected Israel location otherwise", () => {
+test("selecting Hebrew always displays Hebrew regardless of country or location permission", () => {
   assert.equal(displayLanguage("he", null, "IL"), "he");
-  assert.equal(displayLanguage("he", "US", "US"), "en");
-  assert.equal(displayLanguage("he", null, null), "en");
+  assert.equal(displayLanguage("he", "US", "US"), "he");
+  assert.equal(displayLanguage("he", null, null), "he");
+  assert.equal(allowsHebrew("US", "he", null), true);
 });
 test("Israel location alone does not permit Hebrew without Hebrew selection", () => {
   assert.equal(allowsHebrew(null, "en", "IL"), false);

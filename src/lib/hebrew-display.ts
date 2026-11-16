@@ -1,9 +1,9 @@
 import type { LangCode } from "./translations";
 
-export function allowsHebrew(selectedCountry: string | null, selectedLanguage: LangCode, detectedCountry: string | null): boolean {
-  return selectedCountry === "IL" || (selectedLanguage === "he" && detectedCountry === "IL");
+export function allowsHebrew(selectedCountry: string | null, selectedLanguage: LangCode, _detectedCountry: string | null): boolean {
+  return selectedCountry === "IL" || selectedLanguage === "he";
 }
 
-export function displayLanguage(selectedLanguage: LangCode, selectedCountry: string | null, detectedCountry: string | null): LangCode {
-  return selectedLanguage === "he" && !allowsHebrew(selectedCountry, selectedLanguage, detectedCountry) ? "en" : selectedLanguage;
+export function displayLanguage(selectedLanguage: LangCode, _selectedCountry: string | null, _detectedCountry: string | null): LangCode {
+  return selectedLanguage;
 }
