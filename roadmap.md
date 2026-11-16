@@ -2,7 +2,7 @@
 
 ## Videos & Articles
 - [x] Add trusted video and reading links under Resources with existing sharing, phonebook saving and safe external opening.
-- [ ] Verify the section and external-opening confirmation on desktop and phone sizes.
+- [x] Verify the section and external-opening confirmation on desktop and phone sizes.
 
 - [x] Run all automated tests (65 pass, 0 fail)
 - [x] Confirm build is clean
