@@ -8,7 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { performQuickExit } from "./QuickExit";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LANGUAGES, type LangCode } from "@/lib/translations";
-import { getEmergency } from "@/lib/emergency-numbers";
+import { COUNTRY_OPTIONS, getEmergency } from "@/lib/emergency-numbers";
 import { useRegion } from "@/hooks/use-region";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -67,7 +67,7 @@ export function Navbar() {
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { lang, requestedLang, setLang, t } = useLanguage();
-  const { country: region } = useRegion();
+  const { country: region, setCountry, isChosen } = useRegion();
   const emergency = getEmergency(lang, region);
   const fetchUnread = useServerFn(getUnreadMessageCount);
   const isClient = typeof window !== "undefined";
@@ -165,6 +165,8 @@ export function Navbar() {
               </select>
             </label>
             <a
+              translate="no"
+              data-no-translate=""
               data-testid="safety-strip-call-911"
               href={`tel:${emergency.police}`}
               className="inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-red-600 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-white shadow hover:bg-red-700"
@@ -176,6 +178,21 @@ export function Navbar() {
               <span className="hidden sm:inline">{emergency.policeLabel || "Police"}</span>
             </a>
           </div>
+        </div>
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2 px-4 pb-2 text-xs lg:px-10" translate="no" data-no-translate="">
+          <label htmlFor="safety-country" className="font-semibold">
+            {lang === "he" ? "המדינה שבה אתם נמצאים" : "Country you are in"}
+          </label>
+          <select
+            id="safety-country"
+            data-testid="safety-strip-country"
+            value={region ?? "US"}
+            onChange={(e) => setCountry(e.target.value)}
+            className="min-h-8 min-w-0 max-w-full rounded border border-border bg-background px-2 text-foreground"
+          >
+            {COUNTRY_OPTIONS.map((c) => <option key={c.code} value={c.code}>{c.name}</option>)}
+          </select>
+          {!isChosen && <span>{lang === "he" ? "בדקו את המדינה המוצעת" : "Confirm the suggested country"}</span>}
         </div>
       </div>
 

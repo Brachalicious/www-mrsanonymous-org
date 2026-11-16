@@ -19,6 +19,7 @@
 - [x] Extend built-in guide answers and verify resource navigation and country matching (38 tests; all 20 links and signed-out UK guidance checked).
 
 ## Emergency panel country support
+- [ ] Make the current country visible beside the safety controls and verify every named country in Hebrew and English, including reload and phone layout.
 - [x] Remove leftover US-only 911 wording outside the US; 13 tests passed, seven country call destinations checked, Israel persists after reload, phone panel fits, and no page errors.
 - [x] Country picker in the emergency panel (explicit device choice > profile country > locale guess), with persistence across reload.
 - [x] Verify per country in the preview: US, GB, CA, AU, NZ, FR, IL, ES, DE — correct call numbers, text button only where genuinely available, accurate note otherwise, no page errors, panel fits at 390x844.

@@ -62,8 +62,8 @@ const PROFILES: Record<string, EmergencyProfile> = {
   sw: { country: "KE",    police: "112",  policeLabel: "112",                                                                     smsSupported: false },
 };
 
-// Country-specific emergency profiles. A user's chosen country always wins
-// over the language-based default above.
+// Country-specific emergency profiles. Language only changes display labels;
+// it must never select a different emergency destination.
 const COUNTRY_PROFILES: Record<string, EmergencyProfile> = {
   US: { country: "US", police: "911", policeLabel: "911", medical: "911", medicalLabel: "911", fire: "911", fireLabel: "911", crisis: "988", crisisLabel: "988", sms: "911", smsSupported: true },
   // Canada's Text with 9-1-1 is a registered service for people who are deaf,
@@ -185,7 +185,8 @@ export function detectCountry(): string {
 }
 
 export function getEmergency(lang: LangCode, country?: string | null): EmergencyProfile {
-  const profile = country && COUNTRY_PROFILES[country] ? COUNTRY_PROFILES[country] : PROFILES[lang] ?? PROFILES.en;
+  const code = country?.trim().toUpperCase();
+  const profile = code && COUNTRY_PROFILES[code] ? COUNTRY_PROFILES[code] : COUNTRY_PROFILES.US;
   if (profile.country === "IL" && lang !== "he") {
     return { ...profile, policeLabel: "100 (Police)", medicalLabel: "101 (Ambulance)", fireLabel: "102 (Fire)", crisisLabel: "1201 (ERAN)" };
   }
