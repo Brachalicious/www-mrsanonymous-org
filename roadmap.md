@@ -1,5 +1,8 @@
 # Roadmap — pre-production full test
 
+## Translation meaning review
+- [ ] Correct ambiguous safety wording across all 24 language choices and check translated public pages, including Hebrew.
+
 ## Homepage purpose and pathways
 - [x] Rewrite women, girls and storytelling paths; describe resources, phonebook, incident recordings and safety tools without inviting personal outreach. Phone/desktop presentation and Resources navigation checked; no page errors, build OK.
 
