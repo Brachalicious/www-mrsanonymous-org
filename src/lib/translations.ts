@@ -1,5 +1,6 @@
 // Lightweight i18n dictionary for MrsANONymous.
 // Missing keys fall back to English, then to the key itself.
+import { safetyTranslation } from "./safety-translations";
 
 // Any Google-Translate ISO code is accepted; strict union removed so all
 // languages can be selected. Codes below match Google Translate.
@@ -251,8 +252,21 @@ export const dictionaries: Record<string, Dict> = {
 };
 
 export function localTranslation(text: string, lang: LangCode): string | undefined {
+  const safety = safetyTranslation(text, lang);
+  if (safety !== undefined) return safety;
   if (lang !== "he") return undefined;
   const labels: Record<string, string> = {
+    "a safe place to speak": "מקום בטוח להשמיע את קולך",
+    "A safe &": "מרחב בטוח ו",
+    "space": "מרחב",
+    "for women and": "לנשים ול",
+    "girls": "נערות",
+    "safety first": "הבטיחות לפני הכול",
+    "Open My Safety Plan": "פתיחת תוכנית הבטיחות האישית שלי",
+    "Your safety is top priority. Keep this document in a safe place.": "הבטיחות שלך קודמת לכול. שמרי את המסמך הזה במקום בטוח.",
+    "Your story. Your safety. Your choice.": "הסיפור שלך. הבטיחות שלך. הבחירה שלך.",
+    "Emergency & Safety Tools": "כלים לשעת חירום ולבטיחות אישית",
+    "Plan for safer next steps": "תכנני את הצעדים הבאים בבטחה",
     "The Board": "לוח",
     "THE BOARD": "לוח",
     "Go to THE BOARD!": "לכו ללוח!",
