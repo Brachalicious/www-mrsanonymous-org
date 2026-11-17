@@ -1,7 +1,7 @@
 # Roadmap — pre-production full test
 
 ## Homepage purpose and pathways
-- [ ] Rewrite the women, girls and storytelling paths, describe resources, phonebook, incident recordings and safety tools, and check phone/desktop presentation.
+- [x] Rewrite women, girls and storytelling paths; describe resources, phonebook, incident recordings and safety tools without inviting personal outreach. Phone/desktop presentation and Resources navigation checked; no page errors, build OK.
 
 ## Android installation and device reset
 - [x] Distinguish Chrome shortcuts from app installation without promising removal of browser badges.
