@@ -62,60 +62,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let mounted = true;
 
-    async function load() {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      const nextUser = session?.user ?? null;
+    let revision = 0;
+    function receiveSession(nextSession: Session | null, event?: string) {
       if (!mounted) return;
-      setSession(session ?? null);
+      const version = ++revision;
+      const nextUser = nextSession?.user ?? null;
+      setSession(nextSession);
       setUser(nextUser);
-
-      if (nextUser) {
-        const { data } = await sb.from("profiles").select("*").eq("id", nextUser.id).single();
-        if (mounted) setProfile((data as Profile | null) ?? null);
-        const { data: roles } = await sb.from("user_roles").select("role").eq("user_id", nextUser.id);
-        if (mounted) setIsAdmin(Array.isArray(roles) && roles.some((r: any) => r.role === "admin"));
-      } else {
-        setProfile(null);
-        setIsAdmin(false);
-      }
-
-      if (mounted) setLoading(false);
-    }
-
-    load();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (!mounted) return;
-      const nextUser = session?.user ?? null;
-      setSession(session ?? null);
-      setUser(nextUser);
+      // Authentication is ready before optional profile/role reads finish.
+      setLoading(false);
+      setProfile(null);
+      setIsAdmin(false);
       if (event === "SIGNED_OUT") clearNoteDrafts();
-
-      if (!nextUser) {
-        setProfile(null);
-        setIsAdmin(false);
-        setLoading(false);
-        return;
-      }
-      // Auth holds its session lock while invoking this callback. Defer database
-      // calls until it returns, or getSession and sign-in can wait indefinitely.
+      if (!nextUser) return;
       setTimeout(() => {
-        if (!mounted) return;
-        void (async () => {
-          try {
-            const { data } = await sb.from("profiles").select("*").eq("id", nextUser.id).single();
-            if (mounted) setProfile((data as Profile | null) ?? null);
-            const { data: roles } = await sb.from("user_roles").select("role").eq("user_id", nextUser.id);
-            if (mounted) setIsAdmin(Array.isArray(roles) && roles.some((r: any) => r.role === "admin"));
-          } finally {
-            if (mounted) setLoading(false);
-          }
-        })();
+        if (!mounted || version !== revision) return;
+        void Promise.all([
+          sb.from("profiles").select("*").eq("id", nextUser.id).single(),
+          sb.from("user_roles").select("role").eq("user_id", nextUser.id),
+        ]).then(([profileResult, roleResult]) => {
+          if (!mounted || version !== revision) return;
+          setProfile((profileResult.data as Profile | null) ?? null);
+          setIsAdmin(Array.isArray(roleResult.data) && roleResult.data.some((r: { role: string }) => r.role === "admin"));
+        }).catch(() => {
+          // Optional reads must not strand the whole app on Loading.
+        });
       }, 0);
+    }
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, nextSession) => {
+      receiveSession(nextSession, event);
+    });
+    const initialRevision = revision;
+    void supabase.auth.getSession().then(({ data }) => {
+      if (revision === initialRevision) receiveSession(data.session);
+    }).catch(() => {
+      if (mounted && revision === initialRevision) setLoading(false);
     });
 
     return () => {

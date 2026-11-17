@@ -37,3 +37,4 @@
 - Resources and emergency selectors share the stored country; new guide answers apply that country without rewriting previously saved conversations, and safety-plan export labels must not assume a US destination.
 - Device reset requires explicit confirmation, local auth sign-out and app-scoped storage clearing before reloading a clean URL; never infer uninstall or delete Cloud accounts automatically, since browser shortcuts share origin data and uninstall is not observable.
 - Resolve ambiguous safety interface phrases through the browser-safe contextual dictionary before automatic translation, so isolated words do not become financial terms.
+- Cache only successful translations; pause blocked requests and bound waits. Auth readiness precedes optional profile reads. Bound guide requests without replaying writes; disabled queries never imply active loading.
