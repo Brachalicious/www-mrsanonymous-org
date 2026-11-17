@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import { strict as assert } from "node:assert";
-import { LANGUAGES, localTranslation } from "./translations";
+import { localTranslation } from "./translations";
 import { safetyTranslations } from "./safety-translations";
 
 test("Hebrew safety describes personal protection rather than a money safe", () => {

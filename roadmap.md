@@ -1,7 +1,8 @@
 # Roadmap — pre-production full test
 
 ## Translation meaning review
-- [ ] Correct ambiguous safety wording across all 24 language choices and check translated public pages, including Hebrew.
+- [x] Add contextual personal-safety terminology for all 24 language choices and a complete Hebrew homepage headline; check tools/plan headings in 96 phone/desktop page visits, no overflow, Hebrew regression tests pass.
+- [ ] Complete full-text meaning review across every language/page: automatic translation service is rejecting requests in this environment, leaving uncatalogued English text visible; full native-speaker validation is not available.
 
 ## Homepage purpose and pathways
 - [x] Rewrite women, girls and storytelling paths; describe resources, phonebook, incident recordings and safety tools without inviting personal outreach. Phone/desktop presentation and Resources navigation checked; no page errors, build OK.
