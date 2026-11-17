@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { Send, X } from "lucide-react";
 import mascot from "@/assets/app-guidance-mascot-transparent.png";
 import { Button } from "@/components/ui/button";
+import { LinkifiedText } from "@/components/LinkifiedText";
 import { appendGuidanceMessages } from "@/lib/guidance.functions";
 import { answerGuidanceForCountry } from "@/lib/guidance/knowledge";
 import { useRegion } from "@/hooks/use-region";
@@ -112,7 +113,14 @@ export function GuidanceChat({
                       : "max-w-[92%] whitespace-pre-wrap break-words rounded-lg border border-ink-300 bg-white px-3 py-2 text-sm text-ink-900"
                   }
                 >
-                  {message.text}
+                  <LinkifiedText
+                    text={message.text}
+                    linkClassName={
+                      message.role === "user"
+                        ? "inline break-all font-semibold text-rose-200 underline"
+                        : "inline break-all font-semibold text-rose-700 underline"
+                    }
+                  />
                 </p>
               </li>
             ))}
