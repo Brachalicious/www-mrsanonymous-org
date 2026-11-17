@@ -268,7 +268,7 @@ function ToolsPage() {
       <div className="mt-10 text-center">
 
         <Link to="/resources" className="text-sm font-semibold text-rose-600 hover:underline">
-          Browse full resources directory →
+          Browse full resources directory <span aria-hidden className="rtl-flip inline-block">→</span>
         </Link>
       </div>
     </div>

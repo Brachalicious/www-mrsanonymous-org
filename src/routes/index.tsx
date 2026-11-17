@@ -261,7 +261,7 @@ function PathCard({
         <h3 className="mt-2 font-serif text-2xl text-ink-900">{title}</h3>
         <p className="mt-3 text-sm leading-relaxed text-ink-500">{body}</p>
         <div className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-rose-500 transition-transform group-hover:translate-x-1">
-          Continue <span aria-hidden>→</span>
+          Continue <span aria-hidden className="rtl-flip inline-block">→</span>
         </div>
       </a>
     );
@@ -277,7 +277,7 @@ function PathCard({
       <h3 className="mt-2 font-serif text-2xl text-ink-900">{title}</h3>
       <p className="mt-3 text-sm leading-relaxed text-ink-500">{body}</p>
       <div className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-rose-500 transition-transform group-hover:translate-x-1">
-        Continue <span aria-hidden>→</span>
+        Continue <span aria-hidden className="rtl-flip inline-block">→</span>
       </div>
     </Link>
   );
