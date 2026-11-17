@@ -196,11 +196,24 @@ export const safetyTranslations: Record<string, Record<string, string>> = {
 
 export function safetyTranslation(text: string, lang: string): string | undefined {
   const key = text.trim();
+  const safeStates: Record<string, string> = {
+    en: "Safe", es: "A salvo", fr: "En sécurité", pt: "Em segurança", de: "In Sicherheit",
+    it: "Al sicuro", nl: "Veilig", pl: "Bezpieczna", ru: "В безопасности", uk: "У безпеці",
+    tr: "Güvende", he: "בטוחה", ar: "آمنة", fa: "در امنیت", ur: "محفوظ", hi: "सुरक्षित",
+    bn: "নিরাপদ", zh: "安全", ja: "安全", ko: "안전함", vi: "An toàn", tl: "Ligtas", id: "Aman", sw: "Salama",
+  };
+  if (key === "Safe" || key === "safe") return safeStates[lang];
   const aliases: Record<string, string> = {
     "safety": "Safety", "Safety tools": "Safety tools", "safety tools": "Safety tools",
     "My safety plan": "My Safety Plan", "My personal safety plan": "My Safety Plan",
-    "Open My Safety Plan": "My Safety Plan",
   };
   const canonical = aliases[key] ?? key;
   return safetyTranslations[lang]?.[canonical];
+}
+
+// Fail back to source rather than showing a known dangerous meaning error.
+// Financial safes, official organization names and vanity phone numbers are not rewritten.
+export function hasSafetyMeaningError(source: string, translated: string, target: string): boolean {
+  return target === "he" && /כספת/.test(translated) && /\bsafe(?:ty|r)?\b/i.test(source)
+    && !/\b(money|cash|vault|deposit|safe ireland)\b|799-SAFE/i.test(source);
 }
