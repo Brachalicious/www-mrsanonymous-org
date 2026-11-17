@@ -6,6 +6,7 @@ import { sendContactMessage } from "@/lib/contact.functions";
 import { useAuth } from "@/contexts/AuthContext";
 
 export const Route = createFileRoute("/delete-account")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Delete Your Account & Data — MrsANONymous" },

@@ -15,6 +15,7 @@ import signalForHelp from "@/assets/signal-for-help.png.asset.json";
 import helpSignalButton from "@/assets/help-signal-button.png.asset.json";
 
 export const Route = createFileRoute("/")({
+  staticData: { sitemap: true },
   component: Index,
   head: () => ({
     meta: [

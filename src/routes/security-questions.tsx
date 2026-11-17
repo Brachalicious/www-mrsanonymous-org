@@ -12,6 +12,7 @@ const searchSchema = z.object({
 });
 
 export const Route = createFileRoute("/security-questions")({
+  staticData: { sitemap: false },
   validateSearch: (s) => searchSchema.parse(s),
   head: () => ({
     meta: [

@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /journal
+Disallow: /notebooks/
+Disallow: /admin/
+Disallow: /login
+Disallow: /signup
+Disallow: /forgot-password
+Disallow: /inbox
+Disallow: /settings
+Disallow: /phonebook
+Disallow: /safety-plan
+Disallow: /security-questions
+Disallow: /delete-account
+Disallow: /guidance
+Disallow: /api/
+
+Sitemap: https://mrsanonymous.org/sitemap.xml

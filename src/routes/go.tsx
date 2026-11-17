@@ -21,6 +21,7 @@ function isKnownUnframable(url: string): boolean {
 }
 
 export const Route = createFileRoute("/go")({
+  staticData: { sitemap: false },
   validateSearch: (search: Record<string, unknown>): Search => ({
     url: typeof search.url === "string" ? search.url : undefined,
     r: typeof search.r === "string" ? search.r : undefined,

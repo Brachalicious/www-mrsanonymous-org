@@ -6,6 +6,7 @@ import { COUNTRY_OPTIONS, detectCountry } from "@/lib/emergency-numbers";
 import { useEffect } from "react";
 
 export const Route = createFileRoute("/signup")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Create Account — MrsAnonymous" },

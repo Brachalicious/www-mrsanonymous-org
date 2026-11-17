@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Trash2, MessageSquare, Shield } from "lucide-react";
 
 export const Route = createFileRoute("/admin/moderation")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Moderation Queue — MrsANONymous" },

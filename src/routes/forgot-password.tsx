@@ -6,6 +6,7 @@ import { PasswordInput } from "@/components/PasswordInput";
 import { getQuestionsForNickname, resetPasswordWithAnswers } from "@/lib/security-questions.functions";
 
 export const Route = createFileRoute("/forgot-password")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Reset Password — MrsAnonymous" },

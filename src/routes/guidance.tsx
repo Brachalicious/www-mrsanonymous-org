@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 export const Route = createFileRoute("/guidance")({
+  staticData: { sitemap: "exclude-subtree" },
   head: () => ({ meta: [
     { title: "App Guidance — MrsANONymous.org" },
     { name: "description", content: "Ask the built-in MrsANONymous guide how to use the app. Free, no AI, no cost." },

@@ -30,6 +30,7 @@ import { Route as SafetyPlanRouteImport } from './routes/safety-plan'
 import { Route as SecurityQuestionsRouteImport } from './routes/security-questions'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TellYourStoryRouteImport } from './routes/tell-your-story'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ToolsRouteImport } from './routes/tools'
@@ -147,6 +148,11 @@ const SignupRoute = SignupRouteImport.update({
   path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TellYourStoryRoute = TellYourStoryRouteImport.update({
   id: '/tell-your-story',
   path: '/tell-your-story',
@@ -226,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/security-questions': typeof SecurityQuestionsRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tell-your-story': typeof TellYourStoryRoute
   '/terms': typeof TermsRoute
   '/tools': typeof ToolsRoute
@@ -259,6 +266,7 @@ export interface FileRoutesByTo {
   '/security-questions': typeof SecurityQuestionsRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tell-your-story': typeof TellYourStoryRoute
   '/terms': typeof TermsRoute
   '/tools': typeof ToolsRoute
@@ -294,6 +302,7 @@ export interface FileRoutesById {
   '/security-questions': typeof SecurityQuestionsRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tell-your-story': typeof TellYourStoryRoute
   '/terms': typeof TermsRoute
   '/tools': typeof ToolsRoute
@@ -330,6 +339,7 @@ export interface FileRouteTypes {
     | '/security-questions'
     | '/settings'
     | '/signup'
+    | '/sitemap.xml'
     | '/tell-your-story'
     | '/terms'
     | '/tools'
@@ -363,6 +373,7 @@ export interface FileRouteTypes {
     | '/security-questions'
     | '/settings'
     | '/signup'
+    | '/sitemap.xml'
     | '/tell-your-story'
     | '/terms'
     | '/tools'
@@ -397,6 +408,7 @@ export interface FileRouteTypes {
     | '/security-questions'
     | '/settings'
     | '/signup'
+    | '/sitemap.xml'
     | '/tell-your-story'
     | '/terms'
     | '/tools'
@@ -432,6 +444,7 @@ export interface RootRouteChildren {
   SecurityQuestionsRoute: typeof SecurityQuestionsRoute
   SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TellYourStoryRoute: typeof TellYourStoryRoute
   TermsRoute: typeof TermsRoute
   ToolsRoute: typeof ToolsRoute
@@ -592,6 +605,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tell-your-story': {
       id: '/tell-your-story'
       path: '/tell-your-story'
@@ -708,6 +728,7 @@ const rootRouteChildren: RootRouteChildren = {
   SecurityQuestionsRoute: SecurityQuestionsRoute,
   SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TellYourStoryRoute: TellYourStoryRoute,
   TermsRoute: TermsRoute,
   ToolsRoute: ToolsRoute,

@@ -994,6 +994,7 @@ const SECTIONS: { id: string; title: string; items: ResourceItem[] }[] = [
 ];
 
 export const Route = createFileRoute("/resources")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Resources — MrsAnonymous" },

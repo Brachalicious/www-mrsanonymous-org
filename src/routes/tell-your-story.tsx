@@ -5,6 +5,7 @@ import { NotebookList } from "@/components/NotebookList";
 import { IncidentReportsList } from "@/components/IncidentReportsList";
 
 export const Route = createFileRoute("/tell-your-story")({
+  staticData: { sitemap: true },
   validateSearch: z.object({
     tab: z.enum(["story", "mine", "entries"]).default("story").catch("story"),
   }),

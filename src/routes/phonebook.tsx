@@ -7,6 +7,7 @@ import {
 } from "@/lib/phonebook";
 
 export const Route = createFileRoute("/phonebook")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "My Phonebook & Money Plan — MrsANONymous.org" },

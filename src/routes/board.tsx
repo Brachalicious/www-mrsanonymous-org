@@ -5,6 +5,7 @@ import { StoriesBoard } from "@/components/StoriesBoard";
 import cork from "@/assets/corkboard.png.asset.json";
 
 export const Route = createFileRoute("/board")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "The Board — MrsANONymous.org" },

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { GuidanceWorkspace } from "@/components/GuidanceWorkspace";
 export const Route = createFileRoute("/guidance/")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "App Guidance — MrsANONymous" },

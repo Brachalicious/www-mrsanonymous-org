@@ -3,6 +3,7 @@ import { PrivateJournal } from "@/components/PrivateJournal";
 import { BodyCam } from "@/components/BodyCam";
 
 export const Route = createFileRoute("/journal")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Private Journal — MrsANONymous.org" },

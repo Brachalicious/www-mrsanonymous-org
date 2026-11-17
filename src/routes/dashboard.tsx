@@ -15,6 +15,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 
 export const Route = createFileRoute("/dashboard")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Your dashboard — MrsANONymous.org" },

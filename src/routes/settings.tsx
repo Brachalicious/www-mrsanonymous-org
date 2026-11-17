@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { deleteMyAccount } from "@/lib/account.functions";
 
 export const Route = createFileRoute("/settings")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Account Settings — MrsANONymous" },

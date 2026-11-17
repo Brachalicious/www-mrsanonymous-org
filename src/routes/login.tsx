@@ -6,6 +6,7 @@ import { PasswordInput } from "@/components/PasswordInput";
 import { hasMyQuestions } from "@/lib/security-questions.functions";
 
 export const Route = createFileRoute("/login")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Log In — MrsAnonymous" },

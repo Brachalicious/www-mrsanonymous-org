@@ -38,6 +38,7 @@ const TOPIC_OPTIONS = [
 ];
 
 export const Route = createFileRoute("/notebooks/$id")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "My Notebook — MrsANONymous.org" },

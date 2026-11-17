@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { clearDeviceData } from "@/lib/device-reset";
 
 export const Route = createFileRoute("/download")({
+  staticData: { sitemap: true },
   component: DownloadPage,
   head: () => ({
     meta: [

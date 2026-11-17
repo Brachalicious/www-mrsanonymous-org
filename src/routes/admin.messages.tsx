@@ -8,6 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/admin/messages")({
+  staticData: { sitemap: false },
   validateSearch: (search: Record<string, unknown>) => ({
     thread: typeof search['thread'] === "string" ? (search['thread'] as string) : undefined,
   }),

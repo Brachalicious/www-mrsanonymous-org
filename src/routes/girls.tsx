@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AudiencePage } from "@/components/AudiencePage";
 
 export const Route = createFileRoute("/girls")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "For Girls & Teens — MrsAnonymous" },

@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 
 export const Route = createFileRoute("/inbox")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Inbox — MrsANONymous" },
