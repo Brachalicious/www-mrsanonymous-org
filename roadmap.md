@@ -1,9 +1,9 @@
 # Roadmap — pre-production full test
 
 ## Android installation and device reset
-- [ ] Distinguish Chrome shortcuts from app installation without promising removal of browser badges.
-- [ ] Add confirmed device reset that removes local private data and locks without deleting online accounts.
-- [ ] Verify fresh direct-site opening after reset, calculator launch protection, and phone layout.
+- [x] Distinguish Chrome shortcuts from app installation without promising removal of browser badges.
+- [x] Add confirmed device reset that removes local private data and locks without deleting online accounts.
+- [x] Verify fresh direct-site opening after reset, calculator launch protection, phone layout and signed-in local sign-out; nine regression tests pass, no page errors.
 - [ ] Badge-free Android package and automatic uninstall cleanup: requires native Android project changes; unavailable in this website checkout.
 
 ## Videos & Articles
