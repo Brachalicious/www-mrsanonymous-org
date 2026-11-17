@@ -1,6 +1,8 @@
 // Lightweight i18n dictionary for MrsANONymous.
 // Missing keys fall back to English, then to the key itself.
 import { safetyTranslation, hasSafetyMeaningError } from "./safety-translations";
+import { interfaceTranslation } from "./interface-translations";
+import { requestTranslation } from "./translation-request";
 
 // Any Google-Translate ISO code is accepted; strict union removed so all
 // languages can be selected. Codes below match Google Translate.
@@ -254,6 +256,8 @@ export const dictionaries: Record<string, Dict> = {
 export function localTranslation(text: string, lang: LangCode): string | undefined {
   const safety = safetyTranslation(text, lang);
   if (safety !== undefined) return safety;
+  const ui = interfaceTranslation(text, lang);
+  if (ui !== undefined) return ui;
   if (lang !== "he") return undefined;
   const labels: Record<string, string> = {
     "a safe place to speak": "מקום בטוח להשמיע את קולך",
@@ -293,7 +297,8 @@ export function localTranslation(text: string, lang: LangCode): string | undefin
 }
 
 export function translate(lang: LangCode, key: string): string {
-  return dictionaries[lang]?.[key] ?? en[key] ?? key;
+  const value = dictionaries[lang]?.[key] ?? en[key] ?? key;
+  return dictionaries[lang]?.[key] ?? localTranslation(value, lang) ?? value;
 }
 
 /**
@@ -302,17 +307,7 @@ export function translate(lang: LangCode, key: string): string {
  */
 export async function translateToEnglish(text: string, sourceLang: LangCode): Promise<string> {
   if (!text.trim() || sourceLang === "en") return text;
-  try {
-    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=en&dt=t&q=${encodeURIComponent(text)}`;
-    const res = await fetch(url);
-    if (!res.ok) return text;
-    const data = await res.json();
-    // Response: [[["translated","original",...]], ...]
-    if (!Array.isArray(data) || !Array.isArray(data[0])) return text;
-    return data[0].map((seg: unknown[]) => (Array.isArray(seg) ? String(seg[0] ?? "") : "")).join("");
-  } catch {
-    return text;
-  }
+  return (await requestTranslation(text, "en", sourceLang)).text;
 }
 
 /**
@@ -329,15 +324,6 @@ export async function translateText(
     const local = localTranslation(text, targetLang);
     if (local !== undefined) return local;
   }
-  try {
-    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
-    const res = await fetch(url);
-    if (!res.ok) return text;
-    const data = await res.json();
-    if (!Array.isArray(data) || !Array.isArray(data[0])) return text;
-    const result = data[0].map((seg: unknown[]) => (Array.isArray(seg) ? String(seg[0] ?? "") : "")).join("");
-    return hasSafetyMeaningError(text, result, targetLang) ? text : result;
-  } catch {
-    return text;
-  }
+  const result = await requestTranslation(text, targetLang, sourceLang);
+  return hasSafetyMeaningError(text, result.text, targetLang) ? text : result.text;
 }

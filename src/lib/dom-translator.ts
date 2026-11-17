@@ -112,7 +112,7 @@ function collectSlots(): Slot[] {
 
   for (const n of collectTextNodes(document.body)) {
     const ours = applied.get(n);
-    if (!originals.has(n) || (ours !== undefined && ours !== n.nodeValue)) {
+    if (!originals.has(n) || ours !== n.nodeValue) {
       originals.set(n, n.nodeValue ?? "");
       applied.delete(n);
     }
@@ -150,7 +150,7 @@ function collectSlots(): Slot[] {
         attrApplied.set(el, apps);
       }
       const ours = apps.get(attr);
-      if (!origs.has(attr) || (ours !== undefined && ours !== val)) {
+      if (!origs.has(attr) || ours !== val) {
         origs.set(attr, val);
         apps.delete(attr);
       }
@@ -211,8 +211,8 @@ async function translateNow(lang: LangCode) {
   for (const { slot, text } of need) {
     const candidate = map.get(text) ?? text;
     const out = hasSafetyMeaningError(text, candidate, lang) ? text : candidate;
-    cache.set(`${lang}\u0001${text}`, out);
-    if (currentLang === lang && slot.connected()) {
+    if (out !== text) cache.set(`${lang}\u0001${text}`, out);
+    if (currentLang === lang && slot.connected() && slot.read() === slot.current) {
       slot.write(out);
       slot.markApplied(out);
     }
@@ -227,6 +227,8 @@ async function schedule() {
   running = true;
   try {
     await translateNow(currentLang);
+  } catch {
+    // Leave original wording readable when the network is unavailable.
   } finally {
     running = false;
     if (queued) {
@@ -258,5 +260,6 @@ export function applyLanguageToDom(lang: LangCode) {
   currentLang = lang;
   if (typeof document === "undefined") return;
   ensureObserver();
-  schedule();
+  // Apply offline wording immediately, even while an old language request waits.
+  void translateNow(lang).catch(() => {});
 }
