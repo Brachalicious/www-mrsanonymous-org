@@ -9,6 +9,7 @@ import { appendGuidanceMessages } from "@/lib/guidance.functions";
 import { answerGuidanceForCountry } from "@/lib/guidance/knowledge";
 import { useRegion } from "@/hooks/use-region";
 import { newGuidanceMessageId, type GuidanceMessage } from "@/lib/guidance/messages";
+import { waitForGuidance } from "@/lib/guidance/requests";
 
 const SUGGESTIONS = [
   "Where are my saved notes?",
@@ -60,7 +61,7 @@ export function GuidanceChat({
     if (!threadId) return;
     setSaving(true);
     try {
-      await append({ data: { threadId, messages: [userMessage, answer] } });
+      await waitForGuidance(append({ data: { threadId, messages: [userMessage, answer] } }));
       onSaved?.();
     } catch (cause) {
       setError(

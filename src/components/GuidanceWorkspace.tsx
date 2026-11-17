@@ -11,6 +11,7 @@ import {
 } from "@/lib/guidance.functions";
 import { Button } from "@/components/ui/button";
 import { GuidanceChat } from "@/components/GuidanceChat";
+import { waitForGuidance } from "@/lib/guidance/requests";
 
 export function GuidanceWorkspace({ threadId }: { threadId?: string }) {
   const { user, loading } = useAuth();
@@ -21,22 +22,22 @@ export function GuidanceWorkspace({ threadId }: { threadId?: string }) {
   const navigate = useNavigate(),
     queryClient = useQueryClient();
   const key = ["guidance-threads", user?.id];
-  const threads = useQuery({ queryKey: key, queryFn: () => list(), enabled: Boolean(user), retry: false });
+  const threads = useQuery({ queryKey: key, queryFn: () => waitForGuidance(list()), enabled: Boolean(user), retry: false });
   const thread = useQuery({
     queryKey: ["guidance-thread", user?.id, threadId],
-    queryFn: () => load({ data: { threadId: threadId ?? "" } }),
+    queryFn: () => waitForGuidance(load({ data: { threadId: threadId ?? "" } })),
     enabled: Boolean(user && threadId),
     retry: false,
   });
   const newThread = useMutation({
-    mutationFn: () => create(),
+    mutationFn: () => waitForGuidance(create()),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: key });
       navigate({ to: "/guidance/$threadId", params: { threadId: data.id } });
     },
   });
   const deleteThread = useMutation({
-    mutationFn: (id: string) => remove({ data: { threadId: id } }),
+    mutationFn: (id: string) => waitForGuidance(remove({ data: { threadId: id } })),
     onSuccess: (_, id) => {
       queryClient.removeQueries({ queryKey: ["guidance-thread", user?.id, id] });
       queryClient.invalidateQueries({ queryKey: key });

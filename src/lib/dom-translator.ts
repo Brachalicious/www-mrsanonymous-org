@@ -196,6 +196,12 @@ async function translateNow(lang: LangCode) {
         s.markApplied(cached);
       }
     } else {
+      // Never retain the previous language while waiting for the next one.
+      if (s.isApplied && s.current !== orig) {
+        s.write(orig);
+        s.clearApplied();
+        s.current = orig;
+      }
       need.push({ slot: s, text: orig });
     }
   }
@@ -213,8 +219,12 @@ async function translateNow(lang: LangCode) {
     const out = hasSafetyMeaningError(text, candidate, lang) ? text : candidate;
     if (out !== text) cache.set(`${lang}\u0001${text}`, out);
     if (currentLang === lang && slot.connected() && slot.read() === slot.current) {
-      slot.write(out);
-      slot.markApplied(out);
+      // Writing the same text still fires MutationObserver, which would
+      // repeatedly re-request every untranslated string on a blocked service.
+      if (slot.read() !== out) {
+        slot.write(out);
+        slot.markApplied(out);
+      }
     }
   }
 }

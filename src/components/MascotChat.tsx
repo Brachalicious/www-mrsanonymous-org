@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { GuidanceChat } from "@/components/GuidanceChat";
 import mascot from "@/assets/app-guidance-mascot-transparent.png";
+import { guidanceIsWaiting, waitForGuidance } from "@/lib/guidance/requests";
 
 export function MascotChat({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { user } = useAuth();
@@ -22,12 +23,13 @@ export function MascotChat({ open, onClose }: { open: boolean; onClose: () => vo
   const key = ["guidance-threads", user?.id];
   const threads = useQuery({
     queryKey: key,
-    queryFn: () => list(),
+    queryFn: () => waitForGuidance(list()),
     enabled: open && Boolean(user),
+    retry: false,
   });
   const threadId = threads.data?.[0]?.id;
   const createThread = useMutation({
-    mutationFn: () => create(),
+    mutationFn: () => waitForGuidance(create()),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: key }),
   });
   useEffect(() => {
@@ -44,9 +46,12 @@ export function MascotChat({ open, onClose }: { open: boolean; onClose: () => vo
   }, [open, user, threads.data, threads.error]);
   const thread = useQuery({
     queryKey: ["guidance-thread", user?.id, threadId],
-    queryFn: () => load({ data: { threadId: threadId ?? "" } }),
+    queryFn: () => waitForGuidance(load({ data: { threadId: threadId ?? "" } })),
     enabled: open && Boolean(user && threadId),
+    retry: false,
   });
+  const error = threads.error ?? createThread.error ?? thread.error;
+  const waiting = guidanceIsWaiting({ listing: threads.isPending, creating: createThread.isPending, loading: thread.isPending, threadId, error });
   if (!open) return null;
   return (
     <div
@@ -81,20 +86,16 @@ export function MascotChat({ open, onClose }: { open: boolean; onClose: () => vo
               <GuidanceChat initialMessages={[]} />
             </div>
           </div>
-        ) : threads.error ? (
+        ) : error ? (
           <p role="alert" className="p-6 text-destructive">
-            {threads.error.message}
+            {error.message}
           </p>
-        ) : threads.isPending || thread.isPending ? (
+        ) : waiting ? (
           <p className="p-6 text-center">Loading…</p>
-        ) : createThread.error ? (
-          <p role="alert" className="p-6 text-destructive">
-            {createThread.error.message}
-          </p>
-        ) : thread.data ? (
+        ) : thread.data && threadId ? (
           <GuidanceChat
             key={`${user.id}:${threadId}`}
-            threadId={threadId!}
+            threadId={threadId}
             initialMessages={thread.data.messages}
             onSaved={() => {
               queryClient.invalidateQueries({ queryKey: key });
@@ -104,7 +105,7 @@ export function MascotChat({ open, onClose }: { open: boolean; onClose: () => vo
             }}
           />
         ) : (
-          <p className="p-6 text-center">Starting your conversation…</p>
+          <GuidanceChat initialMessages={[]} />
         )}
       </div>
     </div>
