@@ -15,7 +15,7 @@ const PHONE_PATTERN =
 // Vanity numbers such as 1-800-799-SAFE: digit runs that continue into
 // letters. Their spans are excluded from phone matching so a partial,
 // undialable prefix never becomes a tel link.
-const VANITY_PATTERN = /\+?\d[\d\s().-]{2,}\d[-.\s]?\(?[A-Za-z][\dA-Za-z()-]*/g;
+const VANITY_PATTERN = /\+?\d[\d\s().-]{2,}\d[-.]\(?[A-Za-z][\dA-Za-z()-]*/g;
 
 // Punctuation that belongs to the sentence, not the URL.
 const TRAILING = /[.,;:!?)\]}"']+$/;
