@@ -2,6 +2,7 @@
 
 ## Translation meaning review
 - [x] Add contextual personal-safety terminology for all 24 language choices and a complete Hebrew homepage headline; check tools/plan headings in 96 phone/desktop page visits, no overflow, Hebrew regression tests pass.
+- [x] Read safety-bearing UI/source paths: navigation/footer, home/about/audience, dashboard, journal/editor/bodycam, Board, resources/external-opening, agreement/privacy/signup/deletion/download, safety-plan fields/print/export, emergency SMS, guidance and server references. Add safe-state/code-word Hebrew terms and reject כספת mistranslations of personal-safety text in dynamic translation. Existing records, emergency numbers, permissions and financial/organization names unchanged; 184 tests pass. Browse 16 routes at phone/desktop in light/dark system preferences; some captures precede hydration and guidance remained loading, so these are not full translated-flow verification.
 - [ ] Complete full-text meaning review across every language/page: automatic translation service is rejecting requests in this environment, leaving uncatalogued English text visible; full native-speaker validation is not available.
 
 ## Homepage purpose and pathways
