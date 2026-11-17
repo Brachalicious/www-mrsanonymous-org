@@ -5,6 +5,9 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useRegion } from "@/hooks/use-region";
 import { getEmergency } from "@/lib/emergency-numbers";
 import { Button } from "@/components/ui/button";
+import { useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { clearDeviceData } from "@/lib/device-reset";
 
 export const Route = createFileRoute("/download")({
   component: DownloadPage,
@@ -13,7 +16,7 @@ export const Route = createFileRoute("/download")({
       { title: "Install Calculator — MrsANONymous.org" },
       { name: "description", content: "Add the discreet Calculator app to your home screen without an account. Installation options depend on your browser and device." },
       { property: "og:title", content: "Download the MrsANONymous App" },
-      { property: "og:description", content: "Install as a private safety app on iPhone or Android in under 30 seconds." },
+      { property: "og:description", content: "Install Calculator on iPhone or Android, understand browser shortcuts, and reset saved device information." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { property: "og:url", content: "/download" },
@@ -23,6 +26,10 @@ export const Route = createFileRoute("/download")({
 });
 
 type Platform = "ios" | "android" | "desktop";
+interface InstallPrompt extends Event {
+  prompt(): Promise<void>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
+}
 
 function detectPlatform(): Platform {
   if (typeof navigator === "undefined") return "desktop";
@@ -34,8 +41,13 @@ function detectPlatform(): Platform {
 
 function DownloadPage() {
   const [platform, setPlatform] = useState<Platform>("desktop");
-  const [installEvent, setInstallEvent] = useState<any>(null);
+  const [installEvent, setInstallEvent] = useState<InstallPrompt | null>(null);
   const [installed, setInstalled] = useState(false);
+  const [installStatus, setInstallStatus] = useState("");
+  const [resetConfirmation, setResetConfirmation] = useState("");
+  const [resetBusy, setResetBusy] = useState(false);
+  const [resetError, setResetError] = useState("");
+  const queryClient = useQueryClient();
   const disguise = true;
   const [gateOn, setGateOn] = useState(false);
   const { lang } = useLanguage();
@@ -71,9 +83,9 @@ function DownloadPage() {
     setPlatform(detectPlatform());
     const onPrompt = (e: Event) => {
       e.preventDefault();
-      setInstallEvent(e);
+      setInstallEvent(e as InstallPrompt);
     };
-    const onInstalled = () => setInstalled(true);
+    const onInstalled = () => { setInstalled(true); setInstallStatus(""); };
     window.addEventListener("beforeinstallprompt", onPrompt);
     window.addEventListener("appinstalled", onInstalled);
     if (window.matchMedia("(display-mode: standalone)").matches) setInstalled(true);
@@ -85,10 +97,30 @@ function DownloadPage() {
 
   async function handleInstall() {
     if (!installEvent) return;
-    installEvent.prompt();
-    const result = await installEvent.userChoice;
-    if (result?.outcome === "accepted") setInstalled(true);
-    setInstallEvent(null);
+    try {
+      await installEvent.prompt();
+      const result = await installEvent.userChoice;
+      setInstallStatus(result.outcome === "accepted" ? "Installation requested. Wait for your phone to finish, then check the Calculator icon." : "Installation cancelled. Nothing was added by this request.");
+      setInstallEvent(null);
+    } catch {
+      setInstallStatus("Your browser could not start installation. Open this page directly in Chrome on Android or Safari on iPhone.");
+    }
+  }
+
+  async function resetDevice() {
+    if (resetConfirmation !== "RESET" || resetBusy) return;
+    setResetBusy(true);
+    setResetError("");
+    try {
+      const { error } = await supabase.auth.signOut({ scope: "local" });
+      if (error) throw error;
+      clearDeviceData(window.localStorage, window.sessionStorage);
+      queryClient.clear();
+      window.location.replace("/");
+    } catch {
+      setResetError("Reset could not finish. Try again. Do not assume your saved information has been erased.");
+      setResetBusy(false);
+    }
   }
 
   return (
@@ -112,8 +144,21 @@ function DownloadPage() {
 
         <section className="mt-6 border-y border-border py-6 text-foreground" aria-label="Quick installation">
           <h2 className="text-xl font-bold">Add Calculator to your home screen</h2>
-          {installed ? <p className="mt-3">Opened as an installed app on this device.</p> : installEvent ? <Button className="mt-4" onClick={handleInstall} data-testid="quick-install-calculator">Install Calculator</Button> : <p className="mt-3">{platform === "ios" ? "In Safari: Share → Add to Home Screen → keep Calculator → Add." : platform === "android" ? "In Chrome: ⋮ → Install app or Add to Home screen → confirm Calculator." : "Use your browser’s install icon or menu. If installation is unavailable, use a bookmark; mobile instructions are below."}</p>}
+          {installed ? <p className="mt-3">Calculator is running separately from the browser, or this browser reported installation complete.</p> : installEvent ? <Button className="mt-4" onClick={handleInstall} data-testid="quick-install-calculator">Install Calculator</Button> : <p className="mt-3">{platform === "ios" ? "In Safari: Share → Add to Home Screen → keep Calculator → Add." : platform === "android" ? "Open this page directly in Chrome. Choose ⋮ → Install app, or Add to Home screen → Install if offered. Create shortcut is a different option." : "Use your browser’s install icon or menu. If installation is unavailable, use a bookmark; mobile instructions are below."}</p>}
+          {installStatus && <p role="status" className="mt-3 text-sm">{installStatus}</p>}
+          <p className="mt-3 text-sm text-muted-foreground">On Android, a small Chrome badge on the Calculator icon means a browser shortcut. The three-dot menu belongs to Chrome. Neither can be removed by this website. If Chrome only offers Create shortcut, a badge-free installation is not available through that option; installing the Android app through Google Play is a separate process.</p>
           <p className="mt-3 text-sm text-muted-foreground">Your browser controls installation and may require several taps. There is no account or waiting period imposed by this app. The icon is a disguise, not a guarantee of secrecy; device settings and browsing records may still identify the site. Existing installations may need reinstalling to refresh the name and icon.</p>
+        </section>
+
+        <section className="mt-6 border-y border-border py-6 text-foreground" aria-label="Reset this device">
+          <h2 className="text-xl font-bold">Start fresh on this device</h2>
+          <p className="mt-3 text-sm">Removing Calculator from your home screen does not erase this website’s saved information. Your browser and the installed website can share the same calculator lock and sign-in. An installed Calculator still opens as a calculator by design.</p>
+          <p className="mt-3 text-sm">This reset signs you out here and removes this site’s saved addresses, emergency messages, safety plan, temporary note drafts, calculator passcode, and device preferences. After reset, open mrsanonymous.org directly to start without the old calculator lock; the agreement still applies. Other open tabs may retain information—close them before resetting.</p>
+          <p className="mt-3 text-sm font-semibold">It does not delete your account, saved online notebooks or messages, downloaded files, browser history, or browser-held credentials. To delete online account data, use <a href="/settings" className="text-primary underline">Account Settings</a> before resetting. Browser site-data controls may be needed to remove remaining browser-held information.</p>
+          <label htmlFor="device-reset-confirmation" className="mt-4 block text-sm font-medium">Type RESET to erase this site’s saved device information</label>
+          <input id="device-reset-confirmation" value={resetConfirmation} onChange={e => setResetConfirmation(e.target.value)} autoComplete="off" className="mt-2 w-full max-w-xs rounded-md border border-input bg-background px-3 py-2" disabled={resetBusy} />
+          <div className="mt-3"><Button variant="destructive" disabled={resetConfirmation !== "RESET" || resetBusy} onClick={resetDevice}>{resetBusy ? "Resetting…" : "Reset this device"}</Button></div>
+          {resetError && <p role="alert" className="mt-3 text-sm text-destructive">{resetError}</p>}
         </section>
 
         <div className="mt-6 rounded-xl border-2 border-ink-300 bg-white p-5">
@@ -210,8 +255,8 @@ function DownloadPage() {
             <ol className="ml-5 list-decimal space-y-2 text-sm text-ink-700">
               <li>Open <strong>mrsanonymous.org</strong> in <strong>Chrome</strong>.</li>
               <li>Tap the <strong>⋮</strong> menu (top-right).</li>
-              <li>Tap <strong>“Install app”</strong> or <strong>“Add to Home screen”</strong>.</li>
-              <li>Confirm. The Calculator icon will appear on your home screen.</li>
+              <li>Choose <strong>“Install app”</strong>, or <strong>“Add to Home screen” → “Install”</strong> if offered.</li>
+              <li>Keep <strong>Calculator</strong> and confirm. If the choice says <strong>“Create shortcut”</strong>, expect a small Chrome badge; this is not the same installation.</li>
             </ol>
           </Card>
         </div>
