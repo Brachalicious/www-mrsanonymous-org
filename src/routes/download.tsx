@@ -321,7 +321,7 @@ function Card({ title, active, children }: { title: string; active: boolean; chi
       }`}
     >
       <h3 className="font-serif text-xl font-semibold text-ink-900">
-        {title} {active && <span className="ml-1 text-xs text-rose-600">← your device</span>}
+        {title} {active && <span className="ml-1 text-xs text-rose-600"><span className="rtl-flip inline-block">←</span> your device</span>}
       </h3>
       <div className="mt-3">{children}</div>
     </div>

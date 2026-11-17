@@ -1157,7 +1157,7 @@ function LocationFinder() {
             href={`https://www.domesticshelters.org/help/${state.toLowerCase()}`}
             className="btn-ghost mt-4 inline-flex !px-5 !py-2.5 !text-xs"
           >
-            Browse all domestic violence programs in {stateName} →
+            Browse all domestic violence programs in {stateName} <span aria-hidden className="rtl-flip inline-block">→</span>
           </a>
         </div>
       )}
@@ -1215,7 +1215,7 @@ function LocationFinder() {
             href="https://nomoredirectory.org/"
             className="btn-ghost mt-4 inline-flex !px-5 !py-2.5 !text-xs"
           >
-            More services in {intl.name} — NO MORE Global Directory →
+            More services in {intl.name} — NO MORE Global Directory <span aria-hidden className="rtl-flip inline-block">→</span>
           </a>
         </div>
       )}
@@ -1231,7 +1231,7 @@ function LocationFinder() {
             href="https://nomoredirectory.org/"
             className="btn-rose mt-4 inline-flex !px-5 !py-2.5 !text-xs"
           >
-            Find a helpline in your country →
+            Find a helpline in your country <span aria-hidden className="rtl-flip inline-block">→</span>
           </a>
         </div>
       )}
