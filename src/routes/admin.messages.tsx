@@ -26,7 +26,7 @@ export const Route = createFileRoute("/admin/messages")({
 });
 
 function AdminMessages() {
-  const { user, profile, isAdmin, loading, session } = useAuth();
+  const { user, profile, isAdmin, loading, roleLoading, session } = useAuth();
   const { thread } = Route.useSearch();
   const list = useServerFn(listAllMessages);
   const qc = useQueryClient();
@@ -38,7 +38,7 @@ function AdminMessages() {
     retry: false,
   });
 
-  if (loading) return <div className="mx-auto max-w-4xl px-5 py-16 text-ink-500">Loading…</div>;
+  if (loading || (user && roleLoading)) return <div className="mx-auto max-w-4xl px-5 py-16 text-ink-500">Loading…</div>;
   if (!user) {
     return (
       <div className="mx-auto max-w-3xl px-5 py-16 text-center">

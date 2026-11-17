@@ -24,7 +24,7 @@ export const Route = createFileRoute("/admin/moderation")({
 });
 
 function ModerationPage() {
-  const { user, isAdmin, loading } = useAuth();
+  const { user, isAdmin, loading, roleLoading } = useAuth();
   const queryClient = useQueryClient();
   const fetchReports = useServerFn(listStoryReports);
   const resolve = useServerFn(resolveStoryReport);
@@ -46,7 +46,7 @@ function ModerationPage() {
     },
   });
 
-  if (loading) return <div className="mx-auto max-w-3xl px-5 py-16 text-ink-500">Loading…</div>;
+  if (loading || (user && roleLoading)) return <div className="mx-auto max-w-3xl px-5 py-16 text-ink-500">Loading…</div>;
   if (!user || !isAdmin) {
     return <div className="mx-auto max-w-3xl px-5 py-16 text-foreground"><h1 className="font-serif text-3xl">Board moderation</h1><p className="mt-3">Admin access required.</p>{!user && <Button asChild className="mt-4"><Link to="/login">Log in</Link></Button>}</div>;
   }
