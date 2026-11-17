@@ -56,9 +56,9 @@ function Index() {
               <Link to="/tell-your-story" data-testid="home-cta-tell-story" className="btn-rose">
                 Tell Your Story
               </Link>
-              <a href="#contact" data-testid="home-cta-contact" className="btn-ghost">
-                Contact App Support
-              </a>
+              <Link to="/resources" data-testid="home-cta-resources" className="btn-ghost">
+                Find Resources
+              </Link>
               <Link to="/download" data-testid="home-cta-download" className="btn-ghost">
                 📱 Download the App
               </Link>
@@ -162,29 +162,64 @@ function Index() {
 
       {/* Quick paths */}
       <section className="mx-auto max-w-7xl px-5 pb-20 lg:px-10">
+        <div className="mb-8 max-w-3xl">
+          <h2 className="font-serif text-3xl text-ink-900 sm:text-4xl">Your story. Your safety. Your choice.</h2>
+          <p className="mt-4 text-base leading-relaxed text-ink-700">
+            Share your story anonymously, connect directly with emergency services and support organizations,
+            and keep the information you need close at hand. Whether you are a woman or a girl,
+            you choose what to write, save, or share.
+          </p>
+        </div>
         <div className="grid gap-5 md:grid-cols-3">
           <PathCard
             testid="path-card-women"
             eyebrow="Women"
             title="A space for women"
-            body="Send an anonymous message, read resources written for adult women, or reach a hotline if you need urgent help."
+            body="Find support for adult women facing abuse—from shelters and domestic-violence hotlines to financial assistance and grants. Explore your options, plan for safety, and contact services directly when you choose."
             to="/women"
           />
           <PathCard
             testid="path-card-girls"
             eyebrow="Girls"
             title="A space for girls"
-            body="If you're a girl or teen, you matter and we hear you. Reach out anonymously — we listen without judgment."
+            body="Find information for girls and teens about unsafe relationships, abuse, and getting help. Explore youth helplines and resources, ways to involve a trusted adult, and emergency options when you need them."
             to="/girls"
           />
           <PathCard
             testid="path-card-story"
             eyebrow="Tell Your Story"
-            title="Your private notebooks"
-            body="Create an anonymous nickname account and keep private notebooks only you can read. Write what you can't yet say out loud."
-            to={user ? "/tell-your-story?tab=mine" : "/tell-your-story"}
+            title="Share on your own terms"
+            body="Write in your private notebooks or choose to share your story anonymously on the community Board. No real name is required. Read others’ experiences, choose trigger warnings, and decide what stays private. Leave out details that could identify you or someone else."
+            to="/tell-your-story"
+          />
+          <PathCard
+            testid="path-card-resources"
+            eyebrow="Resources & My Phonebook"
+            title="Keep help within reach"
+            body="Find shelters, hotlines, financial grants, legal support, and other resources by country. Save useful contacts and links in your own private Phonebook for easy access, and contact those organizations directly."
+            to="/resources"
+          />
+          <PathCard
+            testid="path-card-incidents"
+            eyebrow="Private Incident Reports"
+            title="Keep a record, your way"
+            body="Save incident dates and details with image attachments, audio recordings, and body-cam video. Keep reports in your private journal, then download or share selected records when you choose. Recording laws vary—consider your safety and local rules before recording."
+            to="/journal"
+          />
+          <PathCard
+            testid="path-card-safety"
+            eyebrow="Emergency & Safety Tools"
+            title="Plan for safer next steps"
+            body="Use emergency options for your selected country, including calls and texts where supported. Build a personal safety plan and money plan, learn the Signal for Help, and access Quick Exit and the calculator disguise."
+            to="/tools"
           />
         </div>
+        <p className="mt-6 max-w-3xl text-sm leading-relaxed text-ink-700">
+          MrsANONymous provides tools and information—not counseling or emergency response.
+          Stories are not requests for help and are not monitored for emergencies.
+          For urgent help, contact local emergency services or a crisis hotline directly.
+          A nickname account is needed to save notebooks, incident reports, and your Phonebook.
+        </p>
       </section>
 
       {/* Embedded Contact form */}
