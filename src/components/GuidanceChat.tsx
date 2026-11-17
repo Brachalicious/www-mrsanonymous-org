@@ -107,6 +107,7 @@ export function GuidanceChat({
                 className={message.role === "user" ? "flex justify-end" : "flex justify-start"}
               >
                 <p
+                  data-no-translate={message.role === "user" ? "" : undefined}
                   className={
                     message.role === "user"
                       ? "max-w-[85%] whitespace-pre-wrap break-words rounded-lg bg-ink-900 px-3 py-2 text-sm text-white"

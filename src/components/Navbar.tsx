@@ -66,7 +66,7 @@ export function Navbar() {
   const [hideHistory, setHideHistory] = useState(false);
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
-  const { lang, requestedLang, setLang, t } = useLanguage();
+  const { lang, requestedLang, setLang, t, translationUnavailable } = useLanguage();
   const { country: region, setCountry, isChosen } = useRegion();
   const emergency = getEmergency(lang, region);
   const fetchUnread = useServerFn(getUnreadMessageCount);
@@ -199,6 +199,13 @@ export function Navbar() {
 
 
       {/* Brand + auth */}
+      {lang !== "en" && translationUnavailable && (
+        <p role="status" translate="no" data-no-translate className="border-b border-border bg-muted px-4 py-2 text-sm text-muted-foreground">
+          {lang === "he"
+            ? "התרגום האוטומטי אינו זמין כרגע. חלק מהתוכן מוצג באנגלית; מספרי החירום אינם משתנים."
+            : "Automatic translation is temporarily unavailable. Some content remains in English; emergency numbers are unchanged."}
+        </p>
+      )}
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 pt-4 lg:px-10">
         <Link to="/" data-testid="nav-logo" className="group flex flex-col leading-none">
           <div className="flex items-baseline gap-1" translate="no" data-no-translate="">

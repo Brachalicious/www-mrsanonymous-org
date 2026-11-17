@@ -3,6 +3,7 @@ import { LANGUAGES, translate, type LangCode } from "@/lib/translations";
 import { applyLanguageToDom } from "@/lib/dom-translator";
 import { useRegion } from "@/hooks/use-region";
 import { allowsHebrew, displayLanguage } from "@/lib/hebrew-display";
+import { resetTranslationRequests, TRANSLATION_STATUS_EVENT } from "@/lib/translation-request";
 
 const STORAGE_KEY = "mrsanon:lang";
 
@@ -14,6 +15,7 @@ type LanguageContextValue = {
   setLang: (l: LangCode) => void;
   t: (key: string) => string;
   dir: "ltr" | "rtl";
+  translationUnavailable: boolean;
 };
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
@@ -31,6 +33,7 @@ function detectInitial(): LangCode {
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [requestedLang, setLangState] = useState<LangCode>("en");
+  const [translationUnavailable, setTranslationUnavailable] = useState(false);
   const [detectedCountry, setDetectedCountry] = useState<string | null>(null);
   const { country, isChosen } = useRegion();
   const chosenCountry = isChosen ? country : null;
@@ -40,6 +43,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   // Hydrate on client to avoid SSR mismatch.
   useEffect(() => {
     setLangState(detectInitial());
+    const onStatus = (event: Event) => setTranslationUnavailable(Boolean((event as CustomEvent<boolean>).detail));
+    window.addEventListener(TRANSLATION_STATUS_EVENT, onStatus);
+    return () => window.removeEventListener(TRANSLATION_STATUS_EVENT, onStatus);
   }, []);
 
   const dir: "ltr" | "rtl" = useMemo(() => {
@@ -54,6 +60,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, [lang, dir]);
 
   const setLang = useCallback((l: LangCode) => {
+    resetTranslationRequests();
     setLangState(l);
     try {
       window.localStorage.setItem(STORAGE_KEY, l);
@@ -62,7 +69,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const t = useCallback((key: string) => translate(lang, key), [lang]);
 
-  const value = useMemo(() => ({ lang, requestedLang, hebrewAllowed, setDetectedCountry, setLang, t, dir }), [lang, requestedLang, hebrewAllowed, setLang, t, dir]);
+  const value = useMemo(() => ({ lang, requestedLang, hebrewAllowed, setDetectedCountry, setLang, t, dir, translationUnavailable }), [lang, requestedLang, hebrewAllowed, setLang, t, dir, translationUnavailable]);
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 }
@@ -79,6 +86,7 @@ export function useLanguage(): LanguageContextValue {
       setLang: () => {},
       t: (k) => translate("en", k),
       dir: "ltr",
+      translationUnavailable: false,
     };
   }
   return ctx;

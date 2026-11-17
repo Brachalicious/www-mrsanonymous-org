@@ -21,11 +21,12 @@ export function GuidanceWorkspace({ threadId }: { threadId?: string }) {
   const navigate = useNavigate(),
     queryClient = useQueryClient();
   const key = ["guidance-threads", user?.id];
-  const threads = useQuery({ queryKey: key, queryFn: () => list(), enabled: Boolean(user) });
+  const threads = useQuery({ queryKey: key, queryFn: () => list(), enabled: Boolean(user), retry: false });
   const thread = useQuery({
     queryKey: ["guidance-thread", user?.id, threadId],
     queryFn: () => load({ data: { threadId: threadId ?? "" } }),
     enabled: Boolean(user && threadId),
+    retry: false,
   });
   const newThread = useMutation({
     mutationFn: () => create(),
@@ -42,17 +43,16 @@ export function GuidanceWorkspace({ threadId }: { threadId?: string }) {
       if (id === threadId) navigate({ to: "/guidance" });
     },
   });
-  if (loading) return <p className="p-8 text-center">Loading…</p>;
-  if (!user)
+  if (loading || !user)
     return (
       <section className="mx-auto max-w-xl px-5 py-12 text-center">
         <h1 className="text-3xl">MrsANONymous app guidance</h1>
-        <p className="my-6">
-          Sign in to ask the mascot and keep your conversations in your account.
-        </p>
-        <Button asChild>
+        <div className="mt-6 h-[min(680px,75dvh)] min-h-[400px] text-start">
+          <GuidanceChat key="unsaved" initialMessages={[]} />
+        </div>
+        {!loading && <Button asChild className="mt-4">
           <Link to="/login">Sign in</Link>
-        </Button>
+        </Button>}
       </section>
     );
   const error = threads.error ?? thread.error ?? newThread.error ?? deleteThread.error;
