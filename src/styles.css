@@ -541,3 +541,8 @@ body:has([data-testid="legal-agreement-return"]) .app-content-shell {
     46% 99.5%, 38% 98%, 30% 100%, 22% 98%, 15% 99.5%, 9% 98%, 4% 100%, 0% 98%
   );
 }
+
+/* Mirror directional arrows/chevrons in right-to-left languages */
+[dir="rtl"] :is(.lucide-arrow-right, .lucide-arrow-left, .lucide-chevron-right, .lucide-chevron-left, .rtl-flip) {
+  transform: scaleX(-1);
+}
