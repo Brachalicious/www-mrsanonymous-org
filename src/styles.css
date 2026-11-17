@@ -544,5 +544,5 @@ body:has([data-testid="legal-agreement-return"]) .app-content-shell {
 
 /* Mirror directional arrows/chevrons in right-to-left languages */
 [dir="rtl"] :is(.lucide-arrow-right, .lucide-arrow-left, .lucide-chevron-right, .lucide-chevron-left, .rtl-flip) {
-  transform: scaleX(-1);
+  scale: -1 1;
 }

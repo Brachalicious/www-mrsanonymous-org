@@ -111,7 +111,7 @@ function Index() {
             <span className="max-w-[10rem] text-base font-extrabold uppercase leading-tight tracking-widest sm:text-lg sm:max-w-[12rem]">
               CLICK FOR EMERGENCY OPTIONS
             </span>
-            <ArrowRight className="mt-1 h-10 w-10 animate-bounce [dir=rtl]_&:-scale-x-100 sm:h-12 sm:w-12" strokeWidth={3} />
+            <ArrowRight className="mt-1 h-10 w-10 animate-bounce sm:h-12 sm:w-12" strokeWidth={3} />
           </div>
           <button
             type="button"
