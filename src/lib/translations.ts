@@ -1,5 +1,6 @@
 // Lightweight i18n dictionary for MrsANONymous.
 // Missing keys fall back to English, then to the key itself.
+import { safetyTranslation, hasSafetyMeaningError } from "./safety-translations";
 
 // Any Google-Translate ISO code is accepted; strict union removed so all
 // languages can be selected. Codes below match Google Translate.
@@ -251,8 +252,35 @@ export const dictionaries: Record<string, Dict> = {
 };
 
 export function localTranslation(text: string, lang: LangCode): string | undefined {
+  const safety = safetyTranslation(text, lang);
+  if (safety !== undefined) return safety;
   if (lang !== "he") return undefined;
   const labels: Record<string, string> = {
+    "a safe place to speak": "מקום בטוח להשמיע את קולך",
+    "A safe &": "מרחב בטוח ו",
+    "space": "מרחב",
+    "for women and": "לנשים ול",
+    "girls": "נערות",
+    "100% anonymous": "אנונימי ב־100%",
+    "safety first": "הבטיחות לפני הכול",
+    "Open My Safety Plan": "פתיחת תוכנית הבטיחות האישית שלי",
+    "Your safety is top priority. Keep this document in a safe place.": "הבטיחות שלך קודמת לכול. שמרי את המסמך הזה במקום בטוח.",
+    "Your story. Your safety. Your choice.": "הסיפור שלך. הבטיחות שלך. הבחירה שלך.",
+    "Emergency & Safety Tools": "כלים לשעת חירום ולבטיחות אישית",
+    "Plan for safer next steps": "תכנני את הצעדים הבאים בבטחה",
+    "Unsafe": "לא בטוחה",
+    "Safety tip": "עצה לבטיחות אישית",
+    "Technology safety": "בטיחות בשימוש בטכנולוגיה",
+    "Emotional safety": "ביטחון רגשי",
+    "Do you have a safe word with someone you trust?": "האם יש לך מילת קוד מוסכמת עם אדם שאת סומכת עליו?",
+    "Your safe word or code phrase": "מילת הקוד או הביטוי המוסכם שלך",
+    "Safe public place you can go to right now": "מקום ציבורי בטוח שתוכלי להגיע אליו עכשיו",
+    "Children's safe place in the home and outside the home": "מקום בטוח לילדים בתוך הבית ומחוצה לו",
+    "Where is a safe place to end the relationship (public, with people nearby)?": "היכן תוכלי לסיים את הקשר בבטחה (במקום ציבורי, עם אנשים בקרבת מקום)?",
+    "What made you start a safety plan today?": "מה גרם לך להתחיל להכין תוכנית בטיחות אישית היום?",
+    "Where is My Safety Plan?": "איפה תוכנית הבטיחות האישית שלי?",
+    "Shelters & safe housing": "מקלטים ודיור בטוח",
+    "Directories & digital safety": "מדריכי שירותים ובטיחות דיגיטלית",
     "The Board": "לוח",
     "THE BOARD": "לוח",
     "Go to THE BOARD!": "לכו ללוח!",
@@ -297,13 +325,18 @@ export async function translateText(
   sourceLang: LangCode = "en",
 ): Promise<string> {
   if (!text.trim() || targetLang === sourceLang) return text;
+  if (sourceLang === "en") {
+    const local = localTranslation(text, targetLang);
+    if (local !== undefined) return local;
+  }
   try {
     const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
     const res = await fetch(url);
     if (!res.ok) return text;
     const data = await res.json();
     if (!Array.isArray(data) || !Array.isArray(data[0])) return text;
-    return data[0].map((seg: unknown[]) => (Array.isArray(seg) ? String(seg[0] ?? "") : "")).join("");
+    const result = data[0].map((seg: unknown[]) => (Array.isArray(seg) ? String(seg[0] ?? "") : "")).join("");
+    return hasSafetyMeaningError(text, result, targetLang) ? text : result;
   } catch {
     return text;
   }

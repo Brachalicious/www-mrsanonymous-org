@@ -5,6 +5,7 @@
 
 import { localTranslation, translateText } from "@/lib/translations";
 import type { LangCode } from "@/lib/translations";
+import { hasSafetyMeaningError } from "@/lib/safety-translations";
 
 const originals = new WeakMap<Text, string>();
 // Text nodes we have written into, mapped to the exact value we wrote.
@@ -160,8 +161,8 @@ function collectSlots(): Slot[] {
         original: origs.get(attr) ?? val,
         current: val,
         isApplied: apps.get(attr) === val,
-        markApplied: (v) => apps!.set(attr, v),
-        clearApplied: () => apps!.delete(attr),
+        markApplied: (v) => apps?.set(attr, v),
+        clearApplied: () => apps?.delete(attr),
       });
     }
   });
@@ -208,7 +209,8 @@ async function translateNow(lang: LangCode) {
   uniq.forEach((t, i) => map.set(t, translated[i] ?? t));
 
   for (const { slot, text } of need) {
-    const out = map.get(text) ?? text;
+    const candidate = map.get(text) ?? text;
+    const out = hasSafetyMeaningError(text, candidate, lang) ? text : candidate;
     cache.set(`${lang}\u0001${text}`, out);
     if (currentLang === lang && slot.connected()) {
       slot.write(out);

@@ -36,3 +36,4 @@
 - Keep the emergency country picker visible in the shared navigation and protect changing emergency-number labels from DOM translation; all safety surfaces must use the same country selection rather than infer destinations from language.
 - Resources and emergency selectors share the stored country; new guide answers apply that country without rewriting previously saved conversations, and safety-plan export labels must not assume a US destination.
 - Device reset requires explicit confirmation, local auth sign-out and app-scoped storage clearing before reloading a clean URL; never infer uninstall or delete Cloud accounts automatically, since browser shortcuts share origin data and uninstall is not observable.
+- Resolve ambiguous safety interface phrases through the browser-safe contextual dictionary before automatic translation, so isolated words do not become financial terms.
