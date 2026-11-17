@@ -1,5 +1,8 @@
 # Roadmap — pre-production full test
 
+## Homepage purpose and pathways
+- [ ] Rewrite the women, girls and storytelling paths, describe resources, phonebook, incident recordings and safety tools, and check phone/desktop presentation.
+
 ## Android installation and device reset
 - [x] Distinguish Chrome shortcuts from app installation without promising removal of browser badges.
 - [x] Add confirmed device reset that removes local private data and locks without deleting online accounts.
