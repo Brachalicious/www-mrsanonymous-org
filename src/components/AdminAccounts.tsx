@@ -1,16 +1,20 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { listAccountsForAdmin, deleteAccountForAdmin, setAccountBlocked } from "@/lib/moderation.functions";
+import { listAccountsForAdmin, deleteAccountForAdmin, setAccountBlocked, messageAccountForAdmin } from "@/lib/moderation.functions";
 import { Button } from "@/components/ui/button";
-import { Trash2, Ban, Undo2 } from "lucide-react";
+import { Trash2, Ban, Undo2, Mail } from "lucide-react";
 import { matchesAccountSearch } from "@/lib/account-number-search";
 
 export function AdminAccounts() {
   const fetchAccounts = useServerFn(listAccountsForAdmin);
   const remove = useServerFn(deleteAccountForAdmin);
   const block = useServerFn(setAccountBlocked);
+  const sendMessage = useServerFn(messageAccountForAdmin);
   const qc = useQueryClient();
+  const [messaging, setMessaging] = useState<{ id: string; nickname: string } | null>(null);
+  const [messageBody, setMessageBody] = useState("");
+  const messageMutation = useMutation({ mutationFn: sendMessage, onSuccess: () => { setSuccess(`Message sent to ${messaging?.nickname}. They will see it in their inbox.`); setMessaging(null); setMessageBody(""); } });
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<{ id: string; nickname: string; accountNumber: string | null } | null>(null);
   const [confirmation, setConfirmation] = useState("");
@@ -29,10 +33,11 @@ export function AdminAccounts() {
     <label htmlFor="account-search" className="mt-4 block text-sm font-semibold">Find a nickname or account number</label><input id="account-search" value={search} onChange={(event) => setSearch(event.target.value)} className="mt-2 w-full rounded-md border border-input bg-background p-3 text-foreground" />
     {accounts.isPending && <p className="mt-3 text-muted-foreground">Loading accounts…</p>}
     {accounts.isError && <p role="alert" className="mt-3 text-destructive">{accounts.error.message}</p>}
-    <div className="mt-4 max-h-96 overflow-y-auto divide-y divide-border">{accounts.data?.filter((account) => matchesAccountSearch(account, search)).map((account) => <div key={account.id} className="flex flex-wrap items-center justify-between gap-3 py-3"><span className="break-words"><strong className="block font-mono text-sm">Account #{account.accountNumber ?? "Unavailable"}</strong>{account.nickname}{account.protected && " · Admin / protected"}{account.blocked && " · Blocked"}</span><div className="flex flex-wrap gap-2"><Button variant="outline" size="sm" disabled={account.protected || blocking.isPending || deletion.isPending} onClick={() => {
+    <div className="mt-4 max-h-96 overflow-y-auto divide-y divide-border">{accounts.data?.filter((account) => matchesAccountSearch(account, search)).map((account) => <div key={account.id} className="flex flex-wrap items-center justify-between gap-3 py-3"><span className="break-words"><strong className="block font-mono text-sm">Account #{account.accountNumber ?? "Unavailable"}</strong>{account.nickname}{account.protected && " · Admin / protected"}{account.blocked && " · Blocked"}</span><div className="flex flex-wrap gap-2"><Button variant="outline" size="sm" disabled={account.id === messaging?.id} onClick={() => { setMessaging(account); setMessageBody(""); setSuccess(""); messageMutation.reset(); }}><Mail />Message</Button><Button variant="outline" size="sm" disabled={account.protected || blocking.isPending || deletion.isPending} onClick={() => {
       const confirmation = account.blocked ? "UNBLOCK" : "BLOCK";
       if (window.prompt(`Type ${confirmation} to ${account.blocked ? "unblock" : "block"} ${account.nickname} (Account #${account.accountNumber}).`) === confirmation) blocking.mutate({ data: { userId: account.id, blocked: !account.blocked, confirmation } });
     }}>{account.blocked ? <Undo2 /> : <Ban />}{account.blocked ? "Unblock" : "Block account"}</Button><Button variant="destructive" size="sm" disabled={account.protected || deletion.isPending || blocking.isPending} onClick={() => { setSelected(account); setConfirmation(""); setSuccess(""); deletion.reset(); }}><Trash2 />Delete account</Button></div></div>)}</div>
+    {messaging && <form className="mt-5 space-y-3 border-t border-border pt-4" onSubmit={(event) => { event.preventDefault(); if (messageBody.trim()) messageMutation.mutate({ data: { userId: messaging.id, body: messageBody } }); }}><h3 className="font-semibold">Message {messaging.nickname}</h3><label className="block text-sm" htmlFor="admin-message">Message (appears in their inbox from Admin)</label><textarea id="admin-message" maxLength={4000} rows={4} value={messageBody} onChange={(event) => setMessageBody(event.target.value)} className="w-full rounded-md border border-input bg-background p-3 text-foreground" /><div className="flex gap-2"><Button type="submit" disabled={!messageBody.trim() || messageMutation.isPending}>{messageMutation.isPending ? "Sending…" : "Send message"}</Button><Button type="button" variant="outline" onClick={() => setMessaging(null)}>Cancel</Button></div>{messageMutation.isError && <p role="alert" className="text-destructive">{messageMutation.error.message}</p>}</form>}
     {blocking.isError && <p role="alert" className="mt-3 text-destructive">{blocking.error.message}</p>}
     {selected && <form className="mt-5 space-y-3 border-t border-border pt-4" onSubmit={(event) => { event.preventDefault(); if (confirmation === "DELETE") deletion.mutate({ data: { userId: selected.id, confirmation: "DELETE" } }); }}><h3 className="font-semibold">Delete {selected.nickname}?</h3><p className="text-sm text-muted-foreground">Permanently deletes this account, its board posts, private notebooks, journal records, uploads, support messages, and saved conversations. This cannot be undone.</p><label className="block text-sm" htmlFor="delete-confirmation">Type DELETE to confirm</label><input id="delete-confirmation" autoComplete="off" value={confirmation} onChange={(event) => setConfirmation(event.target.value)} className="w-full rounded-md border border-input bg-background p-3 text-foreground" /><div className="flex gap-2"><Button type="submit" variant="destructive" disabled={confirmation !== "DELETE" || deletion.isPending}>{deletion.isPending ? "Deleting…" : "Permanently delete account"}</Button><Button type="button" variant="outline" disabled={deletion.isPending} onClick={() => setSelected(null)}>Cancel</Button></div></form>}
     {deletion.isError && <p role="alert" className="mt-3 text-destructive">{deletion.error.message}</p>}{success && <p role="status" className="mt-3">{success}</p>}

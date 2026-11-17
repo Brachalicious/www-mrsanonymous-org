@@ -138,7 +138,7 @@ function ToolsPage() {
           icon={<FileText className="h-6 w-6 text-ink-900" />}
           title="Document an incident"
           color="bg-cream-200"
-          summary="Privately record dates, details, photos, and voice notes. Only your account can open it."
+          summary="Privately record dates, details, photos, voice notes, and body cam video. Only your account can open it."
         >
           <div className="flex flex-col gap-2">
             <Link

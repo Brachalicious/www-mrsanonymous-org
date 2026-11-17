@@ -227,3 +227,21 @@ export const resolveStoryReport = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+export const messageAccountForAdmin = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ userId: z.string().uuid(), body: z.string().trim().min(1).max(4000) }).parse(input))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const target = await supabaseAdmin.from("profiles").select("id").eq("id", data.userId).single();
+    if (target.error || !target.data) throw new Error("Account not found");
+    const thread = await supabaseAdmin.from("contact_messages").insert({ message: "Message from Admin", audience: "other", sender_user_id: data.userId, status: "replied" }).select("id").single();
+    if (thread.error || !thread.data) throw new Error("Message could not be sent");
+    const reply = await supabaseAdmin.from("message_replies").insert({ message_id: thread.data.id, author_user_id: context.userId, body: data.body });
+    if (reply.error) {
+      await supabaseAdmin.from("contact_messages").delete().eq("id", thread.data.id);
+      throw new Error("Message could not be sent");
+    }
+    return { ok: true };
+  });
