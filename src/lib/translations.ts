@@ -261,6 +261,7 @@ export function localTranslation(text: string, lang: LangCode): string | undefin
     "space": "מרחב",
     "for women and": "לנשים ול",
     "girls": "נערות",
+    "100% anonymous": "אנונימי ב־100%",
     "safety first": "הבטיחות לפני הכול",
     "Open My Safety Plan": "פתיחת תוכנית הבטיחות האישית שלי",
     "Your safety is top priority. Keep this document in a safe place.": "הבטיחות שלך קודמת לכול. שמרי את המסמך הזה במקום בטוח.",

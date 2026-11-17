@@ -30,6 +30,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { user, profile } = useAuth();
+  const { lang } = useLanguage();
   const [guidanceOpen, setGuidanceOpen] = useState(false);
 
   return (
@@ -40,9 +41,17 @@ function Index() {
           <div className="animate-fade-in-up lg:col-span-7">
             <span className="hand-note text-3xl">a safe place to speak</span>
             <h1 className="mt-4 text-5xl leading-[1.05] tracking-tight text-ink-900 sm:text-6xl lg:text-[5.25rem]">
+              {lang === "he" ? (
+                <span data-no-translate>
+                  מרחב בטוח ו<span className="italic text-rose-500">אנונימי ב־100%</span>
+                  <br />
+                  לנשים ול<span className="underline decoration-rose-400/60 decoration-4 underline-offset-8">נערות</span>.
+                </span>
+              ) : <>
               A safe &amp; <span className="italic text-rose-500">100%&nbsp;anonymous</span> space
               <br />
               for women and <span className="underline decoration-rose-400/60 decoration-4 underline-offset-8">girls</span>.
+              </>}
             </h1>
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-ink-700">
               Tell your story — without fear of exposure, judgment, or retaliation.

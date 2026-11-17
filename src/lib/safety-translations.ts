@@ -197,10 +197,9 @@ export const safetyTranslations: Record<string, Record<string, string>> = {
 export function safetyTranslation(text: string, lang: string): string | undefined {
   const key = text.trim();
   const aliases: Record<string, string> = {
-    "Safe": "A safe place", "safe": "A safe place",
     "safety": "Safety", "Safety tools": "Safety tools", "safety tools": "Safety tools",
     "My safety plan": "My Safety Plan", "My personal safety plan": "My Safety Plan",
-    "A safe &": "A safe &", "A safe & 100%": "A safe &",
+    "Open My Safety Plan": "My Safety Plan",
   };
   const canonical = aliases[key] ?? key;
   return safetyTranslations[lang]?.[canonical];
