@@ -39,4 +39,4 @@
 - Resolve ambiguous safety interface phrases through the browser-safe contextual dictionary before automatic translation, so isolated words do not become financial terms.
 - Cache only successful translations; pause blocked requests and bound waits. Auth readiness precedes optional profile reads. Bound guide requests without replaying writes; disabled queries never imply active loading.
 
-- Every route sets staticData.sitemap so search visibility is an explicit choice.
+- Routes declare staticData.sitemap explicitly.
