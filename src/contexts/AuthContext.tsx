@@ -21,6 +21,7 @@ interface AuthContextValue {
   profile: Profile | null;
   isAdmin: boolean;
   loading: boolean;
+  roleLoading: boolean;
   login: (creds: { nickname: string; password: string }) => Promise<void>;
   register: (creds: {
     nickname: string;
@@ -40,6 +41,7 @@ const AuthContext = createContext<AuthContextValue>({
   profile: null,
   isAdmin: false,
   loading: true,
+  roleLoading: true,
   login: async () => {},
   register: async () => {},
   logout: async () => {},
@@ -58,11 +60,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [roleLoading, setRoleLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
 
     let revision = 0;
+    let currentUserId: string | null = null;
     function receiveSession(nextSession: Session | null, event?: string) {
       if (!mounted) return;
       const version = ++revision;
@@ -71,10 +75,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(nextUser);
       // Authentication is ready before optional profile/role reads finish.
       setLoading(false);
-      setProfile(null);
-      setIsAdmin(false);
+      const sameUser = !!nextUser && nextUser.id === currentUserId;
+      currentUserId = nextUser?.id ?? null;
+      if (!sameUser) {
+        setProfile(null);
+        setIsAdmin(false);
+        setRoleLoading(!!nextUser);
+      }
       if (event === "SIGNED_OUT") clearNoteDrafts();
       if (!nextUser) return;
+      if (sameUser && event === "TOKEN_REFRESHED") return;
       setTimeout(() => {
         if (!mounted || version !== revision) return;
         void Promise.all([
@@ -84,7 +94,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           if (!mounted || version !== revision) return;
           setProfile((profileResult.data as Profile | null) ?? null);
           setIsAdmin(Array.isArray(roleResult.data) && roleResult.data.some((r: { role: string }) => r.role === "admin"));
+          setRoleLoading(false);
         }).catch(() => {
+          if (mounted && version === revision) setRoleLoading(false);
           // Optional reads must not strand the whole app on Loading.
         });
       }, 0);
@@ -96,7 +108,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     void supabase.auth.getSession().then(({ data }) => {
       if (revision === initialRevision) receiveSession(data.session);
     }).catch(() => {
-      if (mounted && revision === initialRevision) setLoading(false);
+      if (mounted && revision === initialRevision) { setLoading(false); setRoleLoading(false); }
     });
 
     return () => {
@@ -145,7 +157,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, session, profile, isAdmin, loading, login, register, logout, errMsg }}>
+    <AuthContext.Provider value={{ user, session, profile, isAdmin, loading, roleLoading, login, register, logout, errMsg }}>
       {children}
     </AuthContext.Provider>
   );
