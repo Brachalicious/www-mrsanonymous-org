@@ -7,10 +7,12 @@ const URL_PATTERN =
 
 // Matches phone numbers: international (+1-800-...), parenthesized area codes
 // ((800) 799-7233), dashed/dotted/spaced groups (800-799-7233), and short
-// emergency numbers (911, 100, 112, 999, 000). Requires at least 7 digits for
-// long numbers so years and small counts never match.
+// emergency/crisis numbers (911, 100, 112, 999, 000, 988, 118). Requires at
+// least 7 digits for long numbers so years and small counts never match. The
+// lookahead keeps vanity numbers like 1-800-799-SAFE plain: a digit run
+// followed by letters is not dialable.
 const PHONE_PATTERN =
-  /(?:\+?\d[\d\s().-]{6,}\d|\b(?:911|112|999|100|000)\b)/g;
+  /(?:\+?\d[\d\s().-]{6,}\d(?![\s().-]*[A-Za-z])|\b(?:911|112|999|100|000|988|118)\b)/g;
 
 // Punctuation that belongs to the sentence, not the URL.
 const TRAILING = /[.,;:!?)\]}"']+$/;

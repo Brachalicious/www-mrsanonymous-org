@@ -72,6 +72,18 @@ test("plain text and small numbers never become links", () => {
   }
 });
 
+test("vanity numbers with letters stay plain text", () => {
+  const parts = splitTextLinks("call 1-800-799-SAFE (7233) or 1-800-656-HOPE");
+  assert.equal(parts.filter((p) => p.type === "tel").length, 0);
+});
+
+test("988 crisis lifeline becomes a tel link", () => {
+  const parts = splitTextLinks("call or text 988, 24/7");
+  const tels = parts.filter((p) => p.type === "tel");
+  assert.equal(tels.length, 1);
+  assert.equal(tels[0].href, "tel:988");
+});
+
 test("digits inside URLs never become tel links", () => {
   const parts = splitTextLinks("see https://example.org/1-800-799-7233 now");
   assert.equal(parts.filter((p) => p.type === "tel").length, 0);
