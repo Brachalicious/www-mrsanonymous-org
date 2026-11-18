@@ -697,6 +697,18 @@ export const GUIDANCE_TOPICS: GuidanceTopic[] = [
       "moving costs",
       "lost wages",
       "bills",
+      "poor",
+      "broke",
+      "need money",
+      "rent",
+      "cant pay rent",
+      "debt",
+      "unemployed",
+      "no job",
+      "lost my job",
+      "hungry",
+      "food",
+      "homeless",
     ],
     answer:
       "There is real financial help for survivors, and you may qualify even if you have no money of your own right now.\n\n- NY Office of Victim Services (opdv.ny.gov/financial-compensation): if you were hurt by a crime in New York, this program can repay you for medical bills, counseling, lost wages, moving costs, and other expenses from the abuse. You apply as a victim — you do not need money up front, and a victim advocate can help you fill out the application for free.\n- Office on Violence Against Women (justice.gov/ovw/grants): these are federal grants that fund local organizations — shelters, legal aid, and housing programs — so their help is free to you. You do not apply yourself; you use the services they pay for.\n- DomesticShelters.org financial articles (domesticshelters.org/articles/financial): plain-language guides on rebuilding financial independence, escaping financial abuse, and money steps after leaving.\n- FreeFrom (https://www.freefrom.org/): a US survivor-led organization working on financial security and economic justice. Check current programs and eligibility; cash assistance is not guaranteed.\n- Surviving Economic Abuse (https://survivingeconomicabuse.org/i-need-help/): UK information and support options for money control, debt, banking and housing.\n- Against Economic Abuse (https://www.againsteconomicabuse.org/global-directory-of-services/): find specialist economic abuse services by region.\n- NNEDV (https://nnedv.org/): US economic justice and technology safety resources, not an emergency hotline.\n\nFinancial links are in the Financial help & compensation section; NNEDV is in Directories & digital safety. Both sections are on the Resources page. Availability, eligibility and costs vary by organization; financial help is not guaranteed. If a partner controls all the money, that is financial abuse — the National Domestic Violence Hotline (1-800-799-SAFE, 24/7) can help you plan around it safely.",
@@ -885,7 +897,7 @@ const DANGER_ANSWER =
   "If you are in danger right now, put this chat down and get help:\n\n- Tap the Help Hand Signal button at the bottom of the page, then Text 911. Your written address goes at the top of that message.\n- Call 911.\n- The Trevor Project: call 866-488-7386, text 678678, or chat at chat.trvr.org\n- 988 Suicide and Crisis Lifeline: call or text 988.\n\nIf you need this screen gone fast, press ESC or tap ✕ Quick Exit.";
 
 const FALLBACK_ANSWER =
-  "I can only answer questions about using MrsANONymous, and I did not find one for that.\n\nTry asking about: my saved notes, my safety plan, texting 911, THE BOARD, quick exit, the calculator disguise, or deleting my account.\n\nIf you need a person, use the Contact page for app support. If you are in danger, tap the Help Hand Signal button at the bottom of the page and Text 911.";
+  "I am here with you, but I did not quite understand that one. Could you say it another way?\n\nTry asking about: my saved notes, my safety plan, texting 911, THE BOARD, quick exit, the calculator disguise, or deleting my account.\n\nIf you need a person, use the Contact page for app support. If you are in danger, tap the Help Hand Signal button at the bottom of the page and Text 911.";
 
 const GREETING_IDS = new Set(["greeting", "what_can_you_do"]);
 

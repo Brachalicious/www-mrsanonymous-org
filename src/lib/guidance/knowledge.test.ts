@@ -54,7 +54,7 @@ describe("built-in guidance answers", () => {
 
   test("an unrelated question gets the fallback and never invents an answer", () => {
     const answer = answerGuidanceQuestion("what is the capital of france");
-    assert.match(answer, /I can only answer questions about using MrsANONymous/);
+    assert.match(answer, /I did not quite understand/);
     assert.doesNotMatch(answer, /Paris/);
   });
 
@@ -160,7 +160,7 @@ describe("built-in guidance answers", () => {
     const answer = answerGuidanceQuestion("i want to die");
     assert.match(answer, /988/);
     assert.match(answer, /You matter/);
-    assert.doesNotMatch(answer, /I can only answer questions about using/);
+    assert.doesNotMatch(answer, /did not quite understand/);
   });
 
   test("sexual assault disclosure gets empathy and the RAINN line", () => {
@@ -198,7 +198,7 @@ describe("built-in guidance answers", () => {
       assert.match(answer, /justice\.gov\/ovw/);
       assert.match(answer, /domesticshelters\.org\/articles\/financial/);
       assert.match(answer, /financial abuse/i);
-      assert.doesNotMatch(answer, /I can only answer questions about using/);
+      assert.doesNotMatch(answer, /did not quite understand/);
     }
   });
 
@@ -211,7 +211,7 @@ describe("built-in guidance answers", () => {
       const answer = answerGuidanceQuestion(q);
       assert.match(answer, /ujafedny\.org\/domestic-violence-resources/);
       assert.match(answer, /Community & faith-based support/);
-      assert.doesNotMatch(answer, /I can only answer questions about using/);
+      assert.doesNotMatch(answer, /did not quite understand/);
     }
   });
 
@@ -222,7 +222,7 @@ describe("built-in guidance answers", () => {
     ]) {
       const answer = answerGuidanceQuestion(q);
       assert.match(answer, /hjweinbergfoundation\.org\/enews\/supporting-survivors/);
-      assert.doesNotMatch(answer, /I can only answer questions about using/);
+      assert.doesNotMatch(answer, /did not quite understand/);
     }
   });
 
@@ -234,7 +234,7 @@ describe("built-in guidance answers", () => {
     ]) {
       const answer = answerGuidanceQuestion(q);
       assert.match(answer, /ujafedny\.org\/what-we-do\/mental-health-well-being/);
-      assert.doesNotMatch(answer, /I can only answer questions about using/);
+      assert.doesNotMatch(answer, /did not quite understand/);
     }
   });
   test("country names select their local support topic rather than a generic resource answer", () => {
@@ -263,4 +263,12 @@ describe("built-in guidance answers", () => {
     assert.equal(matchGuidanceTopic("WAVE network")?.id, "international_directories");
   });
 
+});
+
+test("hardship words like poor and broke get financial help, not the fallback", () => {
+  for (const q of ["im poor", "i am broke", "i cant pay rent"]) {
+    const answer = answerGuidanceQuestion(q);
+    assert.match(answer, /financial help/i);
+    assert.doesNotMatch(answer, /did not quite understand/);
+  }
 });
