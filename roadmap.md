@@ -11,6 +11,7 @@
 - [x] Rewrite women, girls and storytelling paths; describe resources, phonebook, incident recordings and safety tools without inviting personal outreach. Phone/desktop presentation and Resources navigation checked; no page errors, build OK.
 
 ## Android installation and device reset
+- [ ] Match the published Android link-verification file to package org.mrsanonymous.app with the upload and Google Play signing fingerprints.
 - [x] Distinguish Chrome shortcuts from app installation without promising removal of browser badges.
 - [x] Add confirmed device reset that removes local private data and locks without deleting online accounts.
 - [x] Verify fresh direct-site opening after reset, calculator launch protection, phone layout and signed-in local sign-out; nine regression tests pass, no page errors.
