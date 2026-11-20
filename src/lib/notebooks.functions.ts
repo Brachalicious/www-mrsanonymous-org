@@ -297,14 +297,13 @@ export const shareEntry = createServerFn({ method: "POST" })
       .single();
     if (error) throw new Error(error.message);
     // The board lists shared notebooks; sharing a page must make its notebook
-    // visible there too (only shared pages are ever shown).
+    // visible there too and move it to the top as newly posted.
     if (data.shared && updated?.notebook_id) {
       const { error: parentError } = await context.supabase
         .from("notebooks")
         .update({ shared: true, share_as: data.shareAs, shared_at: new Date().toISOString() })
         .eq("id", updated.notebook_id)
-        .eq("owner_id", context.userId)
-        .eq("shared", false);
+        .eq("owner_id", context.userId);
       if (parentError) throw new Error(parentError.message);
     }
     return updated;

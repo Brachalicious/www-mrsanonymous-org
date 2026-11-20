@@ -64,6 +64,7 @@ function NotebookDetailPage() {
   const shareEn = useServerFn(shareEntry);
   const pin = useServerFn(pinEntry);
   const [pageToShare, setPageToShare] = useState<string | null>(null);
+  const [pageShareAs, setPageShareAs] = useState<"nickname" | "anonymous">("anonymous");
   const [pageWarnings, setPageWarnings] = useState<string[]>([]);
 
   const [newTitle, setNewTitle] = useState("");
@@ -313,7 +314,7 @@ function NotebookDetailPage() {
                     text={entry.content}
                     shared={!!entry.shared}
                     onToggleBoard={() => {
-                      if (!entry.shared) { setPageToShare(entry.id); setPageWarnings(entry.trigger_warnings ?? []); return; }
+                      if (!entry.shared) { setPageToShare(entry.id); setPageWarnings(entry.trigger_warnings ?? []); setPageShareAs(notebook.share_as === "nickname" ? "nickname" : "anonymous"); return; }
                       shareEntryMutation.mutate({
                         data: {
                           id: entry.id,
@@ -330,7 +331,7 @@ function NotebookDetailPage() {
               </div>
               <p className="mt-3 whitespace-pre-line text-ink-800 leading-relaxed">{entry.content}</p>
               {entry.shared && <p className="mt-3 text-xs text-muted-foreground">Trigger warnings: {entry.trigger_warnings.length ? entry.trigger_warnings.join(", ") : "None selected"}</p>}
-              {pageToShare === entry.id && <form className="mt-4 border-t border-border pt-3" onSubmit={(event) => { event.preventDefault(); shareEntryMutation.mutate({ data: { id: entry.id, shared: true, shareAs: "anonymous", topics: notebook.topics || [], triggerWarnings: pageWarnings } }); }}><TriggerWarningPicker value={pageWarnings} onChange={setPageWarnings} /><div className="mt-4 flex flex-wrap gap-2"><Button type="submit" disabled={shareEntryMutation.isPending}>{shareEntryMutation.isPending ? "Posting…" : "Post page to board"}</Button><Button type="button" variant="outline" onClick={() => setPageToShare(null)}>Cancel</Button></div></form>}
+              {pageToShare === entry.id && <form className="mt-4 border-t border-border pt-3" onSubmit={(event) => { event.preventDefault(); shareEntryMutation.mutate({ data: { id: entry.id, shared: true, shareAs: pageShareAs, topics: notebook.topics || [], triggerWarnings: pageWarnings } }); }}><fieldset className="mb-3 text-sm"><legend className="mb-1 font-medium">Post as</legend><label className="mr-4 inline-flex items-center gap-2"><input type="radio" name={`pageShareAs-${entry.id}`} checked={pageShareAs === "anonymous"} onChange={() => setPageShareAs("anonymous")} />Anonymous</label><label className="inline-flex items-center gap-2"><input type="radio" name={`pageShareAs-${entry.id}`} checked={pageShareAs === "nickname"} onChange={() => setPageShareAs("nickname")} />My nickname</label></fieldset><TriggerWarningPicker value={pageWarnings} onChange={setPageWarnings} /><div className="mt-4 flex flex-wrap gap-2"><Button type="submit" disabled={shareEntryMutation.isPending}>{shareEntryMutation.isPending ? "Posting…" : "Post page to board"}</Button><Button type="button" variant="outline" onClick={() => setPageToShare(null)}>Cancel</Button></div></form>}
               {entry.shared && pageToShare !== entry.id && <Button className="mt-2" size="sm" variant="outline" onClick={() => { setPageToShare(entry.id); setPageWarnings(entry.trigger_warnings); }}>Edit trigger warnings</Button>}
             </article>
           ))}
@@ -387,7 +388,7 @@ function RipOutMenu({
               className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-sm hover:bg-cream-100"
             >
               <Globe className="h-4 w-4 text-rose-600" />
-              {shared ? "Remove from public board" : "Post anonymously to board"}
+              {shared ? "Remove from public board" : "Post to board"}
             </button>
 
             <p className="mt-2 border-t border-ink-200 px-2 pt-2 text-[11px] font-semibold uppercase tracking-widest text-ink-500">
