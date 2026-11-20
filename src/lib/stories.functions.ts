@@ -75,7 +75,7 @@ export const listSharedStories = createServerFn({ method: "GET" }).handler(async
   );
 
   const [{ data: entries }, { data: reactionEvents }] = await Promise.all([
-    supabaseAdmin.from("entries").select("id, notebook_id, content, trigger_warnings, pinned_at, created_at").in("notebook_id", ids).eq("shared", true),
+    supabaseAdmin.from("entries").select("id, notebook_id, content, trigger_warnings, pinned_at, created_at, shared_at").in("notebook_id", ids).eq("shared", true),
     supabaseAdmin.from("reaction_events").select("notebook_id, reaction, session_id").in("notebook_id", ids),
   ]);
 
@@ -110,7 +110,7 @@ export const listSharedStories = createServerFn({ method: "GET" }).handler(async
       share_as: s.share_as,
       author: s.share_as === "nickname" ? nicknameMap.get(s.owner_id) || "Anonymous" : "Anonymous",
       created_at: s.created_at,
-      shared_at: s.shared_at,
+      shared_at: [s.shared_at, ...(entries ?? []).filter((page) => page.notebook_id === s.id).map((page) => page.shared_at)].reduce<string | null>((latest, d) => (d && (!latest || d > latest) ? d : latest), null),
       preview: firstEntryMap.get(s.id) || "",
       trigger_warnings: [...new Set([...(s.trigger_warnings ?? []), ...(entries ?? []).filter((page) => page.notebook_id === s.id).flatMap((page) => page.trigger_warnings ?? [])])],
       pages: orderPages((entries ?? []).filter((page) => page.notebook_id === s.id)).map((page) => ({ id: page.id, content: page.content, pinned_at: page.pinned_at, trigger_warnings: page.trigger_warnings })),

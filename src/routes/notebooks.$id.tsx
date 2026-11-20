@@ -314,7 +314,7 @@ function NotebookDetailPage() {
                     text={entry.content}
                     shared={!!entry.shared}
                     onToggleBoard={() => {
-                      if (!entry.shared) { setPageToShare(entry.id); setPageWarnings(entry.trigger_warnings ?? []); setPageShareAs(notebook.share_as === "nickname" ? "nickname" : "anonymous"); return; }
+                      if (!entry.shared) { setPageToShare(entry.id); setPageWarnings(entry.trigger_warnings ?? []); setPageShareAs("anonymous"); return; }
                       shareEntryMutation.mutate({
                         data: {
                           id: entry.id,
@@ -331,7 +331,7 @@ function NotebookDetailPage() {
               </div>
               <p className="mt-3 whitespace-pre-line text-ink-800 leading-relaxed">{entry.content}</p>
               {entry.shared && <p className="mt-3 text-xs text-muted-foreground">Trigger warnings: {entry.trigger_warnings.length ? entry.trigger_warnings.join(", ") : "None selected"}</p>}
-              {pageToShare === entry.id && <form className="mt-4 border-t border-border pt-3" onSubmit={(event) => { event.preventDefault(); shareEntryMutation.mutate({ data: { id: entry.id, shared: true, shareAs: pageShareAs, topics: notebook.topics || [], triggerWarnings: pageWarnings } }); }}><fieldset className="mb-3 text-sm"><legend className="mb-1 font-medium">Post as</legend><label className="mr-4 inline-flex items-center gap-2"><input type="radio" name={`pageShareAs-${entry.id}`} checked={pageShareAs === "anonymous"} onChange={() => setPageShareAs("anonymous")} />Anonymous</label><label className="inline-flex items-center gap-2"><input type="radio" name={`pageShareAs-${entry.id}`} checked={pageShareAs === "nickname"} onChange={() => setPageShareAs("nickname")} />My nickname</label></fieldset><TriggerWarningPicker value={pageWarnings} onChange={setPageWarnings} /><div className="mt-4 flex flex-wrap gap-2"><Button type="submit" disabled={shareEntryMutation.isPending}>{shareEntryMutation.isPending ? "Posting…" : "Post page to board"}</Button><Button type="button" variant="outline" onClick={() => setPageToShare(null)}>Cancel</Button></div></form>}
+              {pageToShare === entry.id && <form className="mt-4 border-t border-border pt-3" onSubmit={(event) => { event.preventDefault(); shareEntryMutation.mutate({ data: { id: entry.id, shared: true, shareAs: pageShareAs, topics: notebook.topics || [], triggerWarnings: pageWarnings } }); }}><fieldset className="mb-3 text-sm"><legend className="mb-1 font-medium">Posts anonymously</legend><label className="inline-flex items-center gap-2"><input type="checkbox" checked={pageShareAs === "nickname"} onChange={(e) => setPageShareAs(e.target.checked ? "nickname" : "anonymous")} />Share with my nickname</label></fieldset><TriggerWarningPicker value={pageWarnings} onChange={setPageWarnings} /><div className="mt-4 flex flex-wrap gap-2"><Button type="submit" disabled={shareEntryMutation.isPending}>{shareEntryMutation.isPending ? "Posting…" : "Post page to board"}</Button><Button type="button" variant="outline" onClick={() => setPageToShare(null)}>Cancel</Button></div></form>}
               {entry.shared && pageToShare !== entry.id && <Button className="mt-2" size="sm" variant="outline" onClick={() => { setPageToShare(entry.id); setPageWarnings(entry.trigger_warnings); }}>Edit trigger warnings</Button>}
             </article>
           ))}
@@ -460,7 +460,7 @@ function SharePanel({
   notebook: Awaited<ReturnType<typeof getNotebook>>;
   onShare: (shared: boolean, shareAs: "nickname" | "anonymous", topics: string[], triggerWarnings: string[]) => void;
 }) {
-  const [shareAs, setShareAs] = useState<"nickname" | "anonymous">(notebook.share_as as "nickname" | "anonymous");
+  const [shareAs, setShareAs] = useState<"nickname" | "anonymous">(notebook.shared && notebook.share_as === "nickname" ? "nickname" : "anonymous");
   const [topics, setTopics] = useState<string[]>(notebook.topics || []);
   const [warnings, setWarnings] = useState<string[]>(notebook.trigger_warnings || []);
 
@@ -474,26 +474,14 @@ function SharePanel({
         Sharing a notebook puts it on the community board. You can keep it anonymous or use your nickname.
       </p>
 
-      <div className="mt-4 flex flex-wrap gap-3">
+      <div className="mt-4">
         <label className="flex items-center gap-2 text-sm text-ink-700">
           <input
-            type="radio"
-            name="shareAs"
-            value="anonymous"
-            checked={shareAs === "anonymous"}
-            onChange={() => setShareAs("anonymous")}
-          />
-          Anonymous
-        </label>
-        <label className="flex items-center gap-2 text-sm text-ink-700">
-          <input
-            type="radio"
-            name="shareAs"
-            value="nickname"
+            type="checkbox"
             checked={shareAs === "nickname"}
-            onChange={() => setShareAs("nickname")}
+            onChange={(e) => setShareAs(e.target.checked ? "nickname" : "anonymous")}
           />
-          My nickname
+          Share with my nickname (otherwise anonymous)
         </label>
       </div>
 
